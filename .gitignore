@@ -1,1 +1,4 @@
 certificates
+config.py
+__pycache__
+virtualenv
