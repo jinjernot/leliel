@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Information</title>
+</head>
+<body>
+    <h1>Product Information</h1>
+
+    <form action="/get_product" method="post">
+        <label for="sku">SKU:</label>
+        <input type="text" id="sku" name="sku" required>
+
+        <label for="country">Country Code:</label>
+        <input type="text" id="country" name="country" required>
+
+        <button type="submit">Go</button>
+    </form>
+</body>
+</html>

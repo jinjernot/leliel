@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>{{ product_data.request.sku[0] }} - {{ product_data.products[product_data.request.sku[0]].productHierarchy.model.name }}</title>
+   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+   <div id="product-info">
+      <h2>{{ product_data.products[product_data.request.sku[0]].productHierarchy.model.name }}</h2>
+      <p>Price: {{ product_data.products[product_data.request.sku[0]].price }}</p>
+      <p>Status: {{ product_data.products[product_data.request.sku[0]].statusMessage }}</p>
+      <!-- Add more details as needed -->
+   </div>
+</body>
+</html>
