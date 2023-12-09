@@ -4,42 +4,171 @@
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>{{ product_data.request.sku[0] }} - {{ product_data.products[product_data.request.sku[0]].productHierarchy.model.name }}</title>
-   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+   <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
 </head>
 <body>
-   <div id="product-info">
+   <div id="product-info" class="superscript-content">
       <h2>{{ product_data.products[product_data.request.sku[0]].productHierarchy.model.name }}</h2>
 
-     <table border="0">
+     <table >
 
       <tbody>
          <tr>
-             <td></td>
-             <td>
-            <strong>{{ product_data.products[product_data.request.sku[0]].chunks[1].details[3].value }}</strong><br>
+            <td><img src="{{ product_data.products[product_data.request.sku[0]].images[0].details[2].imageUrlHttp }}" alt="Product Image"></td>
+            <td>
+            <h3><strong>{{ product_data.products[product_data.request.sku[0]].chunks[1].details[3].value }}</strong></h3>
                {{ product_data.products[product_data.request.sku[0]].chunks[1].details[4].value }}
             </td>
          </tr>
          <tr>
-             <td>
-            <strong>{{ product_data.products[product_data.request.sku[0]].chunks[1].details[6].value }}</strong><br>
+            <td>
+            <h3><strong>{{ product_data.products[product_data.request.sku[0]].chunks[1].details[6].value }}</strong></h3>
                {{ product_data.products[product_data.request.sku[0]].chunks[1].details[7].value }}</td>
-             <td></td>
-         </tr>
+               <td><img src="{{ product_data.products[product_data.request.sku[0]].images[0].details[3].imageUrlHttp }}" alt="Product Image"></td>
+            </tr>
          <tr>
-             <td></td>
-             <td><strong>{{ product_data.products[product_data.request.sku[0]].chunks[1].details[9].value }}</strong><br>
+            <td><img src="{{ product_data.products[product_data.request.sku[0]].images[0].details[0].imageUrlHttp }}" alt="Product Image"></td>
+            <td><h3><strong>{{ product_data.products[product_data.request.sku[0]].chunks[1].details[9].value }}</strong></h3>
                {{ product_data.products[product_data.request.sku[0]].chunks[1].details[10].value }}</td>
          </tr>
          <tr>
-             <td><strong>{{ product_data.products[product_data.request.sku[0]].chunks[1].details[25].value }}</strong><br>
+            <td><h3><strong>{{ product_data.products[product_data.request.sku[0]].chunks[1].details[25].value }}</strong></h3>
                {{ product_data.products[product_data.request.sku[0]].chunks[1].details[26].value }}</td>
-             <td>
-               </td>
+               <td><img src="{{ product_data.products[product_data.request.sku[0]].images[0].details[1].imageUrlHttp }}" alt="Product Image"></td>
+         </tr>
+         <tr>
+            <td><img src="{{ product_data.products[product_data.request.sku[0]].images[0].details[5].imageUrlHttp }}" alt="Product Image"></td>
+            <td><h3><strong>{{ product_data.products[product_data.request.sku[0]].chunks[1].details[27].value }}</strong></h3>
+               {{ product_data.products[product_data.request.sku[0]].chunks[1].details[28].value }}</td>
+         </tr>
+         <tr>
+            <td><h3><strong>{{ product_data.products[product_data.request.sku[0]].chunks[1].details[29].value }}</strong></h3>
+               {{ product_data.products[product_data.request.sku[0]].chunks[1].details[30].value }}<br>
+               <h3><strong>{{ product_data.products[product_data.request.sku[0]].chunks[1].details[31].value }}</strong></h3>
+               {{ product_data.products[product_data.request.sku[0]].chunks[1].details[32].value }}<br>
+               <h3><strong>{{ product_data.products[product_data.request.sku[0]].chunks[1].details[21].value }}</strong></h3>
+               {{ product_data.products[product_data.request.sku[0]].chunks[1].details[22].value }}</td>
+               <td><img src="{{ product_data.products[product_data.request.sku[0]].images[0].details[8].imageUrlHttp }}" alt="Product Image"></td>
          </tr>
      </tbody>
   </table>
-  
+
+  <h2 id="see-more" style="cursor: pointer">+Expand to see more</h2>
+  <br>
+
+  <table id="tech-specs" style="display: none;">
+
+   <tbody>
+      {% for detail in product_data.products[product_data.request.sku[0]].chunks[2].details %}
+         <tr>
+            <td>{{ detail.name }}</td>
+            <td>{{ detail.value }}</td>
+         </tr>
+      {% endfor %}
+
+      {% for detail in product_data.products[product_data.request.sku[0]].chunks[3].details %}
+      <tr>
+         <td>{{ detail.name }}</td>
+         <td>{{ detail.value }}</td>
+      </tr>
+   {% endfor %}
+
+   {% for detail in product_data.products[product_data.request.sku[0]].chunks[4].details %}
+   <tr>
+      <td>{{ detail.name }}</td>
+      <td>{{ detail.value }}</td>
+   </tr>
+{% endfor %}
+
+{% for detail in product_data.products[product_data.request.sku[0]].chunks[5].details %}
+<tr>
+   <td>{{ detail.name }}</td>
+   <td>{{ detail.value }}</td>
+</tr>
+{% endfor %}
+
+{% for detail in product_data.products[product_data.request.sku[0]].chunks[6].details %}
+<tr>
+   <td>{{ detail.name }}</td>
+   <td>{{ detail.value }}</td>
+</tr>
+{% endfor %}
+
+{% for detail in product_data.products[product_data.request.sku[0]].chunks[7].details %}
+<tr>
+   <td>{{ detail.name }}</td>
+   <td>{{ detail.value }}</td>
+</tr>
+{% endfor %}
+
+{% for detail in product_data.products[product_data.request.sku[0]].chunks[8].details %}
+<tr>
+   <td>{{ detail.name }}</td>
+   <td>{{ detail.value }}</td>
+</tr>
+{% endfor %}
+
+{% for detail in product_data.products[product_data.request.sku[0]].chunks[9].details %}
+<tr>
+   <td>{{ detail.name }}</td>
+   <td>{{ detail.value }}</td>
+</tr>
+{% endfor %}
+
+{% for detail in product_data.products[product_data.request.sku[0]].chunks[10].details %}
+<tr>
+   <td>{{ detail.name }}</td>
+   <td>{{ detail.value }}</td>
+</tr>
+{% endfor %}
+
+{% for detail in product_data.products[product_data.request.sku[0]].chunks[11].details %}
+<tr>
+   <td>{{ detail.name }}</td>
+   <td>{{ detail.value }}</td>
+</tr>
+{% endfor %}
+
+{% for detail in product_data.products[product_data.request.sku[0]].chunks[12].details %}
+<tr>
+   <td>{{ detail.name }}</td>
+   <td>{{ detail.value }}</td>
+</tr>
+{% endfor %}
+
+
+{% for detail in product_data.products[product_data.request.sku[0]].chunks[13].details %}
+<tr>
+   <td>{{ detail.name }}</td>
+   <td>{{ detail.value }}</td>
+</tr>
+{% endfor %}
+
+{% for detail in product_data.products[product_data.request.sku[0]].chunks[14].details %}
+<tr>
+   <td>{{ detail.name }}</td>
+   <td>{{ detail.value }}</td>
+</tr>
+{% endfor %}
+
+
+  </tbody>
+
+</table>
+
+<br>
+
+<table id="footnotes">
+{% for detail in product_data.products[product_data.request.sku[0]].chunks[15].details %}
+<tr>
+   <td id="footnote-{{ loop.index }}">{{ detail.value }}</td>
+</tr>
+{% endfor %}
+
+</table>
+
+
    </div>
 </body>
 </html>
