@@ -43,8 +43,8 @@ def get_product():
             print(response.json())
 
             # Save the API response to a JSON file
-            with open("api_response.json", "w") as json_file:
-                json.dump(response.json(), json_file)
+            #with open("api_response.json", "w") as json_file:
+            #    json.dump(response.json(), json_file)
             product_data = response.json()
 
             return render_template("product.html", product_data=product_data)

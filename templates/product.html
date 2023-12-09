@@ -9,9 +9,37 @@
 <body>
    <div id="product-info">
       <h2>{{ product_data.products[product_data.request.sku[0]].productHierarchy.model.name }}</h2>
-      <p>Price: {{ product_data.products[product_data.request.sku[0]].price }}</p>
-      <p>Status: {{ product_data.products[product_data.request.sku[0]].statusMessage }}</p>
-      <!-- Add more details as needed -->
+
+     <table border="0">
+
+      <tbody>
+         <tr>
+             <td></td>
+             <td>
+            <strong>{{ product_data.products[product_data.request.sku[0]].chunks[1].details[3].value }}</strong><br>
+               {{ product_data.products[product_data.request.sku[0]].chunks[1].details[4].value }}
+            </td>
+         </tr>
+         <tr>
+             <td>
+            <strong>{{ product_data.products[product_data.request.sku[0]].chunks[1].details[6].value }}</strong><br>
+               {{ product_data.products[product_data.request.sku[0]].chunks[1].details[7].value }}</td>
+             <td></td>
+         </tr>
+         <tr>
+             <td></td>
+             <td><strong>{{ product_data.products[product_data.request.sku[0]].chunks[1].details[9].value }}</strong><br>
+               {{ product_data.products[product_data.request.sku[0]].chunks[1].details[10].value }}</td>
+         </tr>
+         <tr>
+             <td><strong>{{ product_data.products[product_data.request.sku[0]].chunks[1].details[25].value }}</strong><br>
+               {{ product_data.products[product_data.request.sku[0]].chunks[1].details[26].value }}</td>
+             <td>
+               </td>
+         </tr>
+     </tbody>
+  </table>
+  
    </div>
 </body>
 </html>
