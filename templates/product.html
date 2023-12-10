@@ -8,10 +8,23 @@
    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
 </head>
 <body>
-   <div id="product-info" class="superscript-content">
-      <h2>{{ product_data.products[product_data.request.sku[0]].productHierarchy.model.name }}</h2>
+   <div class="dark-form-container">
+      <form action="/get_product" method="post">
+          <label for="sku">SKU:</label>
+          <input type="text" id="sku" name="sku" required>
 
-     <table >
+          <label for="country">LOCALE:</label>
+          <input type="text" id="country" name="country" required>
+  
+          <button type="submit">Go</button>
+      </form>
+  </div>
+
+
+
+   <div id="product-info" class="superscript-content">
+
+     <table id="ksp">
 
       <tbody>
          <tr>
