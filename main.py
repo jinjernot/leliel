@@ -1,9 +1,8 @@
 from config import ca_cert_path, client_cert_path, client_key_path, url
 
-import json
-import pandas as pd
-import requests
 from flask import Flask, render_template, request
+import requests
+import json
 
 app = Flask(__name__)
 app.use_static_for = 'static'
@@ -41,8 +40,6 @@ def get_product():
         if response.status_code == 200:
             print("Request successful!")
             print(response.json())
-
-            # Save the API response to a JSON file
             #with open("api_response.json", "w") as json_file:
             #    json.dump(response.json(), json_file)
             product_data = response.json()
