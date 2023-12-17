@@ -43,6 +43,11 @@ def get_product():
             #with open("api_response.json", "w") as json_file:
             #    json.dump(response.json(), json_file)
             product_data = response.json()
+            rendered_template = render_template("product.html", product_data=product_data)
+
+                # Save the rendered template to a new HTML file
+            with open("output_product.html", "w", encoding="utf-8") as output_file:
+                output_file.write(rendered_template)
 
             return render_template("product.html", product_data=product_data)
         else:
