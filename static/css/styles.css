@@ -126,4 +126,22 @@ tr:nth-child(even) td:nth-child(odd) {
     background-color: #efefef;
     padding: 15px;
   }
-  
+
+  .slider {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .slider img {
+    margin: 0 auto; /* Center the image horizontally */
+  }
+  .thumbnail-slider {
+    width: 60%; /* Adjust the width as needed */
+    margin: auto;
+  }
+  .thumbnail-slider img {
+    width: 75%;
+    height: auto;
+    cursor: pointer;
+    margin: 0 auto; /* Center the image horizontally */
+
+  }

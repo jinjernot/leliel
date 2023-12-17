@@ -6,6 +6,9 @@
    <title>{{ product_data.request.sku[0] }} - {{ product_data.products[product_data.request.sku[0]].productHierarchy.model.name }}</title>
    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
+   <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
 </head>
 <body>
    <div class="dark-form-container">
@@ -20,7 +23,22 @@
       </form>
   </div>
 
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+  <script src="{{ url_for('static', filename='js/slider.js') }}" defer></script>
 
+  <div class="slider">
+   <div><img src="{{ product_data.products[product_data.request.sku[0]].images[0].details[0].imageUrlHttp }}" alt="Image 1"></div>
+   <div><img src="{{ product_data.products[product_data.request.sku[0]].images[0].details[1].imageUrlHttp }}" alt="Image 2"></div>
+   <div><img src="{{ product_data.products[product_data.request.sku[0]].images[0].details[2].imageUrlHttp }}" alt="Image 3"></div>
+ </div>
+ 
+ <div class="thumbnail-slider">
+   <div><img src="{{ product_data.products[product_data.request.sku[0]].images[0].details[0].imageUrlHttp }}" alt="Thumbnail 1"></div>
+   <div><img src="{{ product_data.products[product_data.request.sku[0]].images[0].details[1].imageUrlHttp }}" alt="Thumbnail 2"></div>
+   <div><img src="{{ product_data.products[product_data.request.sku[0]].images[0].details[2].imageUrlHttp }}" alt="Thumbnail 3"></div>
+ </div>
+ 
 
    <div id="product-info" class="superscript-content">
 
