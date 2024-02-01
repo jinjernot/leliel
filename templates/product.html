@@ -1,82 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ df['prodname'].iloc[0] | default('') | safe }}</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/styles.css') }}"
+    />
+    <script
+      src="{{ url_for('static', filename='js/script.js') }}"
+      defer
+    ></script>
+    <script
+      src="{{ url_for('static', filename='js/superscript.js') }}"
+      defer
+    ></script>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"
+    />
+    <link
+      rel="icon"
+      href="{{ url_for('static', filename='images/favicon.ico') }}"
+      type="image/x-icon"
+    />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>
-test
-  </title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
-  <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
-  <script src="{{ url_for('static', filename='js/superscript.js') }}" defer></script>
-  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
-  <link rel="stylesheet" type="text/css"
-    href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
-  <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon" />
-</head>
+  <body>
+    <div class="dark-form-container">
+      <form action="/get_product" method="post">
+        <label for="sku">SKU:</label>
+        <input type="text" id="sku" name="sku" required />
 
-<body>
-  <div class="dark-form-container">
-    <form action="/get_product" method="post">
-      <label for="sku">SKU:</label>
-      <input type="text" id="sku" name="sku" required />
+        <label for="country">LOCALE:</label>
+        <input type="text" id="country" name="country" required />
 
-      <label for="country">LOCALE:</label>
-      <input type="text" id="country" name="country" required />
+        <label for="language">LANGUAGE:</label>
+        <input type="text" id="language" name="language" required />
 
-      <label for="language">LANGUAGE:</label>
-      <input type="text" id="language" name="language" required />
+        <button type="submit">Go</button>
+      </form>
+    </div>
 
-      <button type="submit">Go</button>
-    </form>
-  </div>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"
+    ></script>
+    <script
+      src="{{ url_for('static', filename='js/slider.js') }}"
+      defer
+    ></script>
 
-  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-  <script src="{{ url_for('static', filename='js/slider.js') }}" defer></script>
-
-  <div id="ATF" class="superscript-content">
-    <table>
-      <tr>
-        <td>
-          <div class="images">
-            <img src="{{ df['Center facing'].iloc[0] | default('') | safe }}" alt="Center Facing Image">
-            <div>
+    <div id="ATF" class="superscript-content">
+      <table>
+        <tr>
+          <td>
+            <div class="images">
+              <img
+                src="{{ df['Center facing'].iloc[0] | default('') | safe }}"
+                alt="Center Facing Image"
+              />
+              <div></div>
             </div>
-          </div>
-        </td>
-        <td>
-          <!--product name, should be prodlongnamespecs -->
-          <b><h1>{{ df['prodname'].iloc[0] | default('') | safe }}</h1></b>
-    
-          <input type="submit" value="BUY NOW" class="button">
-          <br>
-    
-          <!--proddes_overview_extended-->
-          {{ df['proddes_overview_extended'].iloc[0] | default('') | safe }}
-    
-          <br><br>
-          <div id="ksp">
-            {% for tag in ['ksp_01_suppt_01_long', 'ksp_02_suppt_01_long', 'ksp_03_suppt_01_long', 'osinstalled', 'processorname', 'memstdes_01', 'hd_01des', 'displaymet', 'graphicseg_01card_01', 'whatsinbox'] %}
-              {% if tag in df.columns %}
-                {% set content = df[tag].iloc[0] | default('') %}
-                {% if content %}
-                  <ul>
-                    <li><!--{{ tag }}-->
-                      {{ content | safe }}
-                    </li>
-                  </ul>
-                {% endif %}
-              {% endif %}
-            {% endfor %}
-          </div>  
-          <br><br>
-    
-        </td>
-      </tr>
-    </table>  </div>
-  <div id="product-info" class="superscript-content"></div>
-</body>
+          </td>
+          <td>
+            <!--product name, should be prodlongnamespecs -->
+            <b><h1>{{ df['prodname'].iloc[0] | default('') | safe }}</h1></b>
 
+            <input type="submit" value="BUY NOW" class="button" />
+            <br />
+            <!--proddes_overview_extended-->
+            {{ df['proddes_overview_extended'].iloc[0] | default('') | safe }}
+
+            <br /><br />
+
+            <div id="ksp">
+              {% for tag in ['ksp_01_suppt_01_long', 'ksp_02_suppt_01_long',
+              'ksp_03_suppt_01_long', 'osinstalled', 'processorname',
+              'memstdes_01', 'hd_01des', 'displaymet', 'graphicseg_01card_01',
+              'whatsinbox'] %} {% if tag in df.columns %} {% set content =
+              df[tag].iloc[0] | default('') %} {% if content %}
+              <ul>
+                <li>
+                  <!--{{ tag }}-->
+                  {{ content | safe }}
+                </li>
+              </ul>
+              {% endif %} {% endif %} {% endfor %}
+            </div>
+            <br /><br />
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div id="product-info" class="superscript-content"></div>
+  </body>
 </html>
