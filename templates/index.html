@@ -2,14 +2,13 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <title>API</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
     <div class="dark-form-container">
-        <form action="/get_product" method="post">
+        <form method="POST" enctype="multipart/form-data" action="{{ url_for('get_product') }}">
             <label for="sku">SKU:</label>
             <input type="text" id="sku" name="sku" required>
 

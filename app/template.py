@@ -2,6 +2,7 @@
 import pandas as pd
 
 def build_template(api_response):
+    print("enter build_template")
     # Ensure api_response is a dictionary
     if not isinstance(api_response, dict):
         try:
@@ -41,8 +42,8 @@ def build_template(api_response):
                     if 'orientation' in detail and detail['orientation'] in image_tags:
                         atf_tags[detail['orientation']] = detail['imageUrlHttps']
 
-
+    print("end")
     df = pd.DataFrame([atf_tags])
-    df.to_excel("excel.xlsx", index=False, engine='xlsxwriter')
+    #df.to_excel("/home/garciagi/api/excel.xlsx", index=False, engine='xlsxwriter')
 
     return df
