@@ -5,7 +5,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>
-test
+    {{ product_data.request.sku[0] }} - {{
+    product_data.products[product_data.request.sku[0]].productHierarchy.model.name
+    }}
   </title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
   <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
@@ -36,42 +38,70 @@ test
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
   <script src="{{ url_for('static', filename='js/slider.js') }}" defer></script>
 
-  <div id="ATF" class="superscript-content">
+  <div id="ATF">
     <table>
       <tr>
         <td>
           <div class="images">
-            <img src="{{ df['Center facing'].iloc[0] | default('') | safe }}" alt="Center Facing Image">
             <div>
+              <img src="{{ product_data.products[product_data.request.sku[0]].images[0].details[0].imageUrlHttp }}"
+                alt="Image 1" />
             </div>
           </div>
         </td>
         <td>
           <!--product name, should be prodlongnamespecs -->
-          <b><h1>{{ df['prodname'].iloc[0] | default('') | safe }}</h1></b>
+          <b><h1>{{
+            product_data.products[product_data.request.sku[0]].productHierarchy.model.name
+            }}</h1></b>
     
           <input type="submit" value="BUY NOW" class="button">
           <br>
     
           <!--proddes_overview_extended-->
-          {{ df['proddes_overview_extended'].iloc[0] | default('') | safe }}
+          {{ product_data.products[product_data.request.sku[0]].chunks[1].details[0].value | default('') | safe }}
     
           <br><br>
           <div id="ksp">
-            {% for tag in ['ksp_01_suppt_01_long', 'ksp_02_suppt_01_long', 'ksp_03_suppt_01_long', 'osinstalled', 'processorname', 'memstdes_01', 'hd_01des', 'displaymet', 'graphicseg_01card_01', 'whatsinbox'] %}
-              {% if tag in df.columns %}
-                {% set content = df[tag].iloc[0] | default('') %}
-                {% if content %}
-                  <ul>
-                    <li><!--{{ tag }}-->
-                      {{ content | safe }}
-                    </li>
-                  </ul>
-                {% endif %}
-              {% endif %}
-            {% endfor %}
-          </div>  
+            <ul>
+              <li><!--ksp_01_suppt_01_long-->
+                {{ product_data.products[product_data.request.sku[0]].chunks[2].details[1].value | default('') | safe }}
+              </li>
+            </ul>
+    
+            <ul>
+              <li><!--ksp_01_suppt_02_long-->
+                {{ product_data.products[product_data.request.sku[0]].chunks[2].details[3].value | default('') | safe }}
+              </li>
+            </ul>
+    
+            <ul>
+              <li><!--ksp_01_suppt_03_long-->
+                {{ product_data.products[product_data.request.sku[0]].chunks[2].details[5].value | default('') | safe }}
+              </li>
+            </ul>
+          </div>
+    
           <br><br>
+          <div id="atf_specs">
+            <ul>
+              <li><!--osinstalled-->
+                {{ product_data.products[product_data.request.sku[0]].chunks[17].details[0].value | default('') | safe }}
+              </li>
+            </ul>
+    
+            <ul>
+              <li><!--processorname-->
+                {{ product_data.products[product_data.request.sku[0]].chunks[3].details[2].value | default('') | safe }}
+              </li>
+            </ul>
+    
+            <ul>
+              <li><!--processorname-->
+                {{ product_data.products[product_data.request.sku[0]].chunks[6].details[0].value | default('') | safe }}
+              </li>
+            </ul>
+          </div>
     
         </td>
       </tr>

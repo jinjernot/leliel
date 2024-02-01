@@ -1,13 +1,16 @@
 from config import ca_cert_path, client_cert_path, client_key_path, url
-
 from flask import Flask, render_template, request
+from app.template import build_template
 import requests
 import json
+
+import pandas as pd
+
 
 app = Flask(__name__)
 app.use_static_for = 'static'
 
-@app.route('/')
+@app.route('/app4')
 def index():
     return render_template("index.html")
 
@@ -19,17 +22,18 @@ def get_product():
 
         sku = request.form.get('sku')
         country_code = request.form.get('country')
+        language_code = request.form.get('language')
 
         json_data = {
             "sku": [sku],
             "countryCode": country_code,
-            "languageCode": "EN",
+            "languageCode": language_code,
             "layoutName": "PDPCOMBO",
             "requestor": "HERMESQA-PRO",
             "reqContent": ["chunks", "images", "hierarchy", "plc"]
         }
 
-        response = requests.post(
+        api_response = requests.post(
             url,
             cert=client_cert,
             verify=ca_cert,
@@ -37,22 +41,25 @@ def get_product():
             data=json.dumps(json_data)
         )
 
-        if response.status_code == 200:
+        if api_response.status_code == 200:
             print("Request successful!")
-            print(response.json())
+
             #with open("api_response.json", "w") as json_file:
-            #    json.dump(response.json(), json_file)
-            product_data = response.json()
-            rendered_template = render_template("product.html", product_data=product_data)
+            #    json.dump(api_response.json(), json_file)
+            product_data = api_response.json()
+
+            df = build_template(api_response)
+            
+            #rendered_template = render_template("product.html", product_data=product_data)
 
                 # Save the rendered template to a new HTML file
-            with open("output_product.html", "w", encoding="utf-8") as output_file:
-                output_file.write(rendered_template)
+            #with open("output_product.html", "w", encoding="utf-8") as output_file:
+            #    output_file.write(rendered_template)
 
-            return render_template("product.html", product_data=product_data)
+            return render_template("product.html", df=df)
         else:
-            print(f"Request failed with status code {response.status_code}")
-            print(f"Response content: {response.text}")
+            print(f"Request failed with status code {api_response.status_code}")
+            print(f"api_response content: {api_response.text}")
     except Exception as e:
         print(f"An error occurred: {e}")
     return render_template("error.html")
