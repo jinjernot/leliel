@@ -1,4 +1,4 @@
-from config import ca_cert_path, client_cert_path, client_key_path, url
+from config import client_cert_path, client_key_path, url
 from flask import Flask, render_template, request
 from app.template import build_template
 import requests
@@ -20,11 +20,6 @@ def index():
 def get_product():
     
     try:
-        print("Entering try block")
-        print(f"CA Cert Path: {ca_cert_path}")
-        print(f"Client Cert Path: {client_cert_path}")
-        print(f"Client Key Path: {client_key_path}")
-        ca_cert = ca_cert_path
         client_cert = (client_cert_path, client_key_path)
         sku = request.form.get('sku')
         country_code = request.form.get('country')
@@ -42,7 +37,7 @@ def get_product():
         api_response = requests.post(
             url,
             cert=client_cert,
-            verify=ca_cert,
+            verify=False,
             headers={'Content-Type': 'application/json'},
             data=json.dumps(json_data)
         )
