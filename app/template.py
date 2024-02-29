@@ -2,7 +2,7 @@
 import pandas as pd
 
 def build_template(api_response):
-    print("enter build_template")
+
     # Ensure api_response is a dictionary
     if not isinstance(api_response, dict):
         try:
@@ -14,8 +14,8 @@ def build_template(api_response):
     atf_tags = {}
 
     # Define the tags to search for
-    target_tags = ['prodname','proddes_overview_extended','ksp_01_suppt_01_long','ksp_02_suppt_01_long','ksp_03_suppt_01_long','osinstalled','processorname','memstdes_01','hd_01des','displaymet','graphicseg_01card_01','whatsinbox']
-    image_tags = ['Center facing','Left facing','Right facing','Left rear facing','Rear facing','Top view closed','Bottom','Left profile closed','Right profile closed']
+    target_tags = ['prodname','proddes_overview_extended','ksp_01_suppt_01_long','ksp_02_suppt_01_long','ksp_03_suppt_01_long','osinstalled','processorname','memstdes_01','hd_01des','displaymet','graphicseg_01card_01','whatsinbox','ksp_01_headline_medium','ksp_02_headline_medium','ksp_03_headline_medium']
+    image_tags = ['Center facing','Left facing','Right facing','Left rear facing','Rear facing','Left rear facing','Top view closed','Detail view','Left profile closed','Right profile closed','Right rear facing']
 
     # Access the 'products' dictionary in the API api_response
     products = api_response.get('products', {})
@@ -42,8 +42,7 @@ def build_template(api_response):
                     if 'orientation' in detail and detail['orientation'] in image_tags:
                         atf_tags[detail['orientation']] = detail['imageUrlHttps']
 
-    print("end")
     df = pd.DataFrame([atf_tags])
-    #df.to_excel("/home/garciagi/api/excel.xlsx", index=False, engine='xlsxwriter')
+    df.to_excel("excel.xlsx", index=False, engine='xlsxwriter')
 
     return df

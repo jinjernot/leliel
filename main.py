@@ -45,8 +45,8 @@ def get_product():
         if api_response.status_code == 200:
             print("Request successful!")
 
-            #with open("api_response.json", "w") as json_file:
-            #    json.dump(api_response.json(), json_file)
+            with open("api_response.json", "w") as json_file:
+                json.dump(api_response.json(), json_file)
             product_data = api_response.json()
 
             df = build_template(api_response)
