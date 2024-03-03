@@ -1,175 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>{{ df['prodname'].iloc[0] | default('') | safe }}</title>
-    <meta charset="UTF-8" />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/styles.css') }}"
-    />
-    <script
-      src="{{ url_for('static', filename='js/script.js') }}"
-      defer
-    ></script>
-    <script
-    src="{{ url_for('static', filename='js/slideshow.js') }}"
-    defer
-  ></script>
-    <script
-      src="{{ url_for('static', filename='js/superscript.js') }}"
-      defer
-    ></script>
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"
-    />
-    <link
-      rel="icon"
-      href="{{ url_for('static', filename='images/favicon.ico') }}"
-      type="image/x-icon"
-    />
-  </head>
 
-  <body>
-    <div class="dark-form-container">
-      <form method="POST" enctype="multipart/form-data" action="{{ url_for('get_product') }}">       
-        <label for="sku">SKU:</label>
-        <input type="text" id="sku" name="sku" required />
+<head>
+  <title>{{ df['prodname'].iloc[0] | default('') | safe }}</title>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+  <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='js/slideshow.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='js/superscript.js') }}" defer></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+  <link rel="stylesheet" type="text/css"
+    href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
+  <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon" />
+</head>
 
-        <label for="country">LOCALE:</label>
-        <input type="text" id="country" name="country" required />
+<body>
+  <div class="dark-form-container">
+    <form method="POST" enctype="multipart/form-data" action="{{ url_for('get_product') }}">
+      <label for="sku">SKU:</label>
+      <input type="text" id="sku" name="sku" required />
 
-        <label for="language">LANGUAGE:</label>
-        <input type="text" id="language" name="language" required />
+      <label for="country">LOCALE:</label>
+      <input type="text" id="country" name="country" required />
 
-        <button type="submit">GO</button>
-      </form>
-    </div>
+      <label for="language">LANGUAGE:</label>
+      <input type="text" id="language" name="language" required />
 
-    <div id="ATF" class="superscript-content">
+      <button type="submit">GO</button>
+    </form>
+  </div>
+
+  <div id="ATF" class="superscript-content">
+    <table>
+      <tr>
+        <td>
+          <div class="slideshow-container">
+            {% set num_images = 0 %}
+            {% for column_name, image_alt in [('Center facing', 'Center Facing'), ('Left facing', 'Left Facing'), ('Right facing', 'Right facing'), ('Left rear facing', 'Left rear facing'), ('Rear facing', 'Rear facing'), ('Left rear facing', 'Left rear facing'), ('Top view closed', 'Top view closed'), ('Detail view', 'Detail view'), ('Left profile closed', 'Left profile closed'), ('Right profile closed', 'Right profile closed'), ('Right rear facing', 'Right rear facing')] %}
+              {% if column_name in df.columns %}
+                <div class="mySlides fade">
+                  <img src="{{ df[column_name].iloc[0] | default('') | safe }}" alt="{{ image_alt }}" />
+                </div>
+                {% set num_images = num_images + 1 %}
+              {% endif %}
+            {% endfor %}
+            
+            <a class="prev" onclick="plusSlides(-1)">❮</a>
+            <a class="next" onclick="plusSlides(1)">❯</a>
+          </div>
+          <br>
+        </td>
+        <td>
+          <!--product name, should be prodlongnamespecs -->
+          <b>
+            <h1>{{ df['prodname'].iloc[0] | default('') | safe }}</h1>
+          </b>
+
+          <input type="submit" value="BUY NOW" class="button" />
+          <br />
+          <!--proddes_overview_extended-->
+          {{ df['proddes_overview_extended'].iloc[0] | default('') | safe }}
+
+          <br /><br />
+
+          <div id="ksp">
+            {% for tag in ['ksp_01_suppt_01_long', 'ksp_02_suppt_01_long',
+            'ksp_03_suppt_01_long', 'osinstalled', 'processorname',
+            'memstdes_01', 'hd_01des', 'displaymet', 'graphicseg_01card_01',
+            'whatsinbox'] %} {% if tag in df.columns %} {% set content =
+            df[tag].iloc[0] | default('') %} {% if content %}
+            <ul>
+              <li>
+                <!--{{ tag }}-->
+                {{ content | safe }}
+              </li>
+            </ul>
+            {% endif %} {% endif %} {% endfor %}
+          </div>
+          <br /><br />
+        </td>
+      </tr>
+    </table>
+
+    <div id="MM" class="superscript-content">
+
       <table>
-        <tr>
-          <td>
-            <div class="slideshow-container">
 
-              <div class="mySlides fade">
-                <div class="numbertext">1 / 4</div>
-                <img src="{{ df['Center facing'].iloc[0] | default('') | escape  }}" alt="Center Facing"/>
-              </div>
-              
-              <div class="mySlides fade">
-                <div class="numbertext">2 / 4</div>
-                <img src="{{ df['Left facing'].iloc[0] | default('') | safe }}" alt="Left Facing"/>
-              </div>
-              
-              <div class="mySlides fade">
-                <div class="numbertext">3 / 4</div>
-                <img src="{{ df['Right facing'].iloc[0] | default('') | safe }}" alt="Right facing"/>
-              </div>
-
-              <div class="mySlides fade">
-                <div class="numbertext">4 / 4</div>
-                <img src="{{ df['Left rear facing'].iloc[0] | default('') | safe }}" alt="Left rear facing"/>
-              </div>
-              
-              <a class="prev" onclick="plusSlides(-1)">❮</a>
-              <a class="next" onclick="plusSlides(1)">❯</a>
-              
-              </div>
-              <br>
-              
-              <div style="text-align:center">
-                <span class="dot" onclick="currentSlide(1)"></span> 
-                <span class="dot" onclick="currentSlide(2)"></span> 
-                <span class="dot" onclick="currentSlide(3)"></span> 
-              </div>
-
-
-
-
-          </td>
-          <td>
-            <!--product name, should be prodlongnamespecs -->
-            <b><h1>{{ df['prodname'].iloc[0] | default('') | safe }}</h1></b>
-
-            <input type="submit" value="BUY NOW" class="button" />
-            <br />
-            <!--proddes_overview_extended-->
-            {{ df['proddes_overview_extended'].iloc[0] | default('') | safe }}
-
-            <br /><br />
-
-            <div id="ksp">
-              {% for tag in ['ksp_01_suppt_01_long', 'ksp_02_suppt_01_long',
-              'ksp_03_suppt_01_long', 'osinstalled', 'processorname',
-              'memstdes_01', 'hd_01des', 'displaymet', 'graphicseg_01card_01',
-              'whatsinbox'] %} {% if tag in df.columns %} {% set content =
-              df[tag].iloc[0] | default('') %} {% if content %}
-              <ul>
-                <li>
-                  <!--{{ tag }}-->
-                  {{ content | safe }}
-                </li>
-              </ul>
-              {% endif %} {% endif %} {% endfor %}
-            </div>
-            <br /><br />
-          </td>
-        </tr>
-      </table>
-
-      <div id="MM" class="superscript-content">
-
-        <table >
-   
-         <tbody>
-            <tr>
-               <td><img src="{{ df['Center facing'].iloc[0] | default('') | escape  }}" alt="Product Image"></td>
-               <td>
-                <h3><strong>{{ df['ksp_01_headline_medium'].iloc[0] }}</strong></h3>
-                  {{ df['ksp_01_suppt_01_long'].iloc[0] }}
-               </td>
-            </tr>
-            <tr>
-              <td>
+        <tbody>
+          <tr>
+            <td><img src="{{ df['Center facing'].iloc[0] | default('') | escape  }}" alt="Product Image"></td>
+            <td>
+              <h3><strong>{{ df['ksp_01_headline_medium'].iloc[0] }}</strong></h3>
+              {{ df['ksp_01_suppt_01_long'].iloc[0] }}
+            </td>
+          </tr>
+          <tr>
+            <td>
               <h3><strong>{{ df['ksp_02_headline_medium'].iloc[0] }}</strong></h3>
               {{ df['ksp_02_suppt_01_long'].iloc[0] }}
             </td>
-              <td><img src="{{ df['Left facing'].iloc[0] | default('') | escape  }}" alt="Product Image" s></td>
-            </tr>
+            <td><img src="{{ df['Left facing'].iloc[0] | default('') | escape  }}" alt="Product Image" s></td>
+          </tr>
 
-            <tr>
-              <td><img src="{{ df['Right facing'].iloc[0] | default('') | escape  }}" alt="Product Image"></td>
-              <td>
-               <h3><strong>{{ df['ksp_03_headline_medium'].iloc[0] }}</strong></h3>
-                 {{ df['ksp_03_suppt_01_long'].iloc[0] }}
-              </td>
-           </tr>
+          <tr>
+            <td><img src="{{ df['Right facing'].iloc[0] | default('') | escape  }}" alt="Product Image"></td>
+            <td>
+              <h3><strong>{{ df['ksp_03_headline_medium'].iloc[0] }}</strong></h3>
+              {{ df['ksp_03_suppt_01_long'].iloc[0] }}
+            </td>
+          </tr>
 
-           <tr>
-            <td><h3><strong>{{ df['ksp_03_suppt_01_long'].iloc[0] }}</strong></h3>
-               {{ df['ksp_03_suppt_01_long'].iloc[0] }}<br>
-               <h3><strong>{{ df['ksp_03_suppt_01_long'].iloc[0] }}</strong></h3>
-               {{ df['ksp_03_suppt_01_long'].iloc[0] }}<br>
-               <h3><strong>{{ df['ksp_03_suppt_01_long'].iloc[0] }}</strong></h3>
-               {{ df['ksp_03_suppt_01_long'].iloc[0] }}</td>
-               <td><img src="{{ df['Top view closed'].iloc[0] | default('') | escape  }}" alt="Product Image"></td>
-         </tr>
-
-           
-          </tbody>
-     </table>
-   
-
-
+          <tr>
+            <td>
+              <h3><strong>{{ df['ksp_03_suppt_01_long'].iloc[0] }}</strong></h3>
+              {{ df['ksp_03_suppt_01_long'].iloc[0] }}<br>
+            <td><img src="{{ df['Top view closed'].iloc[0] | default('') | escape  }}" alt="Product Image"></td>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
     </div>
-  <div id="product-info2" class="superscript-content"></div>
-  </body>
+    <div id="product-info2" class="superscript-content"></div>
+
+  </div>
+</body>
+
 </html>
