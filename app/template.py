@@ -1,21 +1,31 @@
-
 import pandas as pd
+import json
+
 
 def build_template(api_response):
+    """
+    Builds a template DataFrame from the API response containing product details.
 
+    Args:
+        api_response (dict): The API response containing product information.
+
+    Returns:
+        pandas.DataFrame: DataFrame containing product details.
+    """
     # Ensure api_response is a dictionary
     if not isinstance(api_response, dict):
         try:
-            api_response = api_response.json()  # Assuming 'api_response' is a JSON-like object
+            api_response = api_response.json() 
         except AttributeError:
             print("Error: Unable to convert the response to a dictionary.")
             return {}
-
     atf_tags = {}
 
-    # Define the tags to search for
-    target_tags = ['prodname','proddes_overview_extended','ksp_01_suppt_01_long','ksp_02_suppt_01_long','ksp_03_suppt_01_long','osinstalled','processorname','memstdes_01','hd_01des','displaymet','graphicseg_01card_01','whatsinbox','ksp_01_headline_medium','ksp_02_headline_medium','ksp_03_headline_medium']
-    image_tags = ['Center facing','Left facing','Right facing','Left rear facing','Rear facing','Left rear facing','Top view closed','Detail view','Left profile closed','Right profile closed','Right rear facing']
+    with open("app/data/tags.json", "r") as f:
+        tags_data = json.load(f)
+
+    target_tags = tags_data["target_tags"]
+    image_tags = tags_data["image_tags"]
 
     # Access the 'products' dictionary in the API api_response
     products = api_response.get('products', {})
@@ -34,6 +44,7 @@ def build_template(api_response):
                     if 'tag' in detail and detail['tag'] in target_tags:
                         atf_tags[detail['tag']] = detail['value']
 
+        # Get the images
         for image in images:
             # Check if 'details' key is present in the chunk
             if 'details' in image:

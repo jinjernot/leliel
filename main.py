@@ -1,30 +1,46 @@
+
 from config import client_cert_path, client_key_path, url
 from flask import Flask, render_template, request
 from app.template import build_template
 import requests
-import json
 import config
+import json
 
-
+# Initialize Flask application
 app = Flask(__name__)
 app.use_static_for = 'static'
 
 # Configuration
 app.config.from_object(config)
 
+# Route for the index page
 @app.route('/app4')
 def index():
+    """
+    Renders the index.html page.
+
+    Returns:
+        str: Rendered HTML for the index page.
+    """
     return render_template('index.html')
 
+# Route for getting product data via POST request
 @app.route('/get_product', methods=['POST'])
 def get_product():
-    
+    """
+    Retrieves product data based on form input and renders the product.html page.
+
+    Returns:
+        str: Rendered HTML for the product page.
+    """
     try:
+        # Extract necessary data from the request
         client_cert = (client_cert_path, client_key_path)
         sku = request.form.get('sku')
         country_code = request.form.get('country')
         language_code = request.form.get('language')
 
+        # Prepare JSON data to be sent to the API
         json_data = {
             "sku": [sku],
             "countryCode": country_code,
@@ -34,6 +50,7 @@ def get_product():
             "reqContent": ["chunks", "images", "hierarchy", "plc"]
         }
 
+        # Send POST request to the API
         api_response = requests.post(
             url,
             cert=client_cert,
@@ -42,28 +59,28 @@ def get_product():
             data=json.dumps(json_data)
         )
 
+        # Check if request was successful
         if api_response.status_code == 200:
             print("Request successful!")
 
-            with open("api_response.json", "w") as json_file:
-                json.dump(api_response.json(), json_file)
-            product_data = api_response.json()
-
-            df = build_template(api_response)
+            # Save API response to a JSON file
+            #with open("api_response.json", "w") as json_file:
+            #    json.dump(api_response.json(), json_file)
             
-            #rendered_template = render_template("product.html", product_data=product_data)
+            # Build template using response data
+            df = build_template(api_response)
 
-                # Save the rendered template to a new HTML file
-            #with open("output_product.html", "w", encoding="utf-8") as output_file:
-            #    output_file.write(rendered_template)
-
+            # Render product template with obtained data
             return render_template('product.html', df=df)
         else:
+            # Handle failed requests
             print(f"Request failed with status code {api_response.status_code}")
             print(f"response content: {api_response.text}")
     except Exception as e:
-        print(f"An error occurred: {e}"), 500
-    return render_template('error.html'), 400
+        # Handle exceptions
+        print(f"An error occurred: {e}")
+        return render_template('error.html'), 400
 
+# Run the Flask application
 if __name__ == '__main__':
     app.run(debug=True)
