@@ -134,12 +134,12 @@ p {
 }
 
 ul {
-  list-style-type: disc; /* or 'circle' or 'square' */
-  margin-left: 20px; /* Adjust the margin as needed */
+  list-style-type: disc; 
+  margin-left: 20px;
 }
 
 li {
-  margin-bottom: 10px; /* Adjust the margin as needed */
+  margin-bottom: 10px;
 }
 
 form {
@@ -229,18 +229,15 @@ button:hover {
   user-select: none;
 }
 
-/* Position the "next button" to the right */
 .next {
   right: 0;
   border-radius: 3px 0 0 3px;
 }
 
-/* On hover, add a black background color with a little bit see-through */
 .prev:hover, .next:hover {
   background-color: rgba(255, 255, 255, 0);
 }
 
-/* The dots/bullets/indicators */
 .dot {
   cursor: pointer;
   height: 15px;
@@ -256,7 +253,6 @@ button:hover {
   background-color: #717171;
 }
 
-/* Fading animation */
 .fade {
   animation-name: fade;
   animation-duration: 1.5s;

@@ -21,10 +21,13 @@ def build_template(api_response):
             return {}
     atf_tags = {}
 
+    # Load the tags from a JSON file
     with open("app/data/tags.json", "r") as f:
         tags_data = json.load(f)
 
+    # Chunks
     target_tags = tags_data["target_tags"]
+    # Images
     image_tags = tags_data["image_tags"]
 
     # Access the 'products' dictionary in the API api_response
@@ -43,7 +46,6 @@ def build_template(api_response):
                 for detail in chunk['details']:
                     if 'tag' in detail and detail['tag'] in target_tags:
                         atf_tags[detail['tag']] = detail['value']
-
         # Get the images
         for image in images:
             # Check if 'details' key is present in the chunk
@@ -52,7 +54,7 @@ def build_template(api_response):
                 for detail in image['details']:
                     if 'orientation' in detail and detail['orientation'] in image_tags:
                         atf_tags[detail['orientation']] = detail['imageUrlHttps']
-
+    # Save to an excel file
     df = pd.DataFrame([atf_tags])
     df.to_excel("excel.xlsx", index=False, engine='xlsxwriter')
 

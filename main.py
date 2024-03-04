@@ -76,6 +76,7 @@ def get_product():
             # Handle failed requests
             print(f"Request failed with status code {api_response.status_code}")
             print(f"response content: {api_response.text}")
+            
     except Exception as e:
         # Handle exceptions
         print(f"An error occurred: {e}")
