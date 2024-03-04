@@ -19,6 +19,7 @@ def build_template(api_response):
         except AttributeError:
             print("Error: Unable to convert the response to a dictionary.")
             return {}
+
     atf_tags = {}
 
     # Load the tags from a JSON file
@@ -44,16 +45,18 @@ def build_template(api_response):
             if 'details' in chunk:
                 # Iterate through the details in the chunk
                 for detail in chunk['details']:
-                    if 'tag' in detail and detail['tag'] in target_tags:
+                    if 'tag' in detail and detail['tag'] in target_tags and 'value' in detail:
                         atf_tags[detail['tag']] = detail['value']
+
         # Get the images
         for image in images:
             # Check if 'details' key is present in the chunk
             if 'details' in image:
                 # Iterate through the details in the chunk
                 for detail in image['details']:
-                    if 'orientation' in detail and detail['orientation'] in image_tags:
+                    if 'orientation' in detail and detail['orientation'] in image_tags and 'imageUrlHttps' in detail:
                         atf_tags[detail['orientation']] = detail['imageUrlHttps']
+
     # Save to an excel file
     df = pd.DataFrame([atf_tags])
     df.to_excel("excel.xlsx", index=False, engine='xlsxwriter')
