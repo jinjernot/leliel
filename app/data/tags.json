@@ -1,5 +1,7 @@
 {
     "target_tags": [
+        "prodlongnamespecs",
+        "proddes_overview_short",
         "prodname",
         "proddes_overview_extended",
         "ksp_01_suppt_01_long",
@@ -15,13 +17,14 @@
         "ksp_01_headline_medium",
         "ksp_02_headline_medium",
         "ksp_03_headline_medium"
+        
     ],
     "image_tags": [
         "Center facing",
         "Left facing",
         "Right facing",
-        "Left rear facing",
         "Rear facing",
+        "Left rear facing",
         "Top view closed",
         "Detail view",
         "Left profile closed",
