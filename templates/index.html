@@ -1,25 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <title>API</title>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-</head>
-<body>
+    <meta charset="UTF-8" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/styles.css') }}"
+    />
+  </head>
+  <body>
     <div class="dark-form-container">
-        <form method="POST" enctype="multipart/form-data" action="{{ url_for('get_product') }}">
-            <label for="sku">SKU:</label>
-            <input type="text" id="sku" name="sku" required>
+      <form
+        method="POST"
+        action="{{ url_for('get_product', sku=sku_value, country=country_value, language=language_value) }}"
+      >
+        <label for="sku">SKU:</label>
+        <input type="text" id="sku" name="sku" required />
 
-            <label for="country">LOCALE:</label>
-            <input type="text" id="country" name="country" required>
+        <label for="country">LOCALE:</label>
+        <input type="text" id="country" name="country" required />
 
-            <label for="language">LANGUAGE:</label>
-            <input type="text" id="language" name="language" required>
-    
-            <button type="submit">GO</button>
-        </form>
+        <label for="language">LANGUAGE:</label>
+        <input type="text" id="language" name="language" required />
+
+        <button type="submit">GO</button>
+      </form>
     </div>
-    </body>
+  </body>
 </html>
