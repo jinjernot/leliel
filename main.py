@@ -1,4 +1,3 @@
-
 from config import client_cert_path, client_key_path, url
 from flask import Flask, render_template, request
 from app.template import build_template
@@ -63,15 +62,17 @@ def get_product():
         if api_response.status_code == 200:
             print("Request successful!")
 
-            # Save API response to a JSON file
-            #with open("api_response.json", "w") as json_file:
-            #    json.dump(api_response.json(), json_file)
-            
             # Build template using response data
             df = build_template(api_response)
 
             # Render product template with obtained data
-            return render_template('product.html', df=df)
+            rendered_template = render_template('product.html', df=df)
+            
+            # Save the rendered HTML content to a file with explicit encoding
+            with open("output.html", "w", encoding="utf-8") as html_file:
+                html_file.write(rendered_template)
+            
+            return rendered_template
         else:
             # Handle failed requests
             print(f"Request failed with status code {api_response.status_code}")
