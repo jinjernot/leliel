@@ -1,6 +1,6 @@
 from config import client_cert_path, client_key_path, url
 from flask import Flask, render_template, request
-from app.template import build_template
+from app.laptop_template import build_template
 import requests
 import config
 import json
@@ -62,26 +62,38 @@ def get_product():
         if api_response.status_code == 200:
             print("Request successful!")
 
+            # Validate JSON response
+            response_json = api_response.json()
+            product = response_json.get('products', {}).get(sku, {})
+            product_hierarchy = product.get('productHierarchy', {})
+            product_type = product_hierarchy.get('productType', {})
+            name = product_type.get('name', '')
+
+            # Check if the product type is a laptop
+            if name != "Laptops and Hybrids":
+                return render_template('error.html', error_message="The product is not a laptop."), 400
+
             # Build template using response data
             df = build_template(api_response)
 
             # Render product template with obtained data
             rendered_template = render_template('product.html', df=df)
-            
+
             # Save the rendered HTML content to a file with explicit encoding
             with open("output.html", "w", encoding="utf-8") as html_file:
                 html_file.write(rendered_template)
-            
+
             return rendered_template
         else:
             # Handle failed requests
             print(f"Request failed with status code {api_response.status_code}")
             print(f"response content: {api_response.text}")
-            
+
     except Exception as e:
         # Handle exceptions
-        print(f"An error occurred: {e}")
-        return render_template('error.html'), 400
+        error_message = f"An error occurred: {e}"
+        print(error_message)
+        return render_template('error.html', error_message=error_message), 400
 
 # Run the Flask application
 if __name__ == '__main__':

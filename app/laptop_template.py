@@ -20,14 +20,18 @@ def build_template(api_response):
             print("Error: Unable to convert the response to a dictionary.")
             return {}
 
-    atf_tags = {}
+    all_tags = {}
 
     # Load the tags from a JSON file
-    with open("app/data/tags.json", "r") as f:
+    with open("app/data/tags_laptop.json", "r") as f:
         tags_data = json.load(f)
 
-    # Chunks
-    target_tags = tags_data["target_tags"]
+    # ATF Content
+    atf_tags = tags_data["atf_tags"]
+
+    # BTF Content
+    btf_tags = tags_data["btf_tags"]
+
     # Images
     image_tags = tags_data["image_tags"]
 
@@ -45,8 +49,9 @@ def build_template(api_response):
             if 'details' in chunk:
                 # Iterate through the details in the chunk
                 for detail in chunk['details']:
-                    if 'tag' in detail and detail['tag'] in target_tags and 'value' in detail:
-                        atf_tags[detail['tag']] = detail['value']
+                    if 'tag' in detail and detail['tag'] in atf_tags and 'value' in detail:
+                        all_tags[detail['tag']] = detail['value']
+                        all_tags[detail['tag']] = detail['name']
 
         # Get the images
         for image in images:
@@ -55,10 +60,10 @@ def build_template(api_response):
                 # Iterate through the details in the chunk
                 for detail in image['details']:
                     if 'orientation' in detail and detail['orientation'] in image_tags and 'imageUrlHttps' in detail:
-                        atf_tags[detail['orientation']] = detail['imageUrlHttps']
+                        all_tags[detail['orientation']] = detail['imageUrlHttps']
 
     # Save to an excel file
-    df = pd.DataFrame([atf_tags])
+    df = pd.DataFrame([all_tags])
     df.to_excel("excel.xlsx", index=False, engine='xlsxwriter')
 
     return df

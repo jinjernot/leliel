@@ -12,7 +12,7 @@
     <div class="dark-form-container">
       <form
         method="POST"
-        action="{{ url_for('get_product', sku=sku_value, country=country_value, language=language_value) }}"
+        action="{{ url_for('get_product') }}"
       >
         <label for="sku">SKU:</label>
         <input type="text" id="sku" name="sku" required />
