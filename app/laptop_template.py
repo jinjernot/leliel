@@ -20,8 +20,6 @@ def build_template(api_response):
             print("Error: Unable to convert the response to a dictionary.")
             return {}
 
-    all_tags = {}
-
     # Load the tags from a JSON file
     with open("app/data/tags_laptop.json", "r") as f:
         tags_data = json.load(f)
@@ -32,8 +30,14 @@ def build_template(api_response):
     # BTF Content
     btf_tags = tags_data["btf_tags"]
 
+    # Combine ATF and BTF tags
+    all_tags = atf_tags + btf_tags
+
     # Images
     image_tags = tags_data["image_tags"]
+
+    # Create an empty DataFrame to store the details
+    df = pd.DataFrame(columns=['tag', 'name', 'value'])
 
     # Access the 'products' dictionary in the API api_response
     products = api_response.get('products', {})
@@ -49,9 +53,8 @@ def build_template(api_response):
             if 'details' in chunk:
                 # Iterate through the details in the chunk
                 for detail in chunk['details']:
-                    if 'tag' in detail and detail['tag'] in atf_tags and 'value' in detail:
-                        all_tags[detail['tag']] = detail['value']
-                        all_tags[detail['tag']] = detail['name']
+                    if 'tag' in detail and detail['tag'] in all_tags and 'value' in detail:
+                        df = df.append({'tag': detail['tag'], 'name': detail['name'], 'value': detail['value']}, ignore_index=True)
 
         # Get the images
         for image in images:
@@ -60,10 +63,9 @@ def build_template(api_response):
                 # Iterate through the details in the chunk
                 for detail in image['details']:
                     if 'orientation' in detail and detail['orientation'] in image_tags and 'imageUrlHttps' in detail:
-                        all_tags[detail['orientation']] = detail['imageUrlHttps']
+                        df = df.append({'tag': detail['orientation'], 'name': 'image_url', 'value': detail['imageUrlHttps']}, ignore_index=True)
 
     # Save to an excel file
-    df = pd.DataFrame([all_tags])
     df.to_excel("excel.xlsx", index=False, engine='xlsxwriter')
 
     return df

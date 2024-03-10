@@ -16,7 +16,9 @@
         "whatsinbox",
         "ksp_01_headline_medium",
         "ksp_02_headline_medium",
-        "ksp_03_headline_medium"
+        "ksp_03_headline_medium",
+        "msgfootnote_01",
+        "msgfootnote_02"
     ],
 
     "btf_tags": [
