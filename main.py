@@ -80,8 +80,8 @@ def get_product():
             rendered_template = render_template('product.html', df=df)
 
             # Save the rendered HTML content to a file with explicit encoding
-            with open("output.html", "w", encoding="utf-8") as html_file:
-                html_file.write(rendered_template)
+            #with open("output.html", "w", encoding="utf-8") as html_file:
+            #    html_file.write(rendered_template)
 
             return rendered_template
         else:

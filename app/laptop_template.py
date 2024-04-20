@@ -21,7 +21,7 @@ def build_template(api_response):
             return {}
 
     # Load the tags from a JSON file
-    with open("app/data/tags_laptop.json", "r") as f:
+    with open("/opt/ais/app/python/api/app/data/tags_laptop.json", "r") as f:
         tags_data = json.load(f)
 
     # ATF Content
@@ -66,6 +66,6 @@ def build_template(api_response):
                         df = df.append({'tag': detail['orientation'], 'name': 'image_url', 'value': detail['imageUrlHttps']}, ignore_index=True)
 
     # Save to an excel file
-    df.to_excel("excel.xlsx", index=False, engine='xlsxwriter')
+    #df.to_excel("/opt/ais/app/python/api/excel.xlsx", index=False, engine='xlsxwriter')
 
     return df
