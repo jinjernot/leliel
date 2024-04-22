@@ -67,10 +67,10 @@ def get_product():
             product = response_json.get('products', {}).get(sku, {})
             product_hierarchy = product.get('productHierarchy', {})
             product_type = product_hierarchy.get('productType', {})
-            name = product_type.get('name', '')
+            pmoid = product_type.get('pmoid', '')
 
             # Check if the product type is a laptop
-            if name != "Laptops and Hybrids":
+            if pmoid != "321957":
                 return render_template('error.html', error_message="The product is not a laptop."), 400
 
             # Build template using response data
@@ -88,13 +88,13 @@ def get_product():
             # Handle failed requests
             print(f"Request failed with status code {api_response.status_code}")
             print(f"response content: {api_response.text}")
+            response_json = api_response.json()
+            if response_json.get('status') == 'Error' and response_json.get('statusMessage') == 'Invalid Country or Language Code':
+                error_message = "Invalid Country or Language Code"
+                return render_template('error.html', error_message=error_message), 400
 
     except Exception as e:
         # Handle exceptions
         error_message = f"An error occurred: {e}"
         print(error_message)
         return render_template('error.html', error_message=error_message), 400
-
-# Run the Flask application
-if __name__ == '__main__':
-    app.run(debug=True)

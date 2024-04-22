@@ -41,16 +41,16 @@
         enctype="multipart/form-data"
         action="{{ url_for('get_product') }}"
       >
-        <label for="sku">SKU:</label>
-        <input type="text" id="sku" name="sku" required />
+      <label for="sku">SKU:</label>
+      <input type="text" id="sku" name="sku" required />
 
-        <label for="country">LOCALE:</label>
-        <input type="text" id="country" name="country" required />
+      <label for="country">LOCALE:</label>
+      <input type="text" id="country" name="country" maxlength="2" required />
+      
+      <label for="language">LANGUAGE:</label>
+      <input type="text" id="language" name="language" maxlength="2" required />
 
-        <label for="language">LANGUAGE:</label>
-        <input type="text" id="language" name="language" required />
-
-        <button type="submit">GO</button>
+      <button type="submit">GO</button>
       </form>
     </div>
 
