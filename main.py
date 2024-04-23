@@ -14,24 +14,15 @@ app.config.from_object(config)
 
 # Route for the index page
 @app.route('/app4')
-def index():
-    """
-    Renders the index.html page.
 
-    Returns:
-        str: Rendered HTML for the index page.
-    """
+def index():
     return render_template('index.html')
 
 # Route for getting product data via POST request
 @app.route('/get_product', methods=['POST'])
-def get_product():
-    """
-    Retrieves product data based on form input and renders the product.html page.
 
-    Returns:
-        str: Rendered HTML for the product page.
-    """
+def get_product():
+
     try:
         # Extract necessary data from the request
         client_cert = (client_cert_path, client_key_path)

@@ -3,15 +3,7 @@ import json
 
 
 def build_template_ink(api_response):
-    """
-    Builds a template DataFrame from the API response containing product details.
 
-    Args:
-        api_response (dict): The API response containing product information.
-
-    Returns:
-        pandas.DataFrame: DataFrame containing product details.
-    """
     # Ensure api_response is a dictionary
     if not isinstance(api_response, dict):
         try:
