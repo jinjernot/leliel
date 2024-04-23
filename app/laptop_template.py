@@ -1,7 +1,7 @@
 import pandas as pd
 import json
 
-def build_laptop(api_response):
+def build_template(api_response):
     """
     Builds a template DataFrame from the API response containing product details.
 
