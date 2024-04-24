@@ -80,8 +80,17 @@ def get_product():
             print(f"Request failed with status code {api_response.status_code}")
             print(f"response content: {api_response.text}")
             response_json = api_response.json()
+
             if response_json.get('status') == 'Error' and response_json.get('statusMessage') == 'Invalid Country or Language Code':
                 error_message = "Invalid Country or Language Code"
+                return render_template('error.html', error_message=error_message), 400
+
+            if response_json.get('Status') == 'ERROR' and response_json.get('StatusMessage') == 'Country Code provided is Invalid':
+                error_message = "Non publishable Product"
+                return render_template('error.html', error_message=error_message), 400
+            
+            if response_json.get('status') == 'Success' and response_json.get('statusMessage') == 'Non publishable Product':
+                error_message = "Non publishable Product"
                 return render_template('error.html', error_message=error_message), 400
 
     except Exception as e:
