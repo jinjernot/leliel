@@ -18,7 +18,7 @@
     font-style: normal; }
 
 body {
-    background-color: white;
+    background-color: #e6e6e6;
     font-family: Forma DJR Micro;
 }
 
@@ -156,7 +156,7 @@ p {
 
 .dark-form-container {
     margin: 20px; 
-    background-color: #333;
+    background-color: #0096D6;
     padding: 15px;
     border-radius: 8px;
     font-size: 17px;
@@ -177,56 +177,49 @@ form {
 
 label {
     margin-bottom: 5px;
-    color:#e6e6e6
+    color:#e6e6e6;
+    font-weight: bold
 }
 
 input {
-    padding: 8px;
-    margin: 10px;
-    box-sizing: border-box; 
+  margin: 10px;
+  border: 1px solid #e6e6e6;
+  border-radius: 5px;
+  padding: 10px 20px; 
+  outline: none; 
+  height: 30px;
+  width: 250px; 
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+}
+input:hover {
+  border: 1px solid #0096d6;
+}
+
+input:focus {
+  border: 1px solid #0096d6;
 }
 
 button {
-    background-color: white;
+    margin: 10px;
+    background-color: #e6e6e6;
     color: black;
-    padding: 10px 15px;
-    border: none;
+    padding: 7px 20px; 
     border-radius: 5px;
+    border-width: 0;
+    box-shadow: rgba(50, 50, 93, .1) 0 0 0 1px inset,rgba(50, 50, 93, .1) 0 2px 5px 0,rgba(0, 0, 0, .07) 0 1px 1px 0;
     cursor: pointer;
+    height: 30px;
+    font-size: 16px;
+    line-height: 1.15;
+
 }
 
 button:hover {
     background-color: darkgray;
 }
 
-.button {
-  appearance: button;
-  backface-visibility: hidden;
-  background-color: #0096d6;
-  border-radius: 6px;
-  border-width: 0;
-  box-shadow: rgba(50, 50, 93, .1) 0 0 0 1px inset,rgba(50, 50, 93, .1) 0 2px 5px 0,rgba(0, 0, 0, .07) 0 1px 1px 0;
-  box-sizing: border-box;
-  color: #fff;
-  cursor: pointer;
-  font-size: 100%;
-  height: 44px;
-  line-height: 1.15;
-  margin: 12px 0 0;
-  outline: none;
-  overflow: hidden;
-  padding: 0 25px;
-  position: relative;
-  text-align: center;
-  text-transform: none;
-  transform: translateZ(0);
-  transition: all .2s,box-shadow .08s ease-in;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
+
 
 * {box-sizing:border-box}
 
@@ -267,6 +260,12 @@ button:hover {
   background-color: rgba(255, 255, 255, 0);
 }
 
+.image-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-top: 5%;
+}
 
 @keyframes fade {
   from {opacity: .4}

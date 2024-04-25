@@ -98,3 +98,5 @@ def get_product():
         error_message = f"An error occurred: {e}"
         print(error_message)
         return render_template('error.html', error_message=error_message), 400
+if __name__ == "__main__":
+    app.run(debug=True)
