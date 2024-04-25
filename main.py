@@ -1,6 +1,7 @@
 from config import client_cert_path, client_key_path, url
 from flask import Flask, render_template, request
 from app.laptop_template import build_template
+from app.ink_printer_template import build_template_ink
 import requests
 import config
 import json
@@ -61,8 +62,14 @@ def get_product():
             pmoid = product_type.get('pmoid', '')
 
             # Check if the product type is a laptop
-            if pmoid != "321957":
-                return render_template('error.html', error_message="The product is not a laptop."), 400
+            if pmoid == "321957":
+                # Build template using response data for laptops
+                df = build_template(api_response)
+            elif product_hierarchy.get('marketingCategory', {}).get('pmoid') == "238444":
+                # Call a different template builder function for pmoid 238444
+                df = build_template_ink(api_response)
+            else:
+                return render_template('error.html', error_message="The product is not supported."), 400
 
             # Build template using response data
             df = build_template(api_response)
@@ -70,9 +77,7 @@ def get_product():
             # Render product template with obtained data
             rendered_template = render_template('product.html', df=df)
 
-            # Save the rendered HTML content to a file with explicit encoding
-            #with open("output.html", "w", encoding="utf-8") as html_file:
-            #    html_file.write(rendered_template)
+
 
             return rendered_template
         else:
