@@ -37,21 +37,17 @@
 
   <body>
     <div class="dark-form-container">
-      <form
-        method="POST"
-        enctype="multipart/form-data"
-        action="{{ url_for('get_product') }}"
-      >
-      <label for="sku">SKU:</label>
-      <input type="text" id="sku" name="sku" required />
-
-      <label for="country">Locale:</label>
-      <input type="text" id="country" name="country" maxlength="2" required />
-      
-      <label for="language">Language:</label>
-      <input type="text" id="language" name="language" maxlength="2" required />
-
-      <button type="submit">GO</button>
+      <form method="POST" action="{{ url_for('get_product') }}">
+        <label for="sku">SKU:</label>
+        <input type="text" id="sku" name="sku" maxlength="10" required />
+    
+        <label for="country">Locale:</label>
+        <input type="text" id="country" name="country" maxlength="2" required />
+    
+        <label for="language">Language:</label>
+        <input type="text" id="language" name="language" maxlength="2" required />
+    
+        <button type="submit">GO</button>
       </form>
     </div>
 

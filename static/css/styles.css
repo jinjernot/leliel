@@ -204,6 +204,7 @@ input {
   font-size: 16px;
   transition: border-color 0.3s ease;
 }
+
 input:hover {
   border: 1px solid #0096d6;
 }
@@ -212,6 +213,14 @@ input:focus {
   border: 1px solid #0096d6;
 }
 
+input#country,
+input#language {
+  width: 60px;
+}
+
+input#sku { 
+  width: 140px;
+}
 button {
     margin: 10px;
     background-color: #e6e6e6;
@@ -224,6 +233,8 @@ button {
     height: 30px;
     font-size: 16px;
     line-height: 1.15;
+    margin-left: 50px;
+    width: 100px;
 
 }
 
