@@ -1,6 +1,6 @@
 from config import client_cert_path, client_key_path, url
 from flask import Flask, render_template, request
-from app.laptop_template import build_template
+from app.laptop_template import build_template_laptop
 from app.ink_printer_template import build_template_ink
 import requests
 import config
@@ -64,20 +64,16 @@ def get_product():
             # Check if the product type is a laptop
             if pmoid == "321957":
                 # Build template using response data for laptops
-                df = build_template(api_response)
+                df = build_template_laptop(api_response)
+                # Render product template with obtained data
+                rendered_template = render_template('product.html', df=df)
+
             elif product_hierarchy.get('marketingCategory', {}).get('pmoid') == "238444":
                 # Call a different template builder function for pmoid 238444
                 df = build_template_ink(api_response)
+                rendered_template = build_template_ink('product.html', df=df)
             else:
                 return render_template('error.html', error_message="The product is not supported."), 400
-
-            # Build template using response data
-            df = build_template(api_response)
-
-            # Render product template with obtained data
-            rendered_template = render_template('product.html', df=df)
-
-
 
             return rendered_template
         else:

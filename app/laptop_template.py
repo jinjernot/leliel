@@ -1,7 +1,7 @@
 import pandas as pd
 import json
 
-def build_template(api_response):
+def build_template_laptop(api_response):
 
     # Ensure api_response is a dictionary
     if not isinstance(api_response, dict):
