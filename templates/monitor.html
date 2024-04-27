@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>
+      {{ df[df['tag'] == 'prodname']['value'].iloc[0] | default('') | safe }}
+    </title>
+    <meta charset="UTF-8" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/styles.css') }}"
+    />
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+    <script
+      src="{{ url_for('static', filename='js/slideshow.js') }}"
+      defer
+    ></script>
+    <script
+      src="{{ url_for('static', filename='js/superscript.js') }}"
+      defer
+    ></script>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"
+    />
+    <link
+      rel="icon"
+      href="{{ url_for('static', filename='images/favicon.ico') }}"
+      type="image/x-icon"
+    />
+  </head>
+
+  <body>
+    <div class="dark-form-container">
+      <form method="POST" action="{{ url_for('get_product') }}">
+        <label for="sku">SKU:</label>
+        <input type="text" id="sku" name="sku" maxlength="10" required />
+    
+        <label for="country">Locale:</label>
+        <input type="text" id="country" name="country" maxlength="2" required />
+    
+        <label for="language">Language:</label>
+        <input type="text" id="language" name="language" maxlength="2" required />
+    
+        <button type="submit">GO</button>
+      </form>
+    </div>
+
+    <div id="ATF" class="superscript-content">
+      <table>
+        <tr>
+          <td>
+            <div class="slideshow-container">
+              {% set num_images = 0 %} {% for tag, image_alt in [('Center
+              facing', 'Center Facing'), ('Left facing', 'Left Facing'), ('Right
+              facing', 'Right facing'), ('Left rear facing', 'Left rear
+              facing'), ('Rear facing', 'Rear facing'), ('Left rear facing',
+              'Left rear facing'), ('Top view closed', 'Top view closed'),
+              ('Detail view', 'Detail view'), ('Left profile closed', 'Left
+              profile closed'), ('Right profile closed', 'Right profile
+              closed'), ('Right rear facing', 'Right rear facing')] %} {% if tag
+              in df['tag'].values %} {% set image_row = df[df['tag'] ==
+              tag].iloc[0] %}
+              <div class="mySlides fade">
+                <img
+                  src="{{ image_row['value'] | default('') | safe }}"
+                  alt="{{ image_alt }}"
+                />
+              </div>
+              {% set num_images = num_images + 1 %} {% endif %} {% endfor %}
+
+              <a class="prev" onclick="plusSlides(-1)">❮</a>
+              <a class="next" onclick="plusSlides(1)">❯</a>
+            </div>
+            <br />
+          </td>
+          <td>
+            <!--product name, should be prodlongnamespecs -->
+            <b>
+              <h1>
+                {{ df[df['tag'] == 'prodname']['value'].iloc[0] | default('') |
+                safe }}
+              </h1>
+            </b>
+
+            <input type="submit" value="BUY NOW" class="button" />
+            <br />
+            <!--proddes_overview_extended-->
+            {% if 'proddes_overview_extended' in df['tag'].values %}
+              {{ df[df['tag'] == 'proddes_overview_extended']['value'].iloc[0] |
+              default('') | safe }}
+            {% endif %}
+            <br /><br />
+            <div id="ksp">
+              {% for tag in ['ksp_01_suppt_01_long', 'ksp_02_suppt_01_long',
+              'ksp_03_suppt_01_long', 'osinstalled', 'processorname',
+              'memstdes_01', 'hd_01des', 'displaymet', 'graphicseg_01card_01',
+              'whatsinbox'] %} {% if tag in df['tag'].values %} {% set content =
+              df[df['tag'] == tag]['value'].iloc[0] | default('') %} {% if
+              content %}
+              <ul>
+                <li>
+                  <!--{{ tag }}-->
+                  {{ content | safe }}
+                </li>
+              </ul>
+              {% endif %} {% endif %} {% endfor %}
+            </div>
+            <br /><br />
+          </td>
+        </tr>
+      </table>
+      <br />
+      <div id="MM" class="superscript-content">
+        <table>
+            <tbody>
+                {% if 'Center facing' in df['tag'].values or 'ksp_01_headline_medium' in df['tag'].values or 'ksp_01_suppt_01_long' in df['tag'].values %}
+                <tr>
+                    <td>
+                        {% if 'Center facing' in df['tag'].values %}
+                        <img src="{{ df[df['tag'] == 'Center facing']['value'].iloc[0] | default('') | escape }}" alt="Product Image" />
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if 'ksp_01_headline_medium' in df['tag'].values %}
+                        <h3><strong>{{ df[df['tag'] == 'ksp_01_headline_medium']['value'].iloc[0] }}</strong></h3>
+                        {% endif %} 
+                        {% if 'ksp_01_suppt_01_long' in df['tag'].values %}
+                        {{ df[df['tag'] == 'ksp_01_suppt_01_long']['value'].iloc[0] }}
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endif %} 
+                {% if 'ksp_02_headline_medium' in df['tag'].values or 'ksp_02_suppt_01_long' in df['tag'].values or 'Left facing' in df['tag'].values %}
+                <tr>
+                    <td>
+                        {% if 'ksp_02_headline_medium' in df['tag'].values %}
+                        <h3><strong>{{ df[df['tag'] == 'ksp_02_headline_medium']['value'].iloc[0] }}</strong></h3>
+                        {% endif %} 
+                        {% if 'ksp_02_suppt_01_long' in df['tag'].values %}
+                        {{ df[df['tag'] == 'ksp_02_suppt_01_long']['value'].iloc[0] }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if 'Left facing' in df['tag'].values %}
+                        <img src="{{ df[df['tag'] == 'Left facing']['value'].iloc[0] | default('') | escape }}" alt="Product Image" />
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endif %} 
+                {% if 'Right facing' in df['tag'].values or 'ksp_03_headline_medium' in df['tag'].values or 'ksp_03_suppt_01_long' in df['tag'].values %}
+                <tr>
+                    <td>
+                        {% if 'Right facing' in df['tag'].values %}
+                        <img src="{{ df[df['tag'] == 'Right facing']['value'].iloc[0] | default('') | escape }}" alt="Product Image" />
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if 'ksp_03_headline_medium' in df['tag'].values %}
+                        <h3><strong>{{ df[df['tag'] == 'ksp_03_headline_medium']['value'].iloc[0] }}</strong></h3>
+                        {% endif %} 
+                        {% if 'ksp_03_suppt_01_long' in df['tag'].values %}
+                        {{ df[df['tag'] == 'ksp_03_suppt_01_long']['value'].iloc[0] }}
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endif %} 
+                {% if 'ksp_04_headline_medium' in df['tag'].values or 'ksp_04_suppt_01_long' in df['tag'].values or 'Top view closed' in df['tag'].values %}
+                <tr>
+                    <td>
+                        {% if 'ksp_04_headline_medium' in df['tag'].values %}
+                        <h3><strong>{{ df[df['tag'] == 'ksp_04_headline_medium']['value'].iloc[0] }}</strong></h3>
+                        {% endif %} 
+                        {% if 'ksp_04_suppt_01_long' in df['tag'].values %}
+                        {{ df[df['tag'] == 'ksp_04_suppt_01_long']['value'].iloc[0] }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if 'Top view closed' in df['tag'].values %}
+                        <img src="{{ df[df['tag'] == 'Top view closed']['value'].iloc[0] | default('') | escape }}" alt="Product Image" />
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+
+    <div>
+      <br />
+        <h2 id="see-more" style="cursor: pointer">+Expand to see more</h2>
+        <br />
+
+        <table id="tech-specs" style="display: none">
+          <tbody>
+            
+            {% for value in [
+              "osinstalled",
+              "processorfamily",
+              "processorname",
+              "chipset",
+              "specialfeat",
+              "environspec",
+              "memstdes01",
+              "memstdesnote",
+              "memlayout",
+              "hd01des",
+              "hdnote01",
+              "hd02des",
+              "hdnote02",
+              "hd03des",
+              "hdnote03",
+              "hd04des",
+              "hdnote04",
+              "hd05des",
+              "hdnote05",
+              "cloudserv",
+              "cloudservftntnbr",
+              "graphicseg_01card_01",
+              "ioports",
+              "expanslots",
+              "webcam",
+              "audiofeat",
+              "keyboard",
+              "keybrdftntnbr",
+              "mousepntgdevice",
+              "wirelesstech",
+              "wirelesstechnote",
+              "sensors",
+              "powersupplytype",
+              "batterytype",
+              "batterytypenote",
+              "energyeffcomp",
+              "energyeffcompftntnbr",
+              "dimenmet",
+              "dimenpackmet",
+              "weightmet",
+              "weightpackmet",
+              "colour",
+              "prodfinish",
+              "securitymgmt",
+              "wrntyfeatures",
+              "wrntyfeaturesftntnbr",
+              "swincluded",
+              "softwareftntnbr",
+              "swpreinstalled",
+              "swprodfinance",
+              "productcolour",
+              "memstosimp",
+              "display"
+          ] %}
+          {% if df[df['tag'] == value].shape[0] > 0 %}
+              <tr>
+                  <td>
+                      <b>{{ df[df['tag'] == value]['name'].iloc[0] | default('') | safe }}</b>
+                  </td>
+                  <td>
+                      {{ df[df['tag'] == value]['value'].iloc[0] | default('') | safe }}
+                  </td>
+              </tr>
+          {% endif %}
+      {% endfor %}
+          </tbody>
+        </table>
+
+        <br />
+
+        <table id="footnotes">
+
+          {% for value in [
+            "msgfootnote_01",
+            "msgfootnote_02"
+        ] %}
+        {% if df[df['tag'] == value].shape[0] > 0 %}
+            <tr>
+                <td>
+                    {{ df[df['tag'] == value]['value'].iloc[0] | default('') | safe }}
+                </td>
+            </tr>
+        {% endif %}
+        {% endfor %}
+
+        </table>
+      </div>
+    </div>
+  </body>
+</html>
