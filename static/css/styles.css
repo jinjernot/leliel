@@ -85,6 +85,7 @@ input {
   width: 250px; 
   font-size: 16px;
   transition: border-color 0.3s ease;
+  text-align: center;
 }
 
 input:hover {
@@ -97,7 +98,7 @@ input:focus {
 
 input#country,
 input#language {
-  width: 60px;
+  width: 80px;
 }
 
 input#sku { 
@@ -304,3 +305,4 @@ button:hover {
   justify-content: center;
   padding-top: 5%;
 }
+

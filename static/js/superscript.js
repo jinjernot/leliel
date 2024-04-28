@@ -4,7 +4,7 @@ function addSuperscript(element) {
     var modifiedText = text.replace(/\[([\d,]+)\]/g, function(match, p1) {
         var footnotes = p1.split(",").map(function(footnote) {
             var footnoteId = "footnote-" + footnote;
-            return "<a href="#footnotes" onclick="scrollToFootnotes()"><sup>" + footnote + "</sup></a>";
+            return '<a href="#footnotes" onclick="scrollToFootnotes()"><sup>' + footnote + '</sup></a>';
         });
         return footnotes.join("<sup>,</sup> ");
     });
