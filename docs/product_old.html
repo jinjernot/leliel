@@ -9,13 +9,13 @@
     product_data.products[product_data.request.sku[0]].productHierarchy.model.name
     }}
   </title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
-  <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
-  <script src="{{ url_for('static', filename='js/superscript.js') }}" defer></script>
+  <link rel="stylesheet" href="{{ url_for("static", filename="css/styles.css") }}" />
+  <script src="{{ url_for("static", filename="js/script.js") }}" defer></script>
+  <script src="{{ url_for("static", filename="js/superscript.js") }}" defer></script>
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
   <link rel="stylesheet" type="text/css"
     href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
-  <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon" />
+  <link rel="icon" href="{{ url_for("static", filename="images/favicon.ico") }}" type="image/x-icon" />
 </head>
 
 <body>
@@ -36,7 +36,7 @@
 
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-  <script src="{{ url_for('static', filename='js/slider.js') }}" defer></script>
+  <script src="{{ url_for("static", filename="js/slider.js") }}" defer></script>
 
   <div id="ATF">
     <table>
@@ -59,25 +59,25 @@
           <br>
     
           <!--proddes_overview_extended-->
-          {{ product_data.products[product_data.request.sku[0]].chunks[1].details[0].value | default('') | safe }}
+          {{ product_data.products[product_data.request.sku[0]].chunks[1].details[0].value | default("") | safe }}
     
           <br><br>
           <div id="ksp">
             <ul>
               <li><!--ksp_01_suppt_01_long-->
-                {{ product_data.products[product_data.request.sku[0]].chunks[2].details[1].value | default('') | safe }}
+                {{ product_data.products[product_data.request.sku[0]].chunks[2].details[1].value | default("") | safe }}
               </li>
             </ul>
     
             <ul>
               <li><!--ksp_01_suppt_02_long-->
-                {{ product_data.products[product_data.request.sku[0]].chunks[2].details[3].value | default('') | safe }}
+                {{ product_data.products[product_data.request.sku[0]].chunks[2].details[3].value | default("") | safe }}
               </li>
             </ul>
     
             <ul>
               <li><!--ksp_01_suppt_03_long-->
-                {{ product_data.products[product_data.request.sku[0]].chunks[2].details[5].value | default('') | safe }}
+                {{ product_data.products[product_data.request.sku[0]].chunks[2].details[5].value | default("") | safe }}
               </li>
             </ul>
           </div>
@@ -86,19 +86,19 @@
           <div id="atf_specs">
             <ul>
               <li><!--osinstalled-->
-                {{ product_data.products[product_data.request.sku[0]].chunks[17].details[0].value | default('') | safe }}
+                {{ product_data.products[product_data.request.sku[0]].chunks[17].details[0].value | default("") | safe }}
               </li>
             </ul>
     
             <ul>
               <li><!--processorname-->
-                {{ product_data.products[product_data.request.sku[0]].chunks[3].details[2].value | default('') | safe }}
+                {{ product_data.products[product_data.request.sku[0]].chunks[3].details[2].value | default("") | safe }}
               </li>
             </ul>
     
             <ul>
               <li><!--processorname-->
-                {{ product_data.products[product_data.request.sku[0]].chunks[6].details[0].value | default('') | safe }}
+                {{ product_data.products[product_data.request.sku[0]].chunks[6].details[0].value | default("") | safe }}
               </li>
             </ul>
           </div>

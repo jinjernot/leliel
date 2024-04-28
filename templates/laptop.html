@@ -2,20 +2,20 @@
 <html lang="en">
   <head>
     <title>
-      {{ df[df['tag'] == 'prodname']['value'].iloc[0] | default('') | safe }}
+      {{ df[df["tag"] == "prodname"]["value"].iloc[0] | default("") | safe }}
     </title>
     <meta charset="UTF-8" />
     <link
       rel="stylesheet"
-      href="{{ url_for('static', filename='css/styles.css') }}"
+      href="{{ url_for("static", filename="css/styles.css") }}"
     />
-    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for("static", filename="images/favicon.ico") }}">
     <script
-      src="{{ url_for('static', filename='js/slideshow.js') }}"
+      src="{{ url_for("static", filename="js/slideshow.js") }}"
       defer
     ></script>
     <script
-      src="{{ url_for('static', filename='js/superscript.js') }}"
+      src="{{ url_for("static", filename="js/superscript.js") }}"
       defer
     ></script>
     <link
@@ -30,14 +30,14 @@
     />
     <link
       rel="icon"
-      href="{{ url_for('static', filename='images/favicon.ico') }}"
+      href="{{ url_for("static", filename="images/favicon.ico") }}"
       type="image/x-icon"
     />
   </head>
 
   <body>
     <div class="blue-form-container">
-      <form method="POST" action="{{ url_for('get_product') }}">
+      <form method="POST" action="{{ url_for("get_product") }}">
         <label for="sku">SKU:</label>
         <input type="text" id="sku" name="sku" maxlength="10" required />
     
@@ -56,19 +56,19 @@
         <tr>
           <td>
             <div class="slideshow-container">
-              {% set num_images = 0 %} {% for tag, image_alt in [('Center
-              facing', 'Center Facing'), ('Left facing', 'Left Facing'), ('Right
-              facing', 'Right facing'), ('Left rear facing', 'Left rear
-              facing'), ('Rear facing', 'Rear facing'), ('Left rear facing',
-              'Left rear facing'), ('Top view closed', 'Top view closed'),
-              ('Detail view', 'Detail view'), ('Left profile closed', 'Left
-              profile closed'), ('Right profile closed', 'Right profile
-              closed'), ('Right rear facing', 'Right rear facing')] %} {% if tag
-              in df['tag'].values %} {% set image_row = df[df['tag'] ==
+              {% set num_images = 0 %} {% for tag, image_alt in [("Center
+              facing", "Center Facing"), ("Left facing", "Left Facing"), ("Right
+              facing", "Right facing"), ("Left rear facing", "Left rear
+              facing"), ("Rear facing", "Rear facing"), ("Left rear facing",
+              "Left rear facing"), ("Top view closed", "Top view closed"),
+              ("Detail view", "Detail view"), ("Left profile closed", "Left
+              profile closed"), ("Right profile closed", "Right profile
+              closed"), ("Right rear facing", "Right rear facing")] %} {% if tag
+              in df["tag"].values %} {% set image_row = df[df["tag"] ==
               tag].iloc[0] %}
               <div class="mySlides fade">
                 <img
-                  src="{{ image_row['value'] | default('') | safe }}"
+                  src="{{ image_row["value"] | default("") | safe }}"
                   alt="{{ image_alt }}"
                 />
               </div>
@@ -83,7 +83,7 @@
             <!--product name, should be prodlongnamespecs -->
             <b>
               <h1>
-                {{ df[df['tag'] == 'prodname']['value'].iloc[0] | default('') |
+                {{ df[df["tag"] == "prodname"]["value"].iloc[0] | default("") |
                 safe }}
               </h1>
             </b>
@@ -91,17 +91,17 @@
             <input type="submit" value="BUY NOW" class="button" />
             <br />
             <!--proddes_overview_extended-->
-            {% if 'proddes_overview_extended' in df['tag'].values %}
-              {{ df[df['tag'] == 'proddes_overview_extended']['value'].iloc[0] |
-              default('') | safe }}
+            {% if "proddes_overview_extended" in df["tag"].values %}
+              {{ df[df["tag"] == "proddes_overview_extended"]["value"].iloc[0] |
+              default("") | safe }}
             {% endif %}
             <br /><br />
             <div id="ksp">
-              {% for tag in ['ksp_01_suppt_01_long', 'ksp_02_suppt_01_long',
-              'ksp_03_suppt_01_long', 'osinstalled', 'processorname',
-              'memstdes_01', 'hd_01des', 'displaymet', 'graphicseg_01card_01',
-              'whatsinbox'] %} {% if tag in df['tag'].values %} {% set content =
-              df[df['tag'] == tag]['value'].iloc[0] | default('') %} {% if
+              {% for tag in ["ksp_01_suppt_01_long", "ksp_02_suppt_01_long",
+              "ksp_03_suppt_01_long", "osinstalled", "processorname",
+              "memstdes_01", "hd_01des", "displaymet", "graphicseg_01card_01",
+              "whatsinbox"] %} {% if tag in df["tag"].values %} {% set content =
+              df[df["tag"] == tag]["value"].iloc[0] | default("") %} {% if
               content %}
               <ul>
                 <li>
@@ -119,70 +119,70 @@
       <div id="MM" class="superscript-content">
         <table>
             <tbody>
-                {% if 'Center facing' in df['tag'].values or 'ksp_01_headline_medium' in df['tag'].values or 'ksp_01_suppt_01_long' in df['tag'].values %}
+                {% if "Center facing" in df["tag"].values or "ksp_01_headline_medium" in df["tag"].values or "ksp_01_suppt_01_long" in df["tag"].values %}
                 <tr>
                     <td>
-                        {% if 'Center facing' in df['tag'].values %}
-                        <img src="{{ df[df['tag'] == 'Center facing']['value'].iloc[0] | default('') | escape }}" alt="Product Image" />
+                        {% if "Center facing" in df["tag"].values %}
+                        <img src="{{ df[df["tag"] == "Center facing"]["value"].iloc[0] | default("") | escape }}" alt="Product Image" />
                         {% endif %}
                     </td>
                     <td>
-                        {% if 'ksp_01_headline_medium' in df['tag'].values %}
-                        <h3><strong>{{ df[df['tag'] == 'ksp_01_headline_medium']['value'].iloc[0] }}</strong></h3>
+                        {% if "ksp_01_headline_medium" in df["tag"].values %}
+                        <h3><strong>{{ df[df["tag"] == "ksp_01_headline_medium"]["value"].iloc[0] }}</strong></h3>
                         {% endif %} 
-                        {% if 'ksp_01_suppt_01_long' in df['tag'].values %}
-                        {{ df[df['tag'] == 'ksp_01_suppt_01_long']['value'].iloc[0] }}
+                        {% if "ksp_01_suppt_01_long" in df["tag"].values %}
+                        {{ df[df["tag"] == "ksp_01_suppt_01_long"]["value"].iloc[0] }}
                         {% endif %}
                     </td>
                 </tr>
                 {% endif %} 
-                {% if 'ksp_02_headline_medium' in df['tag'].values or 'ksp_02_suppt_01_long' in df['tag'].values or 'Left facing' in df['tag'].values %}
+                {% if "ksp_02_headline_medium" in df["tag"].values or "ksp_02_suppt_01_long" in df["tag"].values or "Left facing" in df["tag"].values %}
                 <tr>
                     <td>
-                        {% if 'ksp_02_headline_medium' in df['tag'].values %}
-                        <h3><strong>{{ df[df['tag'] == 'ksp_02_headline_medium']['value'].iloc[0] }}</strong></h3>
+                        {% if "ksp_02_headline_medium" in df["tag"].values %}
+                        <h3><strong>{{ df[df["tag"] == "ksp_02_headline_medium"]["value"].iloc[0] }}</strong></h3>
                         {% endif %} 
-                        {% if 'ksp_02_suppt_01_long' in df['tag'].values %}
-                        {{ df[df['tag'] == 'ksp_02_suppt_01_long']['value'].iloc[0] }}
+                        {% if "ksp_02_suppt_01_long" in df["tag"].values %}
+                        {{ df[df["tag"] == "ksp_02_suppt_01_long"]["value"].iloc[0] }}
                         {% endif %}
                     </td>
                     <td>
-                        {% if 'Left facing' in df['tag'].values %}
-                        <img src="{{ df[df['tag'] == 'Left facing']['value'].iloc[0] | default('') | escape }}" alt="Product Image" />
+                        {% if "Left facing" in df["tag"].values %}
+                        <img src="{{ df[df["tag"] == "Left facing"]["value"].iloc[0] | default("") | escape }}" alt="Product Image" />
                         {% endif %}
                     </td>
                 </tr>
                 {% endif %} 
-                {% if 'Right facing' in df['tag'].values or 'ksp_03_headline_medium' in df['tag'].values or 'ksp_03_suppt_01_long' in df['tag'].values %}
+                {% if "Right facing" in df["tag"].values or "ksp_03_headline_medium" in df["tag"].values or "ksp_03_suppt_01_long" in df["tag"].values %}
                 <tr>
                     <td>
-                        {% if 'Right facing' in df['tag'].values %}
-                        <img src="{{ df[df['tag'] == 'Right facing']['value'].iloc[0] | default('') | escape }}" alt="Product Image" />
+                        {% if "Right facing" in df["tag"].values %}
+                        <img src="{{ df[df["tag"] == "Right facing"]["value"].iloc[0] | default("") | escape }}" alt="Product Image" />
                         {% endif %}
                     </td>
                     <td>
-                        {% if 'ksp_03_headline_medium' in df['tag'].values %}
-                        <h3><strong>{{ df[df['tag'] == 'ksp_03_headline_medium']['value'].iloc[0] }}</strong></h3>
+                        {% if "ksp_03_headline_medium" in df["tag"].values %}
+                        <h3><strong>{{ df[df["tag"] == "ksp_03_headline_medium"]["value"].iloc[0] }}</strong></h3>
                         {% endif %} 
-                        {% if 'ksp_03_suppt_01_long' in df['tag'].values %}
-                        {{ df[df['tag'] == 'ksp_03_suppt_01_long']['value'].iloc[0] }}
+                        {% if "ksp_03_suppt_01_long" in df["tag"].values %}
+                        {{ df[df["tag"] == "ksp_03_suppt_01_long"]["value"].iloc[0] }}
                         {% endif %}
                     </td>
                 </tr>
                 {% endif %} 
-                {% if 'ksp_04_headline_medium' in df['tag'].values or 'ksp_04_suppt_01_long' in df['tag'].values or 'Top view closed' in df['tag'].values %}
+                {% if "ksp_04_headline_medium" in df["tag"].values or "ksp_04_suppt_01_long" in df["tag"].values or "Top view closed" in df["tag"].values %}
                 <tr>
                     <td>
-                        {% if 'ksp_04_headline_medium' in df['tag'].values %}
-                        <h3><strong>{{ df[df['tag'] == 'ksp_04_headline_medium']['value'].iloc[0] }}</strong></h3>
+                        {% if "ksp_04_headline_medium" in df["tag"].values %}
+                        <h3><strong>{{ df[df["tag"] == "ksp_04_headline_medium"]["value"].iloc[0] }}</strong></h3>
                         {% endif %} 
-                        {% if 'ksp_04_suppt_01_long' in df['tag'].values %}
-                        {{ df[df['tag'] == 'ksp_04_suppt_01_long']['value'].iloc[0] }}
+                        {% if "ksp_04_suppt_01_long" in df["tag"].values %}
+                        {{ df[df["tag"] == "ksp_04_suppt_01_long"]["value"].iloc[0] }}
                         {% endif %}
                     </td>
                     <td>
-                        {% if 'Top view closed' in df['tag'].values %}
-                        <img src="{{ df[df['tag'] == 'Top view closed']['value'].iloc[0] | default('') | escape }}" alt="Product Image" />
+                        {% if "Top view closed" in df["tag"].values %}
+                        <img src="{{ df[df["tag"] == "Top view closed"]["value"].iloc[0] | default("") | escape }}" alt="Product Image" />
                         {% endif %}
                     </td>
                 </tr>
@@ -254,13 +254,13 @@
               "memstosimp",
               "display"
           ] %}
-          {% if df[df['tag'] == value].shape[0] > 0 %}
+          {% if df[df["tag"] == value].shape[0] > 0 %}
               <tr>
                   <td>
-                      <b>{{ df[df['tag'] == value]['name'].iloc[0] | default('') | safe }}</b>
+                      <b>{{ df[df["tag"] == value]["name"].iloc[0] | default("") | safe }}</b>
                   </td>
                   <td>
-                      {{ df[df['tag'] == value]['value'].iloc[0] | default('') | safe }}
+                      {{ df[df["tag"] == value]["value"].iloc[0] | default("") | safe }}
                   </td>
               </tr>
           {% endif %}
@@ -276,10 +276,10 @@
             "msgfootnote_01",
             "msgfootnote_02"
         ] %}
-        {% if df[df['tag'] == value].shape[0] > 0 %}
+        {% if df[df["tag"] == value].shape[0] > 0 %}
             <tr>
                 <td>
-                    {{ df[df['tag'] == value]['value'].iloc[0] | default('') | safe }}
+                    {{ df[df["tag"] == value]["value"].iloc[0] | default("") | safe }}
                 </td>
             </tr>
         {% endif %}

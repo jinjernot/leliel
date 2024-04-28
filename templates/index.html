@@ -5,14 +5,14 @@
     <meta charset="UTF-8" />
     <link
       rel="stylesheet"
-      href="{{ url_for('static', filename='css/styles.css') }}"
+      href="{{ url_for("static", filename="css/styles.css") }}"
     />
-    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for("static", filename="images/favicon.ico") }}">
 
   </head>
   <body>
     <div class="blue-form-container">
-      <form method="POST" action="{{ url_for('get_product') }}">
+      <form method="POST" action="{{ url_for("get_product") }}">
         <label for="sku">SKU:</label>
         <input type="text" id="sku" name="sku" maxlength="10" required />
     
@@ -27,7 +27,7 @@
     </div>
 
     <div class="image-container">
-      <img src="{{ url_for('static', filename='images/favicon.png') }}" alt="" width="50" height="50">
+      <img src="{{ url_for("static", filename="images/favicon.png") }}" alt="" width="50" height="50">
   </div>
 
   </body>
