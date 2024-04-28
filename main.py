@@ -26,9 +26,9 @@ def get_product():
     try:
         # Extract necessary data from the request
         client_cert = (client_cert_path, client_key_path)
-        sku = request.form.get('sku')
-        country_code = request.form.get('country')
-        language_code = request.form.get('language')
+        sku = request.form.get('sku').strip() if request.form.get('sku') else None
+        country_code = request.form.get('country').strip() if request.form.get('country') else None
+        language_code = request.form.get('language').strip() if request.form.get('language') else None
 
         # Prepare JSON data to be sent to the API
         json_data = {
@@ -95,6 +95,10 @@ def get_product():
             if response_json.get('status') == 'Success' and response_json.get('statusMessage') == 'Non publishable Product':
                 error_message = 'Non publishable Product'
                 return render_template('error.html', error_message=error_message), 400
+
+        # Default response if no valid response is generated
+        return render_template('error.html', error_message='The product is not supported.'), 400
+
     except Exception as e:
         # Handle exceptions
         error_message = f'An error occurred: {e}'
