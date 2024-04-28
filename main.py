@@ -70,18 +70,20 @@ def get_product():
             if pmoid == '321957': # Laptop
                 df = build_template_laptop(api_response)
                 rendered_template = render_template('laptop.html', df=df)
+
             elif product_hierarchy.get('marketingCategory', {}).get('pmoid') == '238444': # Ink_Printer
                 df = build_template_ink(api_response)
                 rendered_template = render_template('ink_printer.html', df=df)
+
             elif product_hierarchy.get('productType', {}).get('pmoid') == '382087': # Monitor
                 df = build_template_monitor(api_response)
                 rendered_template = render_template('monitor.html', df=df)
+                
             else:
                 return render_template('error.html', error_message='The product is not supported.'), 400
 
             return rendered_template
         else:
-            # Handle failed requests
             print(f"Request failed with status code {api_response.status_code}")
             print(f"response content: {api_response.text}")
             response_json = api_response.json()
@@ -89,20 +91,19 @@ def get_product():
             if response_json.get('status') == 'Error' and response_json.get('statusMessage') == 'Invalid Country or Language Code':
                 error_message = 'Invalid Country or Language Code'
                 return render_template('error.html', error_message=error_message), 400
+            
             if response_json.get('Status') == 'ERROR' and response_json.get('StatusMessage') == 'Country Code provided is Invalid':
                 error_message = 'Non publishable Product'
                 return render_template('error.html', error_message=error_message), 400
+            
             if response_json.get('status') == 'Success' and response_json.get('statusMessage') == 'Non publishable Product':
                 error_message = 'Non publishable Product'
                 return render_template('error.html', error_message=error_message), 400
-
-        # Default response if no valid response is generated
+            
         return render_template('error.html', error_message='The product is not supported.'), 400
 
     except Exception as e:
-        # Handle exceptions
         error_message = f'An error occurred: {e}'
-        print(error_message)
         return render_template('error.html', error_message=error_message), 400
 
 if __name__ == '__main__':
