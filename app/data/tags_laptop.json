@@ -217,7 +217,9 @@
         "wrntyfeaturesftntnbr",
         "specialfeat",
         "specialfeatftntnbr",
-        "chassistype"
+        "chassistype",
+        "msgfootnote_01",
+        "msgfootnote_02"
     ],
     "image_tags": [
         "Center facing",

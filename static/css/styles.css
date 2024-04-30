@@ -125,6 +125,12 @@ button:hover {
     background-color: darkgray;
 }
 
+sup {
+  vertical-align: super;
+  font-size: smaller;
+  color:#0096D6;
+}
+
 #error-message {
   display: flex;
   justify-content: center;
