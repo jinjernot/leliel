@@ -1,8 +1,9 @@
-from config import client_cert_path, client_key_path, url
-from flask import Flask, render_template, request
-from app.core.laptop_template import build_template_laptop
 from app.core.ink_printer_template import build_template_ink
 from app.core.monitor_template import build_template_monitor
+from app.core.laptop_template import build_template_laptop
+from config import client_cert_path, client_key_path, url
+
+from flask import Flask, render_template, request
 import requests
 import config
 import json
