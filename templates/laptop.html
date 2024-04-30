@@ -9,7 +9,11 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='css/styles.css') }}"
     />
-    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+    <link
+      rel="shortcut icon"
+      type="image/x-icon"
+      href="{{ url_for('static', filename='images/favicon.ico') }}"
+    />
     <script
       src="{{ url_for('static', filename='js/slideshow.js') }}"
       defer
@@ -40,13 +44,19 @@
       <form method="POST" action="{{ url_for('get_product') }}">
         <label for="sku">SKU:</label>
         <input type="text" id="sku" name="sku" maxlength="10" required />
-    
+
         <label for="country">Locale:</label>
         <input type="text" id="country" name="country" maxlength="2" required />
-    
+
         <label for="language">Language:</label>
-        <input type="text" id="language" name="language" maxlength="2" required />
-    
+        <input
+          type="text"
+          id="language"
+          name="language"
+          maxlength="2"
+          required
+        />
+
         <button type="submit">GO</button>
       </form>
     </div>
@@ -91,155 +101,221 @@
             <input type="submit" value="BUY NOW" class="button" />
             <br />
             <!--proddes_overview_extended-->
-            {% if 'proddes_overview_extended' in df['tag'].values %}
-              {{ df[df['tag'] == 'proddes_overview_extended']['value'].iloc[0] |
-              default('') | safe }}
-            {% endif %}
+            {% if 'proddes_overview_extended' in df['tag'].values %} {{
+            df[df['tag'] == 'proddes_overview_extended']['value'].iloc[0] |
+            default('') | safe }} {% endif %}
             <br /><br />
             <div id="ksp">
-              {% if 'ksp_01_suppt_01_long' in df['tag'].values %}
-                {% set content = df[df['tag'] == 'ksp_01_suppt_01_long']['value'].iloc[0] | default('') %}
-                {% if content %}
-                  <ul>
-                    <li>
-                      <!-- ksp_01_suppt_01_long -->
-                      {{ content | safe }}
-                    </li>
-                  </ul>
-                {% endif %}
-              {% endif %}
-            
-              {% if 'ksp_02_suppt_01_long' in df['tag'].values %}
-                {% set content = df[df['tag'] == 'ksp_02_suppt_01_long']['value'].iloc[0] | default('') %}
-                {% if content %}
-                  <ul>
-                    <li>
-                      <!-- ksp_02_suppt_01_long -->
-                      {{ content | safe }}
-                    </li>
-                  </ul>
-                {% endif %}
-              {% endif %}
-            
-              {% if 'ksp_03_suppt_01_long' in df['tag'].values %}
-                {% set content = df[df['tag'] == 'ksp_03_suppt_01_long']['value'].iloc[0] | default('') %}
-                {% if content %}
-                  <ul>
-                    <li>
-                      <!-- ksp_03_suppt_01_long -->
-                      {{ content | safe }}
-                    </li>
-                  </ul>
-                {% endif %}
-              {% endif %}
-            
-              {% if 'ksp_04_suppt_01_long' in df['tag'].values %}
-                {% set content = df[df['tag'] == 'ksp_04_suppt_01_long']['value'].iloc[0] | default('') %}
-                {% if content %}
-                  <ul>
-                    <li>
-                      <!-- ksp_04_suppt_01_long -->
-                      {{ content | safe }}
-                    </li>
-                  </ul>
-                {% endif %}
-              {% endif %}
-            
-              {% if 'ksp_05_suppt_01_long' in df['tag'].values %}
-                {% set content = df[df['tag'] == 'ksp_05_suppt_01_long']['value'].iloc[0] | default('') %}
-                {% if content %}
-                  <ul>
-                    <li>
-                      <!-- ksp_05_suppt_01_long -->
-                      {{ content | safe }}
-                    </li>
-                  </ul>
-                {% endif %}
-              {% endif %}
-            
-              {% if 'osinstalled' in df['tag'].values %}
-                {% set content = df[df['tag'] == 'osinstalled']['value'].iloc[0] | default('') %}
-                {% if content %}
-                  <ul>
-                    <li>
-                      <!-- osinstalled -->
-                      {{ content | safe }}
-                    </li>
-                  </ul>
-                {% endif %}
-              {% endif %}
-            
-              {% if 'processorname' in df['tag'].values %}
-                {% set content = df[df['tag'] == 'processorname']['value'].iloc[0] | default('') %}
-                {% if content %}
-                  <ul>
-                    <li>
-                      <!-- processorname -->
-                      {{ content | safe }}
-                    </li>
-                  </ul>
-                {% endif %}
-              {% endif %}
-            
-              {% if 'memstdes_01' in df['tag'].values %}
-                {% set content = df[df['tag'] == 'memstdes_01']['value'].iloc[0] | default('') %}
-                {% if content %}
-                  <ul>
-                    <li>
-                      <!-- memstdes_01 -->
-                      {{ content | safe }}
-                    </li>
-                  </ul>
-                {% endif %}
-              {% endif %}
-            
-              {% if 'hd_01des' in df['tag'].values %}
-                {% set content = df[df['tag'] == 'hd_01des']['value'].iloc[0] | default('') %}
-                {% if content %}
-                  <ul>
-                    <li>
-                      <!-- hd_01des -->
-                      {{ content | safe }}
-                    </li>
-                  </ul>
-                {% endif %}
-              {% endif %}
-            
-              {% if 'displaymet' in df['tag'].values %}
-                {% set content = df[df['tag'] == 'displaymet']['value'].iloc[0] | default('') %}
-                {% if content %}
-                  <ul>
-                    <li>
-                      <!-- displaymet -->
-                      {{ content | safe }}
-                    </li>
-                  </ul>
-                {% endif %}
-              {% endif %}
-            
-              {% if 'graphicseg_01card_01' in df['tag'].values %}
-                {% set content = df[df['tag'] == 'graphicseg_01card_01']['value'].iloc[0] | default('') %}
-                {% if content %}
-                  <ul>
-                    <li>
-                      <!-- graphicseg_01card_01 -->
-                      {{ content | safe }}
-                    </li>
-                  </ul>
-                {% endif %}
-              {% endif %}
-            
-              {% if 'whatsinbox' in df['tag'].values %}
-                {% set content = df[df['tag'] == 'whatsinbox']['value'].iloc[0] | default('') %}
-                {% if content %}
-                  <ul>
-                    <li>
-                      <!-- whatsinbox -->
-                      {{ content | safe }}
-                    </li>
-                  </ul>
-                {% endif %}
-              {% endif %}
+              {% if 'ksp_01_suppt_01_long' in df['tag'].values %} {% set content
+              = df[df['tag'] == 'ksp_01_suppt_01_long']['value'].iloc[0] |
+              default('') %} {% if content %}
+              <ul>
+                <li>
+                  <!-- ksp_01_suppt_01_long -->
+                  {{ content | safe }}
+                </li>
+              </ul>
+              {% endif %} {% endif %} {% if 'ksp_02_suppt_01_long' in
+              df['tag'].values %} {% set content = df[df['tag'] ==
+              'ksp_02_suppt_01_long']['value'].iloc[0] | default('') %} {% if
+              content %}
+              <ul>
+                <li>
+                  <!-- ksp_02_suppt_01_long -->
+                  {{ content | safe }}
+                </li>
+              </ul>
+              {% endif %} {% endif %} {% if 'ksp_03_suppt_01_long' in
+              df['tag'].values %} {% set content = df[df['tag'] ==
+              'ksp_03_suppt_01_long']['value'].iloc[0] | default('') %} {% if
+              content %}
+              <ul>
+                <li>
+                  <!-- ksp_03_suppt_01_long -->
+                  {{ content | safe }}
+                </li>
+              </ul>
+              {% endif %} {% endif %} {% if 'ksp_04_suppt_01_long' in
+              df['tag'].values %} {% set content = df[df['tag'] ==
+              'ksp_04_suppt_01_long']['value'].iloc[0] | default('') %} {% if
+              content %}
+              <ul>
+                <li>
+                  <!-- ksp_04_suppt_01_long -->
+                  {{ content | safe }}
+                </li>
+              </ul>
+              {% endif %} {% endif %} {% if 'ksp_05_suppt_01_long' in
+              df['tag'].values %} {% set content = df[df['tag'] ==
+              'ksp_05_suppt_01_long']['value'].iloc[0] | default('') %} {% if
+              content %}
+              <ul>
+                <li>
+                  <!-- ksp_05_suppt_01_long -->
+                  {{ content | safe }}
+                </li>
+              </ul>
+              {% endif %} {% endif %} {% if 'osinstalled' in df['tag'].values %}
+              {% set content_osinstalled = df[df['tag'] ==
+              'osinstalled']['value'].iloc[0] | default('') %} {% endif %} {% if
+              'osinstalledftntnbr' in df['tag'].values %} {% set
+              content_osinstalledftntnbr = df[df['tag'] ==
+              'osinstalledftntnbr']['value'].iloc[0] | default('') %} {% endif
+              %} {% if content_osinstalled or content_osinstalledftntnbr %}
+              <ul>
+                <li>
+                  <!-- osinstalled -->
+                  {{ content_osinstalled | safe }} {% if content_osinstalled %}
+                  {{ content_osinstalled | safe }} {% endif %}
+                </li>
+              </ul>
+              {% endif %} {% if 'processorname' in df['tag'].values %} {% set
+              content_processorname = df[df['tag'] ==
+              'processorname']['value'].iloc[0] | default('') %} {% endif %} {%
+              if 'processornameftntnbr' in df['tag'].values %} {% set
+              content_processornameftntnbr = df[df['tag'] ==
+              'processornameftntnbr']['value'].iloc[0] | default('') %} {% endif
+              %} {% if content_processorname or content_processornameftntnbr %}
+              <ul>
+                <li>
+                  <!-- processorname -->
+                  {{ content_processorname | safe }} {% if
+                  content_processornameftntnbr %} {{
+                  content_processornameftntnbr | safe }} {% endif %}
+                </li>
+              </ul>
+              {% endif %} {% if 'memstdes_01' in df['tag'].values %} {% set
+              content_memstdes_01 = df[df['tag'] ==
+              'memstdes_01']['value'].iloc[0] | default('') %} {% endif %} {% if
+              'memstdes_01ftntnbr' in df['tag'].values %} {% set
+              content_memstdes_01ftntnbr = df[df['tag'] ==
+              'memstdes_01ftntnbr']['value'].iloc[0] | default('') %} {% endif
+              %} {% if content_memstdes_01 or content_memstdes_01ftntnbr %}
+              <ul>
+                <li>
+                  <!-- memstdes_01 -->
+                  {{ content_memstdes_01 | safe }} {% if content_hd_01desftntnbr
+                  %} {{ content_hd_01desftntnbr | safe }} {% endif %}
+                </li>
+              </ul>
+              {% endif %} {% if 'hd_01des' in df['tag'].values %} {% set
+              content_hd_01des = df[df['tag'] == 'hd_01des']['value'].iloc[0] |
+              default('') %} {% endif %} {% if 'hd_01desftntnbr' in
+              df['tag'].values %} {% set content_hd_01desftntnbr = df[df['tag']
+              == 'hd_01desftntnbr']['value'].iloc[0] | default('') %} {% endif
+              %} {% if content_hd_01des %}
+              <ul>
+                <li>
+                  <!-- hd_01des -->
+                  {{ content_hd_01des | safe }} {% if content_hd_01desftntnbr %}
+                  {{ content_hd_01desftntnbr | safe }} {% endif %}
+                </li>
+              </ul>
+              {% endif %}{% if 'hd_02des' in df['tag'].values %} {% set
+              content_hd_02des = df[df['tag'] == 'hd_02des']['value'].iloc[0] |
+              default('') %} {% endif %} {% if 'hd_02desftntnbr' in
+              df['tag'].values %} {% set content_hd_02desftntnbr = df[df['tag']
+              == 'hd_02desftntnbr']['value'].iloc[0] | default('') %} {% endif
+              %} {% if content_hd_02des %}
+              <ul>
+                <li>
+                  <!-- hd_02des -->
+                  {{ content_hd_02des | safe }} {% if content_hd_02desftntnbr %}
+                  {{ content_hd_02desftntnbr | safe }} {% endif %}
+                </li>
+              </ul>
+              {% endif %} {% if 'hd_03des' in df['tag'].values %} {% set
+              content_hd_03des = df[df['tag'] == 'hd_03des']['value'].iloc[0] |
+              default('') %} {% endif %} {% if 'hd_03desftntnbr' in
+              df['tag'].values %} {% set content_hd_03desftntnbr = df[df['tag']
+              == 'hd_03desftntnbr']['value'].iloc[0] | default('') %} {% endif
+              %} {% if content_hd_03des %}
+              <ul>
+                <li>
+                  <!-- hd_01des -->
+                  {{ content_hd_01des | safe }} {% if content_hd_01desftntnbr %}
+                  {{ content_hd_01desftntnbr | safe }} {% endif %}
+                </li>
+              </ul>
+              {% endif %} {% if 'displaymet' in df['tag'].values %} {% set
+              content = df[df['tag'] == 'displaymet']['value'].iloc[0] |
+              default('') %} {% if content %}
+              <ul>
+                <li>
+                  <!-- displaymet -->
+                  {{ content | safe }}
+                </li>
+              </ul>
+              {% endif %} {% endif %} {% if 'graphicseg_01header' in
+              df['tag'].values %} {% set content_graphicseg_01header =
+              df[df['tag'] == 'graphicseg_01header']['value'].iloc[0] |
+              default('') %} {% endif %} {% if 'graphicseg_01card_01' in
+              df['tag'].values %} {% set content_graphicseg_01card_01 =
+              df[df['tag'] == 'graphicseg_01card_01']['value'].iloc[0] |
+              default('') %} {% endif %} {% if content_graphicseg_01header %}
+              <ul>
+                <li>
+                  <!-- graphicseg_01header -->
+                  {{ content_graphicseg_01header | safe }} {% if
+                  content_graphicseg_01card_01 %} {{
+                  content_graphicseg_01card_01 | safe }} {% endif %}
+                </li>
+              </ul>
+              {% endif %} {% if 'batterylife' in df['tag'].values %} {% set
+              content_batterylife = df[df['tag'] ==
+              'batterylife']['value'].iloc[0] | default('') %} {% endif %} {% if
+              'batterylifeftntnbr' in df['tag'].values %} {% set
+              content_batterylifeftntnbr = df[df['tag'] ==
+              'batterylifeftntnbr']['value'].iloc[0] | default('') %} {% endif
+              %} {% if content_batterylife %}
+              <ul>
+                <li>
+                  <!-- batterylife -->
+                  {{ content_batterylife | safe }} {% if
+                  content_batterylifeftntnbr %} {{ content_batterylifeftntnbr |
+                  safe }} {% endif %}
+                </li>
+              </ul>
+              {% endif %} {% if 'batterylifedes' in df['tag'].values %} {% set
+              content_batterylifedes = df[df['tag'] ==
+              'batterylifedes']['value'].iloc[0] | default('') %} {% endif %} {%
+              if 'batterylifedesftntnbr' in df['tag'].values %} {% set
+              content_batterylifedesftntnbr = df[df['tag'] ==
+              'batterylifedesftntnbr']['value'].iloc[0] | default('') %} {%
+              endif %} {% if 'batterylifeftntnbr' in df['tag'].values %} {% set
+              content_batterylifeftntnbr = df[df['tag'] ==
+              'batterylifeftntnbr']['value'].iloc[0] | default('') %} {% endif
+              %} {% if content_batterylifedes %}
+              <ul>
+                <li>
+                  <!-- batterylifedes -->
+                  {{ content_batterylifedes | safe }}
+                </li>
+              </ul>
+              {% endif %} {% if content_batterylifedesftntnbr %}
+              <ul>
+                <li>
+                  <!-- batterylifedesftntnbr -->
+                  {{ content_batterylifedesftntnbr | safe }}
+                </li>
+              </ul>
+              {% endif %} {% if content_batterylifeftntnbr %}
+              <ul>
+                <li>
+                  <!-- batterylifeftntnbr -->
+                  {{ content_batterylifeftntnbr | safe }}
+                </li>
+              </ul>
+              {% endif %} {% if 'colour' in df['tag'].values %} {% set content =
+              df[df['tag'] == 'colour']['value'].iloc[0] | default('') %} {% if
+              content %}
+              <ul>
+                <li>
+                  <!-- whatsinbox -->
+                  {{ content | safe }}
+                </li>
+              </ul>
+              {% endif %} {% endif %}
             </div>
             <br /><br />
           </td>
@@ -248,173 +324,160 @@
       <br />
       <div id="MM" class="superscript-content">
         <table>
-            <tbody>
-                {% if 'Center facing' in df['tag'].values or 'ksp_01_headline_medium' in df['tag'].values or 'ksp_01_suppt_01_long' in df['tag'].values %}
-                <tr>
-                    <td>
-                        {% if 'Center facing' in df['tag'].values %}
-                        <img src="{{ df[df['tag'] == 'Center facing']['value'].iloc[0] | default('') | escape }}" alt="Product Image" />
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% if 'ksp_01_headline_medium' in df['tag'].values %}
-                        <h3><strong>{{ df[df['tag'] == 'ksp_01_headline_medium']['value'].iloc[0] }}</strong></h3>
-                        {% endif %} 
-                        {% if 'ksp_01_suppt_01_long' in df['tag'].values %}
-                        {{ df[df['tag'] == 'ksp_01_suppt_01_long']['value'].iloc[0] }}
-                        {% endif %}
-                    </td>
-                </tr>
-                {% endif %} 
-                {% if 'ksp_02_headline_medium' in df['tag'].values or 'ksp_02_suppt_01_long' in df['tag'].values or 'Left facing' in df['tag'].values %}
-                <tr>
-                    <td>
-                        {% if 'ksp_02_headline_medium' in df['tag'].values %}
-                        <h3><strong>{{ df[df['tag'] == 'ksp_02_headline_medium']['value'].iloc[0] }}</strong></h3>
-                        {% endif %} 
-                        {% if 'ksp_02_suppt_01_long' in df['tag'].values %}
-                        {{ df[df['tag'] == 'ksp_02_suppt_01_long']['value'].iloc[0] }}
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% if 'Left facing' in df['tag'].values %}
-                        <img src="{{ df[df['tag'] == 'Left facing']['value'].iloc[0] | default('') | escape }}" alt="Product Image" />
-                        {% endif %}
-                    </td>
-                </tr>
-                {% endif %} 
-                {% if 'Right facing' in df['tag'].values or 'ksp_03_headline_medium' in df['tag'].values or 'ksp_03_suppt_01_long' in df['tag'].values %}
-                <tr>
-                    <td>
-                        {% if 'Right facing' in df['tag'].values %}
-                        <img src="{{ df[df['tag'] == 'Right facing']['value'].iloc[0] | default('') | escape }}" alt="Product Image" />
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% if 'ksp_03_headline_medium' in df['tag'].values %}
-                        <h3><strong>{{ df[df['tag'] == 'ksp_03_headline_medium']['value'].iloc[0] }}</strong></h3>
-                        {% endif %} 
-                        {% if 'ksp_03_suppt_01_long' in df['tag'].values %}
-                        {{ df[df['tag'] == 'ksp_03_suppt_01_long']['value'].iloc[0] }}
-                        {% endif %}
-                    </td>
-                </tr>
-                {% endif %} 
-                {% if 'ksp_04_headline_medium' in df['tag'].values or 'ksp_04_suppt_01_long' in df['tag'].values or 'Top view closed' in df['tag'].values %}
-                <tr>
-                    <td>
-                        {% if 'ksp_04_headline_medium' in df['tag'].values %}
-                        <h3><strong>{{ df[df['tag'] == 'ksp_04_headline_medium']['value'].iloc[0] }}</strong></h3>
-                        {% endif %} 
-                        {% if 'ksp_04_suppt_01_long' in df['tag'].values %}
-                        {{ df[df['tag'] == 'ksp_04_suppt_01_long']['value'].iloc[0] }}
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% if 'Top view closed' in df['tag'].values %}
-                        <img src="{{ df[df['tag'] == 'Top view closed']['value'].iloc[0] | default('') | escape }}" alt="Product Image" />
-                        {% endif %}
-                    </td>
-                </tr>
+          <tbody>
+            {% if 'Center facing' in df['tag'].values or
+            'ksp_01_headline_medium' in df['tag'].values or
+            'ksp_01_suppt_01_long' in df['tag'].values %}
+            <tr>
+              <td>
+                {% if 'Center facing' in df['tag'].values %}
+                <img
+                  src="{{ df[df['tag'] == 'Center facing']['value'].iloc[0] | default('') | escape }}"
+                  alt="Product Image"
+                />
                 {% endif %}
-            </tbody>
+              </td>
+              <td>
+                {% if 'ksp_01_headline_medium' in df['tag'].values %}
+                <h3>
+                  <strong
+                    >{{ df[df['tag'] ==
+                    'ksp_01_headline_medium']['value'].iloc[0] }}</strong
+                  >
+                </h3>
+                {% endif %} {% if 'ksp_01_suppt_01_long' in df['tag'].values %}
+                {{ df[df['tag'] == 'ksp_01_suppt_01_long']['value'].iloc[0] }}
+                {% endif %}
+              </td>
+            </tr>
+            {% endif %} {% if 'ksp_02_headline_medium' in df['tag'].values or
+            'ksp_02_suppt_01_long' in df['tag'].values or 'Left facing' in
+            df['tag'].values %}
+            <tr>
+              <td>
+                {% if 'ksp_02_headline_medium' in df['tag'].values %}
+                <h3>
+                  <strong
+                    >{{ df[df['tag'] ==
+                    'ksp_02_headline_medium']['value'].iloc[0] }}</strong
+                  >
+                </h3>
+                {% endif %} {% if 'ksp_02_suppt_01_long' in df['tag'].values %}
+                {{ df[df['tag'] == 'ksp_02_suppt_01_long']['value'].iloc[0] }}
+                {% endif %}
+              </td>
+              <td>
+                {% if 'Left facing' in df['tag'].values %}
+                <img
+                  src="{{ df[df['tag'] == 'Left facing']['value'].iloc[0] | default('') | escape }}"
+                  alt="Product Image"
+                />
+                {% endif %}
+              </td>
+            </tr>
+            {% endif %} {% if 'Right facing' in df['tag'].values or
+            'ksp_03_headline_medium' in df['tag'].values or
+            'ksp_03_suppt_01_long' in df['tag'].values %}
+            <tr>
+              <td>
+                {% if 'Right facing' in df['tag'].values %}
+                <img
+                  src="{{ df[df['tag'] == 'Right facing']['value'].iloc[0] | default('') | escape }}"
+                  alt="Product Image"
+                />
+                {% endif %}
+              </td>
+              <td>
+                {% if 'ksp_03_headline_medium' in df['tag'].values %}
+                <h3>
+                  <strong
+                    >{{ df[df['tag'] ==
+                    'ksp_03_headline_medium']['value'].iloc[0] }}</strong
+                  >
+                </h3>
+                {% endif %} {% if 'ksp_03_suppt_01_long' in df['tag'].values %}
+                {{ df[df['tag'] == 'ksp_03_suppt_01_long']['value'].iloc[0] }}
+                {% endif %}
+              </td>
+            </tr>
+            {% endif %} {% if 'ksp_04_headline_medium' in df['tag'].values or
+            'ksp_04_suppt_01_long' in df['tag'].values or 'Top view closed' in
+            df['tag'].values %}
+            <tr>
+              <td>
+                {% if 'ksp_04_headline_medium' in df['tag'].values %}
+                <h3>
+                  <strong
+                    >{{ df[df['tag'] ==
+                    'ksp_04_headline_medium']['value'].iloc[0] }}</strong
+                  >
+                </h3>
+                {% endif %} {% if 'ksp_04_suppt_01_long' in df['tag'].values %}
+                {{ df[df['tag'] == 'ksp_04_suppt_01_long']['value'].iloc[0] }}
+                {% endif %}
+              </td>
+              <td>
+                {% if 'Top view closed' in df['tag'].values %}
+                <img
+                  src="{{ df[df['tag'] == 'Top view closed']['value'].iloc[0] | default('') | escape }}"
+                  alt="Product Image"
+                />
+                {% endif %}
+              </td>
+            </tr>
+            {% endif %}
+          </tbody>
         </table>
-    </div>
+      </div>
 
-    <div>
-      <br />
+      <div>
+        <br />
         <h2 id="see-more" style="cursor: pointer">+Expand to see more</h2>
         <br />
 
         <table id="tech-specs" style="display: none">
           <tbody>
-            
-            {% for value in [
-              "osinstalled",
-              "processorfamily",
-              "processorname",
-              "chipset",
-              "specialfeat",
-              "environspec",
-              "memstdes01",
-              "memstdesnote",
-              "memlayout",
-              "hd01des",
-              "hdnote01",
-              "hd02des",
-              "hdnote02",
-              "hd03des",
-              "hdnote03",
-              "hd04des",
-              "hdnote04",
-              "hd05des",
-              "hdnote05",
-              "cloudserv",
-              "cloudservftntnbr",
-              "graphicseg_01card_01",
-              "ioports",
-              "expanslots",
-              "webcam",
-              "audiofeat",
-              "keyboard",
-              "keybrdftntnbr",
-              "mousepntgdevice",
-              "wirelesstech",
-              "wirelesstechnote",
-              "sensors",
-              "powersupplytype",
-              "batterytype",
-              "batterytypenote",
-              "energyeffcomp",
-              "energyeffcompftntnbr",
-              "dimenmet",
-              "dimenpackmet",
-              "weightmet",
-              "weightpackmet",
-              "colour",
-              "prodfinish",
-              "securitymgmt",
-              "wrntyfeatures",
-              "wrntyfeaturesftntnbr",
-              "swincluded",
-              "softwareftntnbr",
-              "swpreinstalled",
-              "swprodfinance",
-              "productcolour",
-              "memstosimp",
-              "display"
-          ] %}
-          {% if df[df['tag'] == value].shape[0] > 0 %}
-              <tr>
-                  <td>
-                      <b>{{ df[df['tag'] == value]['name'].iloc[0] | default('') | safe }}</b>
-                  </td>
-                  <td>
-                      {{ df[df['tag'] == value]['value'].iloc[0] | default('') | safe }}
-                  </td>
-              </tr>
-          {% endif %}
-      {% endfor %}
+            {% for value in [ "osinstalled", "processorfamily", "processorname",
+            "chipset", "specialfeat", "environspec", "memstdes01",
+            "memstdesnote", "memlayout", "hd01des", "hdnote01", "hd02des",
+            "hdnote02", "hd03des", "hdnote03", "hd04des", "hdnote04", "hd05des",
+            "hdnote05", "cloudserv", "cloudservftntnbr", "graphicseg_01card_01",
+            "ioports", "expanslots", "webcam", "audiofeat", "keyboard",
+            "keybrdftntnbr", "mousepntgdevice", "wirelesstech",
+            "wirelesstechnote", "sensors", "powersupplytype", "batterytype",
+            "batterytypenote", "energyeffcomp", "energyeffcompftntnbr",
+            "dimenmet", "dimenpackmet", "weightmet", "weightpackmet", "colour",
+            "prodfinish", "securitymgmt", "wrntyfeatures",
+            "wrntyfeaturesftntnbr", "swincluded", "softwareftntnbr",
+            "swpreinstalled", "swprodfinance", "productcolour", "memstosimp",
+            "display" ] %} {% if df[df['tag'] == value].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == value]['name'].iloc[0] | default('') |
+                  safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == value]['value'].iloc[0] | default('') | safe
+                }}
+              </td>
+            </tr>
+            {% endif %} {% endfor %}
           </tbody>
         </table>
 
         <br />
 
         <table id="footnotes">
-
-          {% for value in [
-            "msgfootnote_01",
-            "msgfootnote_02"
-        ] %}
-        {% if df[df['tag'] == value].shape[0] > 0 %}
-            <tr>
-                <td>
-                    {{ df[df['tag'] == value]['value'].iloc[0] | default('') | safe }}
-                </td>
-            </tr>
-        {% endif %}
-        {% endfor %}
-
+          {% for value in [ "msgfootnote_01", "msgfootnote_02" ] %} {% if
+          df[df['tag'] == value].shape[0] > 0 %}
+          <tr>
+            <td>
+              {{ df[df['tag'] == value]['value'].iloc[0] | default('') | safe }}
+            </td>
+          </tr>
+          {% endif %} {% endfor %}
         </table>
       </div>
     </div>
