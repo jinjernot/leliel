@@ -73,8 +73,8 @@
                 {% for index, row in df_images.iterrows() %}
                   {% if row['pixelWidth'] == '573' and row['orientation'] == orientation and row['type'] == 'png' %}
                     {% set found = true %}
-                    <div class="mySlides fade">
-                      <img src="{{ row['imageUrlHttps'] | default('') | safe }}" />
+                    <div class="mySlides fade"><center>
+                      <img src="{{ row['imageUrlHttps'] | default('') | safe }}" /></center>
                     </div>
                     {% set num_images = num_images + 1 %}
                   {% endif %}
@@ -322,14 +322,14 @@
       <div id="MM" class="superscript-content">
         <table>
           <tbody>
-            {% if 'Center facing' in df['tag'].values or
+            {% if 'Center facing' in df_images['orientation'].values or
             'ksp_01_headline_medium' in df['tag'].values or
             'ksp_01_suppt_01_long' in df['tag'].values %}
             <tr>
               <td>
-                {% if 'Center facing' in df['tag'].values %}
+                {% if 'Center facing' in df_images['orientation'].values %}
                 <img
-                  src="{{ df[df['tag'] == 'Center facing']['value'].iloc[0] | default('') | escape }}"
+                  src="{{ df_images[df_images['orientation'] == 'Center facing']['imageUrlHttps'].iloc[0] | default('') | escape }}"
                   alt="Product Image"
                 />
                 {% endif %}
@@ -349,7 +349,7 @@
             </tr>
             {% endif %} {% if 'ksp_02_headline_medium' in df['tag'].values or
             'ksp_02_suppt_01_long' in df['tag'].values or 'Left facing' in
-            df['tag'].values %}
+            df_images['orientation'].values %}
             <tr>
               <td>
                 {% if 'ksp_02_headline_medium' in df['tag'].values %}
@@ -364,22 +364,22 @@
                 {% endif %}
               </td>
               <td>
-                {% if 'Left facing' in df['tag'].values %}
+                {% if 'Left facing' in df_images['orientation'].values %}
                 <img
-                  src="{{ df[df['tag'] == 'Left facing']['value'].iloc[0] | default('') | escape }}"
+                  src="{{ df_images[df_images['orientation'] == 'Left facing']['imageUrlHttps'].iloc[0] | default('') | escape }}"
                   alt="Product Image"
                 />
                 {% endif %}
               </td>
             </tr>
-            {% endif %} {% if 'Right facing' in df['tag'].values or
+            {% endif %} {% if 'Right facing' in df_images['orientation'].values or
             'ksp_03_headline_medium' in df['tag'].values or
             'ksp_03_suppt_01_long' in df['tag'].values %}
             <tr>
               <td>
-                {% if 'Right facing' in df['tag'].values %}
+                {% if 'Right facing' in df_images['orientation'].values %}
                 <img
-                  src="{{ df[df['tag'] == 'Right facing']['value'].iloc[0] | default('') | escape }}"
+                  src="{{ df_images[df_images['orientation'] == 'Right facing']['imageUrlHttps'].iloc[0] | default('') | escape }}"
                   alt="Product Image"
                 />
                 {% endif %}
