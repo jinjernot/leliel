@@ -22,7 +22,7 @@ def build_template_laptop(api_response):
 
     # Initialize DataFrames
     df = pd.DataFrame(columns=['tag', 'name', 'value'])
-    df_images = pd.DataFrame(columns=['orientation', 'pixelWidth', 'imageUrlHttps'])
+    df_images = pd.DataFrame(columns=['orientation', 'pixelWidth','type','imageUrlHttps'])
 
     # Extract product data
     products = api_response.get('products', {})
@@ -42,7 +42,7 @@ def build_template_laptop(api_response):
             if 'details' in image:
                 for detail in image['details']:
                     if 'orientation' in detail and detail['orientation'] in image_tags and 'imageUrlHttps' in detail:
-                        df_images = df_images.append({'orientation': detail['orientation'], 'pixelWidth': detail['pixelWidth'], 'imageUrlHttps': detail['imageUrlHttps']}, ignore_index=True)
+                        df_images = df_images.append({'orientation': detail['orientation'], 'pixelWidth': detail['pixelWidth'], 'type': detail['type'], 'imageUrlHttps': detail['imageUrlHttps']}, ignore_index=True)
 
     # Save to Excel file with separate sheets
     with pd.ExcelWriter("excel.xlsx", engine='xlsxwriter') as writer:
