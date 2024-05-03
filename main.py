@@ -36,8 +36,8 @@ def get_product():
             "sku": [sku],
             "countryCode": country_code,
             "languageCode": language_code,
-            "layoutName": "PDPCOMBO",
-            "requestor": "HERMESQA-PRO",
+            "layoutName": "ALL-Specs",
+            "requestor": "APIQA-PRO",
             "reqContent": ["chunks", "images", "hierarchy", "plc"]
         }
 
@@ -69,8 +69,9 @@ def get_product():
 
             # Product Selection
             if pmoid == '321957': # Laptop
-                df = build_template_laptop(api_response)
-                rendered_template = render_template('laptop.html', df=df)
+                df,df_images = build_template_laptop(api_response)
+                
+                rendered_template = render_template('laptop.html', df=df, df_images=df_images)
 
             elif product_hierarchy.get('marketingCategory', {}).get('pmoid') == '238444': # Ink_Printer
                 df = build_template_ink(api_response)
@@ -79,7 +80,7 @@ def get_product():
             elif product_hierarchy.get('productType', {}).get('pmoid') == '382087': # Monitor
                 df = build_template_monitor(api_response)
                 rendered_template = render_template('monitor.html', df=df)
-                
+
             else:
                 return render_template('error.html', error_message='The product is not supported.'), 400
 

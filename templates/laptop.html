@@ -66,19 +66,19 @@
         <tr>
           <td>
             <div class="slideshow-container">
-              {% set num_images = 0 %} {% for tag, image_alt in [('Center
+              {% set num_images = 0 %} {% for orientation, image_alt in [('Center
               facing', 'Center Facing'), ('Left facing', 'Left Facing'), ('Right
               facing', 'Right facing'), ('Left rear facing', 'Left rear
               facing'), ('Rear facing', 'Rear facing'), ('Left rear facing',
               'Left rear facing'), ('Top view closed', 'Top view closed'),
               ('Detail view', 'Detail view'), ('Left profile closed', 'Left
               profile closed'), ('Right profile closed', 'Right profile
-              closed'), ('Right rear facing', 'Right rear facing')] %} {% if tag
-              in df['tag'].values %} {% set image_row = df[df['tag'] ==
-              tag].iloc[0] %}
+              closed'), ('Right rear facing', 'Right rear facing')] %} {% if orientation
+              in df_images['orientation'].values %} {% set image_row = df_images[df_images['orientation'] ==
+              orientation].iloc[0] %}
               <div class="mySlides fade">
                 <img
-                  src="{{ image_row['value'] | default('') | safe }}"
+                  src="{{ image_row['imageUrlHttps'] | default('') | safe }}"
                   alt="{{ image_alt }}"
                 />
               </div>

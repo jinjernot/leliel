@@ -2,63 +2,51 @@ import pandas as pd
 import json
 
 def build_template_laptop(api_response):
-
     # Ensure api_response is a dictionary
     if not isinstance(api_response, dict):
         try:
-            api_response = api_response.json() 
+            api_response = api_response.json()
         except AttributeError:
             print("Error: Unable to convert the response to a dictionary.")
             return {}
 
-    # Load the tags from a JSON file
-    #with open("/opt/ais/app/python/api/app/data/tags_laptop.json", "r") as f:
+    # Load tag data from JSON file
     with open("app/data/tags_laptop.json", "r") as f:
         tags_data = json.load(f)
 
-    # ATF Content
+    # Extract tags
     atf_tags = tags_data["atf_tags"]
-
-    # BTF Content
     btf_tags = tags_data["btf_tags"]
-
-    # Combine ATF and BTF tags
     all_tags = atf_tags + btf_tags
-
-    # Images
     image_tags = tags_data["image_tags"]
 
-    # Create an empty DataFrame to store the details
+    # Initialize DataFrames
     df = pd.DataFrame(columns=['tag', 'name', 'value'])
+    df_images = pd.DataFrame(columns=['orientation', 'pixelWidth', 'imageUrlHttps'])
 
-    # Access the "products" dictionary in the API api_response
+    # Extract product data
     products = api_response.get('products', {})
-
-    # Iterate through the 'sku' values in the 'request' dictionary
     for sku in api_response['request']['sku']:
-        # Access the 'chunks' list for each 'sku'
         chunks = products.get(sku, {}).get('chunks', [])
         images = products.get(sku, {}).get('images', [])
-    # Iterate through the "sku" values in the "request" d
-        # Iterate through the chunks in the API api_response
+
+        # Process chunks
         for chunk in chunks:
-            # Check if 'details' key is present in the chunk
             if 'details' in chunk:
-                # Iterate through the details in the chunk
                 for detail in chunk['details']:
                     if 'tag' in detail and detail['tag'] in all_tags and 'value' in detail:
                         df = df.append({'tag': detail['tag'], 'name': detail['name'], 'value': detail['value']}, ignore_index=True)
 
-        # Get the images
+        # Process images
         for image in images:
-            # Check if 'details' key is present in the chunk
             if 'details' in image:
-                # Iterate through the details in the chunk
                 for detail in image['details']:
                     if 'orientation' in detail and detail['orientation'] in image_tags and 'imageUrlHttps' in detail:
-                        df = df.append({'tag': detail['orientation'], 'name': 'image_url', 'value': detail['imageUrlHttps']}, ignore_index=True)
+                        df_images = df_images.append({'orientation': detail['orientation'], 'pixelWidth': detail['pixelWidth'], 'imageUrlHttps': detail['imageUrlHttps']}, ignore_index=True)
 
-    # Save to an excel file
-    #df.to_excel("/opt/ais/app/python/api/excel.xlsx", index=False, engine='xlsxwriter')
+    # Save to Excel file with separate sheets
+    with pd.ExcelWriter("excel.xlsx", engine='xlsxwriter') as writer:
+        df.to_excel(writer, index=False, sheet_name='chunks')
+        df_images.to_excel(writer, index=False, sheet_name='images')
 
-    return df
+    return df, df_images
