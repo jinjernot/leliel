@@ -203,22 +203,26 @@ sup {
   width: 25%; 
 }
 
-#MM {
-  margin: 0 auto; 
-}
-
 #MM table {
   border-collapse: collapse;
-  width: 80%;
   margin-left: auto;
   margin-right: auto;
   table-layout: fixed; 
+  background-color: lightgray;
 }
 
 #MM td {
   border: 1px solid #ddd;
   padding: 20px;
-  width: 25%; 
+}
+
+#MM td.MM-image {
+  width: 30%;
+  background-color: darkgray;
+}
+
+#MM td.MM-text {
+  width: 70%;
 }
 
 #MM img {
@@ -228,11 +232,12 @@ sup {
   margin: 0 auto; 
 }
 
-/*sup {
-    vertical-align: super;
-    font-size: smaller;
-    color:#0096D6;
-}*/
+
+#features table {
+  width: 80%;
+  margin: 0 auto; 
+  background-color: lightgray;
+}
 
 .blue-form-container {
     margin: 20px; 
