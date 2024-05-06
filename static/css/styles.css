@@ -217,12 +217,12 @@ sup {
 }
 
 #MM td.MM-image {
-  width: 30%;
+  width: 50%;
   background-color: darkgray;
 }
 
 #MM td.MM-text {
-  width: 70%;
+  width: 50%;
 }
 
 #MM img {

@@ -11,7 +11,8 @@ def build_template_laptop(api_response):
             return {}
 
     # Load tag data from JSON file
-    with open("app/data/tags_laptop.json", "r") as f:
+    #with open("app/data/tags_laptop.json", "r") as f:
+    with open("/opt/ais/app/python/api/app/data/tags_laptop.json", "r") as f:
         tags_data = json.load(f)
 
     # Extract tags
@@ -45,8 +46,8 @@ def build_template_laptop(api_response):
                         df_images = df_images.append({'orientation': detail['orientation'], 'pixelWidth': detail['pixelWidth'], 'type': detail['type'], 'imageUrlHttps': detail['imageUrlHttps']}, ignore_index=True)
 
     # Save to Excel file with separate sheets
-    with pd.ExcelWriter("excel.xlsx", engine='xlsxwriter') as writer:
-        df.to_excel(writer, index=False, sheet_name='chunks')
-        df_images.to_excel(writer, index=False, sheet_name='images')
+    #with pd.ExcelWriter("excel.xlsx", engine='xlsxwriter') as writer:
+    #    df.to_excel(writer, index=False, sheet_name='chunks')
+    #    df_images.to_excel(writer, index=False, sheet_name='images')
 
     return df, df_images

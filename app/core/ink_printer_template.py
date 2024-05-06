@@ -13,8 +13,8 @@ def build_template_ink(api_response):
             return {}
 
     # Load the tags from a JSON file
-    #with open("/opt/ais/app/python/api/app/data/tags_ink_printer.json", "r") as f:
-    with open("app/data/tags_ink_printer.json", "r") as f:
+    with open("/opt/ais/app/python/api/app/data/tags_ink_printer.json", "r") as f:
+    #with open("app/data/tags_ink_printer.json", "r") as f:
         tags_data = json.load(f)
 
     # ATF Content

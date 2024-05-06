@@ -55,10 +55,10 @@ def get_product():
             print("Request successful!")
 
             # Save the API response JSON to a file
-            response_json_file_path = os.path.join(app.static_folder, 'api_response.json')
-            with open(response_json_file_path, 'w') as json_file:
-                json.dump(api_response.json(), json_file)
-            print(f"API response JSON saved to {response_json_file_path}")
+            #response_json_file_path = os.path.join(app.static_folder, 'api_response.json')
+            #with open(response_json_file_path, 'w') as json_file:
+            #    json.dump(api_response.json(), json_file)
+            #print(f"API response JSON saved to {response_json_file_path}")
 
             # Validate JSON response
             response_json = api_response.json()
@@ -82,7 +82,7 @@ def get_product():
                 rendered_template = render_template('monitor.html', df=df)
 
             else:
-                return render_template('error.html', error_message='The product is not supported.'), 400
+                return render_template('error.html', error_message='The product is not supported. (yet)'), 400
 
             return rendered_template
         else:
@@ -102,7 +102,7 @@ def get_product():
                 error_message = 'Non publishable Product'
                 return render_template('error.html', error_message=error_message), 400
             
-        return render_template('error.html', error_message='The product is not supported.'), 400
+        return render_template('error.html', error_message='The product is not supported. (yet)'), 400
 
     except Exception as e:
         error_message = f'An error occurred: {e}'
