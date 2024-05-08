@@ -1,12 +1,20 @@
 function handleMouseover(element, replacementText) {
-    // Save the original text
-    var originalText = element.textContent.trim();
+  // Create a new element for the pop-up
+  var popup = document.createElement('div');
+  popup.textContent = replacementText;
+  popup.style.position = 'absolute';
+  popup.style.background = '#fff'; 
+  popup.style.border = '1px solid #ccc'; 
+  popup.style.padding = '5px'; 
+  popup.style.zIndex = '1000'; 
   
-    // Change the text content to the replacement text
-    element.textContent = replacementText;
-  
-    // Set up mouseout event listener to revert to original text
-    element.onmouseout = function() {
-      element.textContent = originalText;
-    };
-  }
+  var rect = element.getBoundingClientRect();
+  popup.style.top = (rect.top + window.pageYOffset) + 'px';
+  popup.style.left = (rect.left + window.pageXOffset) + 'px';
+
+  document.body.appendChild(popup);
+
+  element.onmouseout = function() {
+    document.body.removeChild(popup);
+  };
+}
