@@ -22,6 +22,10 @@
       src="{{ url_for('static', filename='js/superscript.js') }}"
       defer
     ></script>
+    <script
+      src="{{ url_for('static', filename='js/mouseover.js') }}"
+      defer
+    ></script>
     <link
       rel="stylesheet"
       type="text/css"
@@ -91,15 +95,21 @@
             <!--product name, should be prodlongnamespecs -->
             <b>
               <h1>
-                {{ df[df['tag'] == 'prodname']['value'].iloc[0] | default('') |
-                safe }}
+                <span id="prodname" onmouseover="handleMouseover(this, 'prodname')">
+                  {% if 'prodname' in df['tag'].values %} 
+                    {{ df[df['tag'] == 'prodname']['value'].iloc[0] | default('') | safe }} 
+                  {% endif %}
+                </span>
               </h1>
             </b>
 
             <!--proddes_overview_extended-->
-            {% if 'proddes_overview_extended' in df['tag'].values %} {{
-            df[df['tag'] == 'proddes_overview_extended']['value'].iloc[0] |
-            default('') | safe }} {% endif %}
+            <span id="proddes_overview_extended" onmouseover="handleMouseover(this, 'proddes_overview_extended')">
+              {% if 'proddes_overview_extended' in df['tag'].values %} 
+                {{ df[df['tag'] == 'proddes_overview_extended']['value'].iloc[0] | default('') | safe }} 
+              {% endif %}
+            </span>
+
             <br /><br />
             <div id="ksp">
               {% if 'ksp_01_suppt_01_long' in df['tag'].values %} {% set content
