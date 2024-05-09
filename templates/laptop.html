@@ -116,7 +116,7 @@
               = df[df['tag'] == 'ksp_01_suppt_01_long']['value'].iloc[0] |
               default('') %} {% if content %}
               <ul>
-                <li>
+                <li id="ksp_01_suppt_01_long" onmouseover="handleMouseover(this, 'ksp_01_suppt_01_long')">
                   <!-- ksp_01_suppt_01_long -->
                   {{ content | safe }}
                 </li>
@@ -126,7 +126,7 @@
               'ksp_02_suppt_01_long']['value'].iloc[0] | default('') %} {% if
               content %}
               <ul>
-                <li>
+                <li id="ksp_02_suppt_01_long" onmouseover="handleMouseover(this, 'ksp_02_suppt_01_long')">
                   <!-- ksp_02_suppt_01_long -->
                   {{ content | safe }}
                 </li>
@@ -136,7 +136,7 @@
               'ksp_03_suppt_01_long']['value'].iloc[0] | default('') %} {% if
               content %}
               <ul>
-                <li>
+                <li id="ksp_03_suppt_01_long" onmouseover="handleMouseover(this, 'ksp_03_suppt_01_long')">
                   <!-- ksp_03_suppt_01_long -->
                   {{ content | safe }}
                 </li>
@@ -146,7 +146,7 @@
               'ksp_04_suppt_01_long']['value'].iloc[0] | default('') %} {% if
               content %}
               <ul>
-                <li>
+                <li id="ksp_04_suppt_01_long" onmouseover="handleMouseover(this, 'ksp_04_suppt_01_long')">
                   <!-- ksp_04_suppt_01_long -->
                   {{ content | safe }}
                 </li>
@@ -156,7 +156,7 @@
               'ksp_05_suppt_01_long']['value'].iloc[0] | default('') %} {% if
               content %}
               <ul>
-                <li>
+                <li id="ksp_05_suppt_01_long" onmouseover="handleMouseover(this, 'ksp_05_suppt_01_long')">
                   <!-- ksp_05_suppt_01_long -->
                   {{ content | safe }}
                 </li>
@@ -169,7 +169,7 @@
               'osinstalledftntnbr']['value'].iloc[0] | default('') %} {% endif
               %} {% if content_osinstalled or content_osinstalledftntnbr %}
               <ul>
-                <li>
+                <li id="osinstalled" onmouseover="handleMouseover(this, 'osinstalled, osinstalledftntnbr')">
                   <!-- osinstalled -->
                   {{ content_osinstalled | safe }} {% if content_osinstalled %}
                   {{ content_osinstalled | safe }} {% endif %}
@@ -183,7 +183,7 @@
               'processornameftntnbr']['value'].iloc[0] | default('') %} {% endif
               %} {% if content_processorname or content_processornameftntnbr %}
               <ul>
-                <li>
+                <li id="processorname" onmouseover="handleMouseover(this, 'processorname, processornameftntnbr')">
                   <!-- processorname -->
                   {{ content_processorname | safe }} {% if
                   content_processornameftntnbr %} {{
@@ -198,7 +198,7 @@
               'memstdes_01ftntnbr']['value'].iloc[0] | default('') %} {% endif
               %} {% if content_memstdes_01 or content_memstdes_01ftntnbr %}
               <ul>
-                <li>
+                <li id="memstdes_01" onmouseover="handleMouseover(this, 'memstdes_01, memstdes_01ftntnbr')">
                   <!-- memstdes_01 -->
                   {{ content_memstdes_01 | safe }} {% if content_hd_01desftntnbr
                   %} {{ content_hd_01desftntnbr | safe }} {% endif %}
@@ -211,7 +211,7 @@
               == 'hd_01desftntnbr']['value'].iloc[0] | default('') %} {% endif
               %} {% if content_hd_01des %}
               <ul>
-                <li>
+                <li id="hd_01des" onmouseover="handleMouseover(this, 'hd_01des, hd_01desftntnbr')">
                   <!-- hd_01des -->
                   {{ content_hd_01des | safe }} {% if content_hd_01desftntnbr %}
                   {{ content_hd_01desftntnbr | safe }} {% endif %}
@@ -224,7 +224,7 @@
               == 'hd_02desftntnbr']['value'].iloc[0] | default('') %} {% endif
               %} {% if content_hd_02des %}
               <ul>
-                <li>
+                <li id="hd_02des" onmouseover="handleMouseover(this, 'hd_02des, hd_02desftntnbr')">
                   <!-- hd_02des -->
                   {{ content_hd_02des | safe }} {% if content_hd_02desftntnbr %}
                   {{ content_hd_02desftntnbr | safe }} {% endif %}
@@ -237,17 +237,17 @@
               == 'hd_03desftntnbr']['value'].iloc[0] | default('') %} {% endif
               %} {% if content_hd_03des %}
               <ul>
-                <li>
-                  <!-- hd_01des -->
-                  {{ content_hd_01des | safe }} {% if content_hd_01desftntnbr %}
-                  {{ content_hd_01desftntnbr | safe }} {% endif %}
+                <li id="hd_03des" onmouseover="handleMouseover(this, 'hd_03des, hd_03desftntnbr')">
+                  <!-- hd_03des -->
+                  {{ content_hd_03des | safe }} {% if content_hd_03desftntnbr %}
+                  {{ content_hd_03desftntnbr | safe }} {% endif %}
                 </li>
               </ul>
               {% endif %} {% if 'displaymet' in df['tag'].values %} {% set
               content = df[df['tag'] == 'displaymet']['value'].iloc[0] |
               default('') %} {% if content %}
               <ul>
-                <li>
+                <li id="displaymet" onmouseover="handleMouseover(this, 'displaymet')">
                   <!-- displaymet -->
                   {{ content | safe }}
                 </li>
@@ -260,7 +260,7 @@
               df[df['tag'] == 'graphicseg_01card_01']['value'].iloc[0] |
               default('') %} {% endif %} {% if content_graphicseg_01header %}
               <ul>
-                <li>
+                <li id="graphicseg_01header" onmouseover="handleMouseover(this, 'graphicseg_01header, graphicseg_01card_01')">
                   <!-- graphicseg_01header -->
                   {{ content_graphicseg_01header | safe }} {% if
                   content_graphicseg_01card_01 %} {{
@@ -275,7 +275,7 @@
               'batterylifeftntnbr']['value'].iloc[0] | default('') %} {% endif
               %} {% if content_batterylife %}
               <ul>
-                <li>
+                <li id="batterylife" onmouseover="handleMouseover(this, 'batterylife, batterylifeftntnbr')">
                   <!-- batterylife -->
                   {{ content_batterylife | safe }} {% if
                   content_batterylifeftntnbr %} {{ content_batterylifeftntnbr |
@@ -293,31 +293,17 @@
               'batterylifeftntnbr']['value'].iloc[0] | default('') %} {% endif
               %} {% if content_batterylifedes %}
               <ul>
-                <li>
+                <li id="batterylifedes" onmouseover="handleMouseover(this, 'batterylifedes, batterylifedesftntnbr')">
                   <!-- batterylifedes -->
                   {{ content_batterylifedes | safe }}
-                </li>
-              </ul>
-              {% endif %} {% if content_batterylifedesftntnbr %}
-              <ul>
-                <li>
-                  <!-- batterylifedesftntnbr -->
-                  {{ content_batterylifedesftntnbr | safe }}
-                </li>
-              </ul>
-              {% endif %} {% if content_batterylifeftntnbr %}
-              <ul>
-                <li>
-                  <!-- batterylifeftntnbr -->
-                  {{ content_batterylifeftntnbr | safe }}
                 </li>
               </ul>
               {% endif %} {% if 'colour' in df['tag'].values %} {% set content =
               df[df['tag'] == 'colour']['value'].iloc[0] | default('') %} {% if
               content %}
               <ul>
-                <li>
-                  <!-- whatsinbox -->
+                <li id="colour" onmouseover="handleMouseover(this, 'colour')">
+                  <!-- colour -->
                   {{ content | safe }}
                 </li>
               </ul>
@@ -345,7 +331,7 @@
               </td>
               <td class="MM-text">
                 {% if 'ksp_01_headline_medium' in df['tag'].values %}
-                <h3>
+                <h3 id="ksp_01_headline_medium" onmouseover="handleMouseover(this, 'ksp_01_headline_medium')">
                   <strong
                     >{{ df[df['tag'] ==
                     'ksp_01_headline_medium']['value'].iloc[0] }}</strong
@@ -362,7 +348,7 @@
             <tr>
               <td class="MM-text">
                 {% if 'ksp_02_headline_medium' in df['tag'].values %}
-                <h3>
+                <h3 id="ksp_02_headline_medium" onmouseover="handleMouseover(this, 'ksp_02_headline_medium')">
                   <strong
                     >{{ df[df['tag'] ==
                     'ksp_02_headline_medium']['value'].iloc[0] }}</strong

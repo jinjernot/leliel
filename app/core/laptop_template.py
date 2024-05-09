@@ -11,8 +11,8 @@ def build_template_laptop(api_response):
             return {}
 
     # Load tag data from JSON file
-    #with open("app/data/tags_laptop.json", "r") as f:
-    with open("/opt/ais/app/python/api/app/data/tags_laptop.json", "r") as f:
+    with open("app/data/tags_laptop.json", "r") as f:
+    #with open("/opt/ais/app/python/api/app/data/tags_laptop.json", "r") as f:
         tags_data = json.load(f)
 
     # Extract tags
