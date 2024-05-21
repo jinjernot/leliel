@@ -239,6 +239,17 @@ sup {
   background-color: lightgray;
 }
 
+#icon {
+  border: 1px solid #ccc;
+}
+
+#ports_img {
+  padding: 0;
+  margin: 0;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
 .blue-form-container {
     margin: 20px; 
     background-color: #0096D6;
