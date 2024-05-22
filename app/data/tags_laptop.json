@@ -219,7 +219,9 @@
         "specialfeatftntnbr",
         "chassistype",
         "msgfootnote_01",
-        "msgfootnote_02"
+        "msgfootnote_02",
+        "flex_value_prop_1_headline",
+        "flex_value_prop_1_suppt"
     ],
     "image_tags": [
         "Center facing",

@@ -1348,6 +1348,36 @@
           </tr>
         </table>
 
+
+        <table>
+          <tr>
+
+            <td style="vertical-align: middle; padding-left: 10px">
+
+              <br />
+              {% if 'flex_value_prop_1_headline' in df['tag'].values %}
+                {% set content_flex_value_prop_1_headline = df[df['tag'] == 'flex_value_prop_1_headline']['value'].iloc[0] | default('') %}
+                <h1><b>{{ content_flex_value_prop_1_headline | safe }}</b></h1>
+              {% endif %}
+              <br />
+              {% if 'flex_value_prop_1_suppt' in df['tag'].values %}
+                {% set content_flex_value_prop_1_suppt = df[df['tag'] == 'flex_value_prop_1_suppt']['value'].iloc[0] | default('') %}
+                {{ content_flex_value_prop_1_suppt | safe }}
+              {% endif %}
+
+
+            </td>
+
+            {% if 'Left and Right facing' in df_images['orientation'].values %}
+            <td style="vertical-align: middle">
+              <img id="environ_img" src="{{ url_for('static', filename='images/sustainable_impact.jpg') }}" alt="" width="400" height="400">
+            </td>
+            {% endif %}
+          </tr>
+        </table>
+
+        <br />
+        <br />
       </div>
 
       <div>
@@ -1401,5 +1431,15 @@
         </table>
       </div>
     </div>
+
+    <div class="image-container">
+      <img
+        src="{{ url_for('static', filename='images/favicon.png') }}"
+        alt=""
+        width="50"
+        height="50"
+      />
+    </div>
+
   </body>
 </html>

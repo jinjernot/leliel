@@ -243,13 +243,14 @@ sup {
   border: 1px solid #ccc;
 }
 
-#ports_img {
+#ports_img, #environ_img {
   padding: 0;
   margin: 0;
   display: block;
   margin-left: auto;
   margin-right: auto;
 }
+
 .blue-form-container {
     margin: 20px; 
     background-color: #0096D6;
@@ -326,5 +327,6 @@ sup {
   display: flex;
   justify-content: center;
   padding-top: 5%;
+  padding-bottom: 5%;
 }
 
