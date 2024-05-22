@@ -1316,7 +1316,8 @@
           <tr>
             {% if 'Left and Right facing' in df_images['orientation'].values %}
             <td style="vertical-align: middle">
-              <img id="ports_img"
+              <img
+                id="ports_img"
                 src="{{ df_images[df_images['orientation'] == 'Left and Right facing']['imageUrlHttps'].iloc[0] | default('') | escape }}"
                 alt="Product Image"
               />
@@ -1326,51 +1327,60 @@
               <h1><b>Ports:</b></h1>
               <br />
               <ul>
-              {% if 'ioports' in df['tag'].values %}
-                {% set content_ioports = df[df['tag'] == 'ioports']['value'].iloc[0] | default('') %}
+                {% if 'ioports' in df['tag'].values %} {% set content_ioports =
+                df[df['tag'] == 'ioports']['value'].iloc[0] | default('') %}
                 <li>{{ content_ioports | safe }}</li>
-              {% endif %}
-
-                {% if 'ioports_02' in df['tag'].values %}
-                  <li>{{ df[df['tag'] == 'ioports_02']['value'].iloc[0] | default('') | safe }}</li>
-                {% endif %}
-                {% if 'ioports_03' in df['tag'].values %}
-                  <li>{{ df[df['tag'] == 'ioports_03']['value'].iloc[0] | default('') | safe }}</li>
-                {% endif %}
-                {% if 'ioports_04' in df['tag'].values %}
-                  <li>{{ df[df['tag'] == 'ioports_04']['value'].iloc[0] | default('') | safe }}</li>
-                {% endif %}
-                {% if 'ioports_05' in df['tag'].values %}
-                  <li>{{ df[df['tag'] == 'ioports_05']['value'].iloc[0] | default('') | safe }}</li>
+                {% endif %} {% if 'ioports_02' in df['tag'].values %}
+                <li>
+                  {{ df[df['tag'] == 'ioports_02']['value'].iloc[0] |
+                  default('') | safe }}
+                </li>
+                {% endif %} {% if 'ioports_03' in df['tag'].values %}
+                <li>
+                  {{ df[df['tag'] == 'ioports_03']['value'].iloc[0] |
+                  default('') | safe }}
+                </li>
+                {% endif %} {% if 'ioports_04' in df['tag'].values %}
+                <li>
+                  {{ df[df['tag'] == 'ioports_04']['value'].iloc[0] |
+                  default('') | safe }}
+                </li>
+                {% endif %} {% if 'ioports_05' in df['tag'].values %}
+                <li>
+                  {{ df[df['tag'] == 'ioports_05']['value'].iloc[0] |
+                  default('') | safe }}
+                </li>
                 {% endif %}
               </ul>
             </td>
           </tr>
         </table>
 
-
         <table>
           <tr>
-
             <td style="vertical-align: middle; padding-left: 10px">
-
               <br />
-              {% if 'flex_value_prop_1_headline' in df['tag'].values %}
-                {% set content_flex_value_prop_1_headline = df[df['tag'] == 'flex_value_prop_1_headline']['value'].iloc[0] | default('') %}
-                <h1><b>{{ content_flex_value_prop_1_headline | safe }}</b></h1>
+              {% if 'flex_value_prop_1_headline' in df['tag'].values %} {% set
+              content_flex_value_prop_1_headline = df[df['tag'] ==
+              'flex_value_prop_1_headline']['value'].iloc[0] | default('') %}
+              <h1><b>{{ content_flex_value_prop_1_headline | safe }}</b></h1>
               {% endif %}
               <br />
-              {% if 'flex_value_prop_1_suppt' in df['tag'].values %}
-                {% set content_flex_value_prop_1_suppt = df[df['tag'] == 'flex_value_prop_1_suppt']['value'].iloc[0] | default('') %}
-                {{ content_flex_value_prop_1_suppt | safe }}
-              {% endif %}
-
-
+              {% if 'flex_value_prop_1_suppt' in df['tag'].values %} {% set
+              content_flex_value_prop_1_suppt = df[df['tag'] ==
+              'flex_value_prop_1_suppt']['value'].iloc[0] | default('') %} {{
+              content_flex_value_prop_1_suppt | safe }} {% endif %}
             </td>
 
             {% if 'Left and Right facing' in df_images['orientation'].values %}
             <td style="vertical-align: middle">
-              <img id="environ_img" src="{{ url_for('static', filename='images/sustainable_impact.jpg') }}" alt="" width="400" height="400">
+              <img
+                id="environ_img"
+                src="{{ url_for('static', filename='images/sustainable_impact.jpg') }}"
+                alt=""
+                width="400"
+                height="400"
+              />
             </td>
             {% endif %}
           </tr>
@@ -1440,6 +1450,5 @@
         height="50"
       />
     </div>
-
   </body>
 </html>
