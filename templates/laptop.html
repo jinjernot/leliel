@@ -1464,8 +1464,11 @@
                 >
               </td>
               <td>
-                {{ df[df['tag'] == "osinstalled"]['value'].iloc[0] | default('')
-                | safe }} {% if df[df['tag'] == "osinstalledftntnbr"].shape[0] >
+                <span
+                  id="osinstalled"
+                  onmouseover="handleMouseover(this, 'osinstalled')"
+                >{{ df[df['tag'] == "osinstalled"]['value'].iloc[0] | default('')
+                | safe }}</span> {% if df[df['tag'] == "osinstalledftntnbr"].shape[0] >
                 0 %} {{ df[df['tag'] == "osinstalledftntnbr"]['value'].iloc[0] |
                 default('') | safe }} {% endif %}
               </td>
@@ -1582,20 +1585,9 @@
               </td>
               <td>
                 {{ df[df['tag'] == "hd01des"]['value'].iloc[0] | default('') |
-                safe }}
-              </td>
-            </tr>
-            {% endif %} {% if df[df['tag'] == "hdnote01"].shape[0] > 0 %}
-            <tr>
-              <td>
-                <b
-                  >{{ df[df['tag'] == "hdnote01"]['name'].iloc[0] | default('')
-                  | safe }}</b
-                >
-              </td>
-              <td>
-                {{ df[df['tag'] == "hdnote01"]['value'].iloc[0] | default('') |
-                safe }}
+                safe }} {% if df[df['tag'] == "hd01desftntnbr"].shape[0] > 0 %}
+                {{ df[df['tag'] == "hd01desftntnbr"]['value'].iloc[0] |
+                default('') | safe }} {% endif %}
               </td>
             </tr>
             {% endif %} {% if df[df['tag'] == "hd02des"].shape[0] > 0 %}
@@ -1608,20 +1600,9 @@
               </td>
               <td>
                 {{ df[df['tag'] == "hd02des"]['value'].iloc[0] | default('') |
-                safe }}
-              </td>
-            </tr>
-            {% endif %} {% if df[df['tag'] == "hdnote02"].shape[0] > 0 %}
-            <tr>
-              <td>
-                <b
-                  >{{ df[df['tag'] == "hdnote02"]['name'].iloc[0] | default('')
-                  | safe }}</b
-                >
-              </td>
-              <td>
-                {{ df[df['tag'] == "hdnote02"]['value'].iloc[0] | default('') |
-                safe }}
+                safe }} {% if df[df['tag'] == "hd02desftntnbr"].shape[0] > 0 %}
+                {{ df[df['tag'] == "hd02desftntnbr"]['value'].iloc[0] |
+                default('') | safe }} {% endif %}
               </td>
             </tr>
             {% endif %} {% if df[df['tag'] == "hd03des"].shape[0] > 0 %}
@@ -1634,71 +1615,6 @@
               </td>
               <td>
                 {{ df[df['tag'] == "hd03des"]['value'].iloc[0] | default('') |
-                safe }}
-              </td>
-            </tr>
-            {% endif %} {% if df[df['tag'] == "hdnote03"].shape[0] > 0 %}
-            <tr>
-              <td>
-                <b
-                  >{{ df[df['tag'] == "hdnote03"]['name'].iloc[0] | default('')
-                  | safe }}</b
-                >
-              </td>
-              <td>
-                {{ df[df['tag'] == "hdnote03"]['value'].iloc[0] | default('') |
-                safe }}
-              </td>
-            </tr>
-            {% endif %} {% if df[df['tag'] == "hd04des"].shape[0] > 0 %}
-            <tr>
-              <td>
-                <b
-                  >{{ df[df['tag'] == "hd04des"]['name'].iloc[0] | default('') |
-                  safe }}</b
-                >
-              </td>
-              <td>
-                {{ df[df['tag'] == "hd04des"]['value'].iloc[0] | default('') |
-                safe }}
-              </td>
-            </tr>
-            {% endif %} {% if df[df['tag'] == "hdnote04"].shape[0] > 0 %}
-            <tr>
-              <td>
-                <b
-                  >{{ df[df['tag'] == "hdnote04"]['name'].iloc[0] | default('')
-                  | safe }}</b
-                >
-              </td>
-              <td>
-                {{ df[df['tag'] == "hdnote04"]['value'].iloc[0] | default('') |
-                safe }}
-              </td>
-            </tr>
-            {% endif %} {% if df[df['tag'] == "hd05des"].shape[0] > 0 %}
-            <tr>
-              <td>
-                <b
-                  >{{ df[df['tag'] == "hd05des"]['name'].iloc[0] | default('') |
-                  safe }}</b
-                >
-              </td>
-              <td>
-                {{ df[df['tag'] == "hd05des"]['value'].iloc[0] | default('') |
-                safe }}
-              </td>
-            </tr>
-            {% endif %} {% if df[df['tag'] == "hdnote05"].shape[0] > 0 %}
-            <tr>
-              <td>
-                <b
-                  >{{ df[df['tag'] == "hdnote05"]['name'].iloc[0] | default('')
-                  | safe }}</b
-                >
-              </td>
-              <td>
-                {{ df[df['tag'] == "hdnote05"]['value'].iloc[0] | default('') |
                 safe }}
               </td>
             </tr>
@@ -1717,18 +1633,19 @@
                 default('') | safe }} {% endif %}
               </td>
             </tr>
-            {% endif %} {% if df[df['tag'] == "cloudservftntnbr"].shape[0] > 0
-            %}
+            {% endif %} {% if df[df['tag'] == "cdromdvd"].shape[0] > 0 %}
             <tr>
               <td>
                 <b
-                  >{{ df[df['tag'] == "cloudservftntnbr"]['name'].iloc[0] |
-                  default('') | safe }}</b
+                  >{{ df[df['tag'] == "cdromdvd"]['name'].iloc[0] | default('')
+                  | safe }}</b
                 >
               </td>
               <td>
-                {{ df[df['tag'] == "cloudservftntnbr"]['value'].iloc[0] |
-                default('') | safe }}
+                {{ df[df['tag'] == "cdromdvd"]['value'].iloc[0] | default('') |
+                safe }} {% if df[df['tag'] == "cdromdvdftntnbr"].shape[0] > 0 %}
+                {{ df[df['tag'] == "cdromdvdftntnbr"]['value'].iloc[0] |
+                default('') | safe }} {% endif %}
               </td>
             </tr>
             {% endif %} {% if df[df['tag'] == "graphicseg_01card_01"].shape[0] >
