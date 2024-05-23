@@ -1212,7 +1212,7 @@
         <br />
         <br />
 
-        <table style="text-align: center">
+        <table id="icon_table" style="text-align: center">
           <tr>
             <td style="vertical-align: middle">
               <img
@@ -1220,9 +1220,14 @@
               /><br />
               {% if 'displaymet' in df['tag'].values %} {% set
               content_displaymet = df[df['tag'] ==
-              'displaymet']['value'].iloc[0] | default('') %} {% endif %} {{
-              content_displaymet | safe }} {% if content_displaymet %}{% endif
-              %}
+              'displaymet']['value'].iloc[0] | default('') %} {% endif %}
+              <span
+                id="icon_displaymet"
+                onmouseover="handleMouseover(this, 'displaymet')"
+              >
+                {{ content_displaymet | safe }}</span
+              >
+              {% if content_displaymet %}{% endif %}
             </td>
             <td style="vertical-align: middle">
               <img
@@ -1230,9 +1235,13 @@
               /><br />
               {% if 'processorname' in df['tag'].values %} {% set
               content_processorname = df[df['tag'] ==
-              'processorname']['value'].iloc[0] | default('') %} {% endif %} {{
-              content_processorname | safe }} {% if content_processorname %}{%
-              endif %}
+              'processorname']['value'].iloc[0] | default('') %} {% endif %}
+              <span
+                id="icon_processorname"
+                onmouseover="handleMouseover(this, 'processorname')"
+                >{{ content_processorname | safe }}</span
+              >
+              {% if content_processorname %}{% endif %}
             </td>
             <td style="vertical-align: middle">
               <img
@@ -1240,9 +1249,12 @@
               /><br />
               {% if 'memstdes_01' in df['tag'].values %} {% set
               content_memstdes_01 = df[df['tag'] ==
-              'memstdes_01']['value'].iloc[0] | default('') %} {% endif %} {{
-              content_memstdes_01 | safe }} {% if content_memstdes_01 %}{% endif
-              %}
+              'memstdes_01']['value'].iloc[0] | default('') %} {% endif %}<span
+                id="icon_memstdes_01"
+                onmouseover="handleMouseover(this, 'memstdes_01')"
+              >
+                {{ content_memstdes_01 | safe }} </span
+              >{% if content_memstdes_01 %}{% endif %}
             </td>
           </tr>
           <tr>
@@ -1252,8 +1264,13 @@
               /><br />
               {% if 'hd_01des' in df['tag'].values %} {% set content_hd_01des =
               df[df['tag'] == 'hd_01des']['value'].iloc[0] | default('') %} {%
-              endif %} {{ content_hd_01des | safe }} {% if content_hd_01des %}{%
-              endif %}
+              endif %}<span
+                id="icon_hd_01des"
+                onmouseover="handleMouseover(this, 'hd_01des')"
+              >
+                {{ content_hd_01des | safe }}</span
+              >
+              {% if content_hd_01des %}{% endif %}
             </td>
             <td style="vertical-align: middle">
               <img
@@ -1262,8 +1279,13 @@
               {% if 'graphicseg_01card_01' in df['tag'].values %} {% set
               content_graphicseg_01card_01 = df[df['tag'] ==
               'graphicseg_01card_01']['value'].iloc[0] | default('') %} {% endif
-              %} {{ content_graphicseg_01card_01 | safe }} {% if
-              content_graphicseg_01card_01 %}{% endif %}
+              %}<span
+                id="icon_graphicseg_01card_01"
+                onmouseover="handleMouseover(this, 'graphicseg_01card_01')"
+              >
+                {{ content_graphicseg_01card_01 | safe }}</span
+              >
+              {% if content_graphicseg_01card_01 %}{% endif %}
             </td>
             <td style="vertical-align: middle">
               <img
@@ -1271,9 +1293,13 @@
               /><br />
               {% if 'wirelesstech' in df['tag'].values %} {% set
               content_wirelesstech = df[df['tag'] ==
-              'wirelesstech']['value'].iloc[0] | default('') %} {% endif %} {{
-              content_wirelesstech | safe }} {% if content_wirelesstech %}{%
-              endif %}
+              'wirelesstech']['value'].iloc[0] | default('') %} {% endif %}<span
+                id="icon_wirelesstech"
+                onmouseover="handleMouseover(this, 'graphicseg_01card_01')"
+              >
+                {{ content_wirelesstech | safe }}</span
+              >
+              {% if content_wirelesstech %}{% endif %}
             </td>
           </tr>
           <tr>
@@ -1283,8 +1309,11 @@
               /><br />
               {% if 'osinstalled' in df['tag'].values %} {% set
               content_osinstalled = df[df['tag'] ==
-              'osinstalled']['value'].iloc[0] | default('') %} {% endif %} {{
-              content_osinstalled | safe }} {% if content_osinstalled %}{% endif
+              'osinstalled']['value'].iloc[0] | default('') %} {% endif %} <span
+              id="icon_osinstalled"
+              onmouseover="handleMouseover(this, 'osinstalled')"
+            >{{
+              content_osinstalled | safe }}</span> {% if content_osinstalled %}{% endif
               %}
             </td>
             <td style="vertical-align: middle">
@@ -1293,8 +1322,11 @@
               /><br />
               {% if 'batterylife' in df['tag'].values %} {% set
               content_batterylife = df[df['tag'] ==
-              'batterylife']['value'].iloc[0] | default('') %} {% endif %} {{
-              content_batterylife | safe }} {% if content_batterylife %}{% endif
+              'batterylife']['value'].iloc[0] | default('') %} {% endif %} <span
+              id="icon_batterylife"
+              onmouseover="handleMouseover(this, 'batterylife')"
+            >{{
+              content_batterylife | safe }}</span> {% if content_batterylife %}{% endif
               %}
             </td>
             <td style="vertical-align: middle">
@@ -1303,7 +1335,10 @@
               /><br />
               {% if 'weightmet' in df['tag'].values %} {% set content_weightmet
               = df[df['tag'] == 'weightmet']['value'].iloc[0] | default('') %}
-              {% endif %} {{ content_weightmet | safe }} {% if content_weightmet
+              {% endif %} <span
+              id="icon_weightmet"
+              onmouseover="handleMouseover(this, 'weightmet')"
+            >{{ content_weightmet | safe }}</span> {% if content_weightmet
               %}{% endif %}
             </td>
           </tr>

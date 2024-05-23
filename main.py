@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request
 import requests
 import json
-import os
 import logging
 from app.core.ink_printer_template import build_template_ink
 from app.core.monitor_template import build_template_monitor
