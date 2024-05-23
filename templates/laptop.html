@@ -1309,12 +1309,13 @@
               /><br />
               {% if 'osinstalled' in df['tag'].values %} {% set
               content_osinstalled = df[df['tag'] ==
-              'osinstalled']['value'].iloc[0] | default('') %} {% endif %} <span
-              id="icon_osinstalled"
-              onmouseover="handleMouseover(this, 'osinstalled')"
-            >{{
-              content_osinstalled | safe }}</span> {% if content_osinstalled %}{% endif
-              %}
+              'osinstalled']['value'].iloc[0] | default('') %} {% endif %}
+              <span
+                id="icon_osinstalled"
+                onmouseover="handleMouseover(this, 'osinstalled')"
+                >{{ content_osinstalled | safe }}</span
+              >
+              {% if content_osinstalled %}{% endif %}
             </td>
             <td style="vertical-align: middle">
               <img
@@ -1322,12 +1323,13 @@
               /><br />
               {% if 'batterylife' in df['tag'].values %} {% set
               content_batterylife = df[df['tag'] ==
-              'batterylife']['value'].iloc[0] | default('') %} {% endif %} <span
-              id="icon_batterylife"
-              onmouseover="handleMouseover(this, 'batterylife')"
-            >{{
-              content_batterylife | safe }}</span> {% if content_batterylife %}{% endif
-              %}
+              'batterylife']['value'].iloc[0] | default('') %} {% endif %}
+              <span
+                id="icon_batterylife"
+                onmouseover="handleMouseover(this, 'batterylife')"
+                >{{ content_batterylife | safe }}</span
+              >
+              {% if content_batterylife %}{% endif %}
             </td>
             <td style="vertical-align: middle">
               <img
@@ -1335,11 +1337,13 @@
               /><br />
               {% if 'weightmet' in df['tag'].values %} {% set content_weightmet
               = df[df['tag'] == 'weightmet']['value'].iloc[0] | default('') %}
-              {% endif %} <span
-              id="icon_weightmet"
-              onmouseover="handleMouseover(this, 'weightmet')"
-            >{{ content_weightmet | safe }}</span> {% if content_weightmet
-              %}{% endif %}
+              {% endif %}
+              <span
+                id="icon_weightmet"
+                onmouseover="handleMouseover(this, 'weightmet')"
+                >{{ content_weightmet | safe }}</span
+              >
+              {% if content_weightmet %}{% endif %}
             </td>
           </tr>
         </table>
@@ -1364,7 +1368,13 @@
               <ul>
                 {% if 'ioports' in df['tag'].values %} {% set content_ioports =
                 df[df['tag'] == 'ioports']['value'].iloc[0] | default('') %}
-                <li>{{ content_ioports | safe }}</li>
+                <li>
+                  <span
+                    id="ioports"
+                    onmouseover="handleMouseover(this, 'ioports')"
+                    >{{ content_ioports | safe }}</span
+                  >
+                </li>
                 {% endif %} {% if 'ioports_02' in df['tag'].values %}
                 <li>
                   {{ df[df['tag'] == 'ioports_02']['value'].iloc[0] |
@@ -1398,13 +1408,26 @@
               {% if 'flex_value_prop_1_headline' in df['tag'].values %} {% set
               content_flex_value_prop_1_headline = df[df['tag'] ==
               'flex_value_prop_1_headline']['value'].iloc[0] | default('') %}
-              <h1><b>{{ content_flex_value_prop_1_headline | safe }}</b></h1>
+              <h1>
+                <b
+                  ><span
+                    id="flex_value_prop_1_headline"
+                    onmouseover="handleMouseover(this, 'flex_value_prop_1_headline')"
+                    >{{ content_flex_value_prop_1_headline | safe }}</span
+                  ></b
+                >
+              </h1>
               {% endif %}
               <br />
               {% if 'flex_value_prop_1_suppt' in df['tag'].values %} {% set
               content_flex_value_prop_1_suppt = df[df['tag'] ==
-              'flex_value_prop_1_suppt']['value'].iloc[0] | default('') %} {{
-              content_flex_value_prop_1_suppt | safe }} {% endif %}
+              'flex_value_prop_1_suppt']['value'].iloc[0] | default('') %}<span
+                id="flex_value_prop_1_suppt"
+                onmouseover="handleMouseover(this, 'flex_value_prop_1_suppt')"
+              >
+                {{ content_flex_value_prop_1_suppt | safe }}</span
+              >
+              {% endif %}
             </td>
 
             {% if 'Left and Right facing' in df_images['orientation'].values %}
@@ -1432,36 +1455,705 @@
 
         <table id="tech-specs" style="display: none">
           <tbody>
-            {% for value in [ "osinstalled", "processorfamily", "processorname",
-            "chipset", "specialfeat", "environspec", "memstdes01",
-            "memstdesnote", "memlayout", "hd01des", "hdnote01", "hd02des",
-            "hdnote02", "hd03des", "hdnote03", "hd04des", "hdnote04", "hd05des",
-            "hdnote05", "cloudserv", "cloudservftntnbr", "graphicseg_01card_01",
-            "ioports", "expanslots", "webcam", "audiofeat", "keyboard",
-            "keybrdftntnbr", "mousepntgdevice", "wirelesstech",
-            "wirelesstechnote", "sensors", "powersupplytype", "batterytype",
-            "batterytypenote", "energyeffcomp", "energyeffcompftntnbr",
-            "dimenmet", "dimenpackmet", "weightmet", "weightpackmet", "colour",
-            "prodfinish", "securitymgmt", "wrntyfeatures",
-            "wrntyfeaturesftntnbr", "swincluded", "softwareftntnbr",
-            "swpreinstalled", "swprodfinance", "productcolour", "memstosimp",
-            "display" ] %} {% if df[df['tag'] == value].shape[0] > 0 %}
+            {% if df[df['tag'] == "osinstalled"].shape[0] > 0 %}
             <tr>
               <td>
                 <b
-                  >{{ df[df['tag'] == value]['name'].iloc[0] | default('') |
+                  >{{ df[df['tag'] == "osinstalled"]['name'].iloc[0] |
+                  default('') | safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "osinstalled"]['value'].iloc[0] | default('')
+                | safe }} {% if df[df['tag'] == "osinstalledftntnbr"].shape[0] >
+                0 %} {{ df[df['tag'] == "osinstalledftntnbr"]['value'].iloc[0] |
+                default('') | safe }} {% endif %}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "processorfamily"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "processorfamily"]['name'].iloc[0] |
+                  default('') | safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "processorfamily"]['value'].iloc[0] |
+                default('') | safe }} {% if df[df['tag'] ==
+                "processorfamilyftntnbr"].shape[0] > 0 %} {{ df[df['tag'] ==
+                "processorfamilyftntnbr"]['value'].iloc[0] | default('') | safe
+                }} {% endif %}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "processorname"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "processorname"]['name'].iloc[0] |
+                  default('') | safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "processorname"]['value'].iloc[0] |
+                default('') | safe }} {% if df[df['tag'] ==
+                "processornameftntnbr"].shape[0] > 0 %} {{ df[df['tag'] ==
+                "processornameftntnbr"]['value'].iloc[0] | default('') | safe }}
+                {% endif %}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "chipset"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "chipset"]['name'].iloc[0] | default('') |
                   safe }}</b
                 >
               </td>
               <td>
-                {{ df[df['tag'] == value]['value'].iloc[0] | default('') | safe
-                }}
+                {{ df[df['tag'] == "chipset"]['value'].iloc[0] | default('') |
+                safe }} {% if df[df['tag'] == "chipsetftntnbr"].shape[0] > 0 %}
+                {{ df[df['tag'] == "chipsetftntnbr"]['value'].iloc[0] |
+                default('') | safe }} {% endif %}
               </td>
             </tr>
-            {% endif %} {% endfor %}
+
+            {% endif %} {% if df[df['tag'] == "memstdes01"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "memstdes01"]['name'].iloc[0] |
+                  default('') | safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "memstdes01"]['value'].iloc[0] | default('')
+                | safe }} {% if df[df['tag'] == "memstdes01ftntnbr"].shape[0] >
+                0 %} {{ df[df['tag'] == "memstdes01ftntnbr"]['value'].iloc[0] |
+                default('') | safe }} {% endif %}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "memstdesnote"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "memstdesnote"]['name'].iloc[0] |
+                  default('') | safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "memstdesnote"]['value'].iloc[0] |
+                default('') | safe }}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "memlayout"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "memlayout"]['name'].iloc[0] | default('')
+                  | safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "memlayout"]['value'].iloc[0] | default('') |
+                safe }}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "memslots"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "memslots"]['name'].iloc[0] | default('')
+                  | safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "memslots"]['value'].iloc[0] | default('') |
+                safe }}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "hd01des"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "hd01des"]['name'].iloc[0] | default('') |
+                  safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "hd01des"]['value'].iloc[0] | default('') |
+                safe }}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "hdnote01"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "hdnote01"]['name'].iloc[0] | default('')
+                  | safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "hdnote01"]['value'].iloc[0] | default('') |
+                safe }}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "hd02des"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "hd02des"]['name'].iloc[0] | default('') |
+                  safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "hd02des"]['value'].iloc[0] | default('') |
+                safe }}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "hdnote02"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "hdnote02"]['name'].iloc[0] | default('')
+                  | safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "hdnote02"]['value'].iloc[0] | default('') |
+                safe }}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "hd03des"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "hd03des"]['name'].iloc[0] | default('') |
+                  safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "hd03des"]['value'].iloc[0] | default('') |
+                safe }}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "hdnote03"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "hdnote03"]['name'].iloc[0] | default('')
+                  | safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "hdnote03"]['value'].iloc[0] | default('') |
+                safe }}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "hd04des"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "hd04des"]['name'].iloc[0] | default('') |
+                  safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "hd04des"]['value'].iloc[0] | default('') |
+                safe }}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "hdnote04"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "hdnote04"]['name'].iloc[0] | default('')
+                  | safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "hdnote04"]['value'].iloc[0] | default('') |
+                safe }}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "hd05des"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "hd05des"]['name'].iloc[0] | default('') |
+                  safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "hd05des"]['value'].iloc[0] | default('') |
+                safe }}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "hdnote05"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "hdnote05"]['name'].iloc[0] | default('')
+                  | safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "hdnote05"]['value'].iloc[0] | default('') |
+                safe }}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "cloudserv"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "cloudserv"]['name'].iloc[0] | default('')
+                  | safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "cloudserv"]['value'].iloc[0] | default('') |
+                safe }} {% if df[df['tag'] == "cloudservftntnbr"].shape[0] > 0
+                %} {{ df[df['tag'] == "cloudservftntnbr"]['value'].iloc[0] |
+                default('') | safe }} {% endif %}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "cloudservftntnbr"].shape[0] > 0
+            %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "cloudservftntnbr"]['name'].iloc[0] |
+                  default('') | safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "cloudservftntnbr"]['value'].iloc[0] |
+                default('') | safe }}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "graphicseg_01card_01"].shape[0] >
+            0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "graphicseg_01card_01"]['name'].iloc[0] |
+                  default('') | safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "graphicseg_01card_01"]['value'].iloc[0] |
+                default('') | safe }}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "ioports"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "ioports"]['name'].iloc[0] | default('') |
+                  safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "ioports"]['value'].iloc[0] | default('') |
+                safe }}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "expanslots"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "expanslots"]['name'].iloc[0] |
+                  default('') | safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "expanslots"]['value'].iloc[0] | default('')
+                | safe }}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "webcam"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "webcam"]['name'].iloc[0] | default('') |
+                  safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "webcam"]['value'].iloc[0] | default('') |
+                safe }}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "audiofeat"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "audiofeat"]['name'].iloc[0] | default('')
+                  | safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "audiofeat"]['value'].iloc[0] | default('') |
+                safe }}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "keyboard"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "keyboard"]['name'].iloc[0] | default('')
+                  | safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "keyboard"]['value'].iloc[0] | default('') |
+                safe }}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "keybrdftntnbr"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "keybrdftntnbr"]['name'].iloc[0] |
+                  default('') | safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "keybrdftntnbr"]['value'].iloc[0] |
+                default('') | safe }}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "mousepntgdevice"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "mousepntgdevice"]['name'].iloc[0] |
+                  default('') | safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "mousepntgdevice"]['value'].iloc[0] |
+                default('') | safe }}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "wirelesstech"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "wirelesstech"]['name'].iloc[0] |
+                  default('') | safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "wirelesstech"]['value'].iloc[0] |
+                default('') | safe }}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "wirelesstechnote"].shape[0] > 0
+            %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "wirelesstechnote"]['name'].iloc[0] |
+                  default('') | safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "wirelesstechnote"]['value'].iloc[0] |
+                default('') | safe }}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "sensors"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "sensors"]['name'].iloc[0] | default('') |
+                  safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "sensors"]['value'].iloc[0] | default('') |
+                safe }}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "powersupplytype"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "powersupplytype"]['name'].iloc[0] |
+                  default('') | safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "powersupplytype"]['value'].iloc[0] |
+                default('') | safe }}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "batterytype"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "batterytype"]['name'].iloc[0] |
+                  default('') | safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "batterytype"]['value'].iloc[0] | default('')
+                | safe }}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "batterytypenote"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "batterytypenote"]['name'].iloc[0] |
+                  default('') | safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "batterytypenote"]['value'].iloc[0] |
+                default('') | safe }}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "energyeffcomp"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "energyeffcomp"]['name'].iloc[0] |
+                  default('') | safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "energyeffcomp"]['value'].iloc[0] |
+                default('') | safe }}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "energyeffcompftntnbr"].shape[0] >
+            0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "energyeffcompftntnbr"]['name'].iloc[0] |
+                  default('') | safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "energyeffcompftntnbr"]['value'].iloc[0] |
+                default('') | safe }}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "dimenmet"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "dimenmet"]['name'].iloc[0] | default('')
+                  | safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "dimenmet"]['value'].iloc[0] | default('') |
+                safe }}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "dimenpackmet"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "dimenpackmet"]['name'].iloc[0] |
+                  default('') | safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "dimenpackmet"]['value'].iloc[0] |
+                default('') | safe }}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "weightmet"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "weightmet"]['name'].iloc[0] | default('')
+                  | safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "weightmet"]['value'].iloc[0] | default('') |
+                safe }}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "weightpackmet"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "weightpackmet"]['name'].iloc[0] |
+                  default('') | safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "weightpackmet"]['value'].iloc[0] |
+                default('') | safe }}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "colour"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "colour"]['name'].iloc[0] | default('') |
+                  safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "colour"]['value'].iloc[0] | default('') |
+                safe }}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "prodfinish"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "prodfinish"]['name'].iloc[0] |
+                  default('') | safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "prodfinish"]['value'].iloc[0] | default('')
+                | safe }}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "securitymgmt"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "securitymgmt"]['name'].iloc[0] |
+                  default('') | safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "securitymgmt"]['value'].iloc[0] |
+                default('') | safe }}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "wrntyfeatures"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "wrntyfeatures"]['name'].iloc[0] |
+                  default('') | safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "wrntyfeatures"]['value'].iloc[0] |
+                default('') | safe }}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "wrntyfeaturesftntnbr"].shape[0] >
+            0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "wrntyfeaturesftntnbr"]['name'].iloc[0] |
+                  default('') | safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "wrntyfeaturesftntnbr"]['value'].iloc[0] |
+                default('') | safe }}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "swincluded"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "swincluded"]['name'].iloc[0] |
+                  default('') | safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "swincluded"]['value'].iloc[0] | default('')
+                | safe }}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "softwareftntnbr"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "softwareftntnbr"]['name'].iloc[0] |
+                  default('') | safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "softwareftntnbr"]['value'].iloc[0] |
+                default('') | safe }}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "swpreinstalled"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "swpreinstalled"]['name'].iloc[0] |
+                  default('') | safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "swpreinstalled"]['value'].iloc[0] |
+                default('') | safe }}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "swprodfinance"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "swprodfinance"]['name'].iloc[0] |
+                  default('') | safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "swprodfinance"]['value'].iloc[0] |
+                default('') | safe }}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "productcolour"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "productcolour"]['name'].iloc[0] |
+                  default('') | safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "productcolour"]['value'].iloc[0] |
+                default('') | safe }}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "memstosimp"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "memstosimp"]['name'].iloc[0] |
+                  default('') | safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "memstosimp"]['value'].iloc[0] | default('')
+                | safe }}
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "display"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "display"]['name'].iloc[0] | default('') |
+                  safe }}</b
+                >
+              </td>
+              <td>
+                {{ df[df['tag'] == "display"]['value'].iloc[0] | default('') |
+                safe }}
+              </td>
+            </tr>
+            {% endif %}
           </tbody>
         </table>
-
         <br />
 
         <table id="footnotes">
