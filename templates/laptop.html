@@ -1467,9 +1467,11 @@
                 <span
                   id="osinstalled"
                   onmouseover="handleMouseover(this, 'osinstalled')"
-                >{{ df[df['tag'] == "osinstalled"]['value'].iloc[0] | default('')
-                | safe }}</span> {% if df[df['tag'] == "osinstalledftntnbr"].shape[0] >
-                0 %} {{ df[df['tag'] == "osinstalledftntnbr"]['value'].iloc[0] |
+                  >{{ df[df['tag'] == "osinstalled"]['value'].iloc[0] |
+                  default('') | safe }}</span
+                >
+                {% if df[df['tag'] == "osinstalledftntnbr"].shape[0] > 0 %} {{
+                df[df['tag'] == "osinstalledftntnbr"]['value'].iloc[0] |
                 default('') | safe }} {% endif %}
               </td>
             </tr>
@@ -1486,11 +1488,12 @@
                   id="processorfamily"
                   onmouseover="handleMouseover(this, 'processorfamily')"
                 >
-                {{ df[df['tag'] == "processorfamily"]['value'].iloc[0] |
-                default('') | safe }}</span> {% if df[df['tag'] ==
-                "processorfamilyftntnbr"].shape[0] > 0 %} {{ df[df['tag'] ==
-                "processorfamilyftntnbr"]['value'].iloc[0] | default('') | safe
-                }} {% endif %}
+                  {{ df[df['tag'] == "processorfamily"]['value'].iloc[0] |
+                  default('') | safe }}</span
+                >
+                {% if df[df['tag'] == "processorfamilyftntnbr"].shape[0] > 0 %}
+                {{ df[df['tag'] == "processorfamilyftntnbr"]['value'].iloc[0] |
+                default('') | safe }} {% endif %}
               </td>
             </tr>
             {% endif %} {% if df[df['tag'] == "processorname"].shape[0] > 0 %}
@@ -1503,14 +1506,14 @@
               </td>
               <td>
                 <span
-                id="processorfamily"
-                onmouseover="handleMouseover(this, 'processorname')"
-              >
-                {{ df[df['tag'] == "processorname"]['value'].iloc[0] |
-                default('') | safe }} </span>{% if df[df['tag'] ==
-                "processornameftntnbr"].shape[0] > 0 %} {{ df[df['tag'] ==
-                "processornameftntnbr"]['value'].iloc[0] | default('') | safe }}
-                {% endif %}
+                  id="processorfamily"
+                  onmouseover="handleMouseover(this, 'processorname')"
+                >
+                  {{ df[df['tag'] == "processorname"]['value'].iloc[0] |
+                  default('') | safe }} </span
+                >{% if df[df['tag'] == "processornameftntnbr"].shape[0] > 0 %}
+                {{ df[df['tag'] == "processornameftntnbr"]['value'].iloc[0] |
+                default('') | safe }} {% endif %}
               </td>
             </tr>
             {% endif %} {% if df[df['tag'] == "chipset"].shape[0] > 0 %}
@@ -1523,13 +1526,15 @@
               </td>
               <td>
                 <span
-                id="chipset"
-                onmouseover="handleMouseover(this, 'chipset')"
-              >
-                {{ df[df['tag'] == "chipset"]['value'].iloc[0] | default('') |
-                safe }}</span> {% if df[df['tag'] == "chipsetftntnbr"].shape[0] > 0 %}
-                {{ df[df['tag'] == "chipsetftntnbr"]['value'].iloc[0] |
-                default('') | safe }} {% endif %}
+                  id="chipset"
+                  onmouseover="handleMouseover(this, 'chipset')"
+                >
+                  {{ df[df['tag'] == "chipset"]['value'].iloc[0] | default('') |
+                  safe }}</span
+                >
+                {% if df[df['tag'] == "chipsetftntnbr"].shape[0] > 0 %} {{
+                df[df['tag'] == "chipsetftntnbr"]['value'].iloc[0] | default('')
+                | safe }} {% endif %}
               </td>
             </tr>
 
@@ -1543,12 +1548,13 @@
               </td>
               <td>
                 <span
-                id="memstdes01"
-                onmouseover="handleMouseover(this, 'memstdes01')"
-              >
-                {{ df[df['tag'] == "memstdes01"]['value'].iloc[0] | default('')
-                | safe }} </span>{% if df[df['tag'] == "memstdes01ftntnbr"].shape[0] >
-                0 %} {{ df[df['tag'] == "memstdes01ftntnbr"]['value'].iloc[0] |
+                  id="memstdes01"
+                  onmouseover="handleMouseover(this, 'memstdes01')"
+                >
+                  {{ df[df['tag'] == "memstdes01"]['value'].iloc[0] |
+                  default('') | safe }} </span
+                >{% if df[df['tag'] == "memstdes01ftntnbr"].shape[0] > 0 %} {{
+                df[df['tag'] == "memstdes01ftntnbr"]['value'].iloc[0] |
                 default('') | safe }} {% endif %}
               </td>
             </tr>
@@ -1562,12 +1568,12 @@
               </td>
               <td>
                 <span
-                id="memstdes01"
-                onmouseover="handleMouseover(this, 'memstdes01')"
-              >
-
-                {{ df[df['tag'] == "memstdesnote"]['value'].iloc[0] |
-                default('') | safe }}</span>
+                  id="memstdes01"
+                  onmouseover="handleMouseover(this, 'memstdes01')"
+                >
+                  {{ df[df['tag'] == "memstdesnote"]['value'].iloc[0] |
+                  default('') | safe }}</span
+                >
               </td>
             </tr>
             {% endif %} {% if df[df['tag'] == "memlayout"].shape[0] > 0 %}
@@ -1579,8 +1585,13 @@
                 >
               </td>
               <td>
-                {{ df[df['tag'] == "memlayout"]['value'].iloc[0] | default('') |
-                safe }}
+                <span
+                  id="memlayout"
+                  onmouseover="handleMouseover(this, 'memlayout')"
+                >
+                  {{ df[df['tag'] == "memlayout"]['value'].iloc[0] | default('')
+                  | safe }}</span
+                >
               </td>
             </tr>
             {% endif %} {% if df[df['tag'] == "memslots"].shape[0] > 0 %}
