@@ -2,7 +2,7 @@ import pandas as pd
 import json
 
 def build_template_laptop(api_response):
-    # Ensure api_response is a dictionary
+    # Check if api_response is a dictionary
     if not isinstance(api_response, dict):
         try:
             api_response = api_response.json()
@@ -11,8 +11,8 @@ def build_template_laptop(api_response):
             return {}
 
     # Load tag data from JSON file
-    with open("app/data/tags_laptop.json", "r") as f:
-    #with open("/opt/ais/app/python/api/app/data/tags_laptop.json", "r") as f:
+    #with open("/opt/ais/app/python/api/app/data/tags_laptop.json", "r") as f: # Server
+    with open("app/data/tags_laptop.json", "r") as f: # Local
         tags_data = json.load(f)
 
     # Extract tags
