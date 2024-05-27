@@ -1568,8 +1568,8 @@
               </td>
               <td>
                 <span
-                  id="memstdes01"
-                  onmouseover="handleMouseover(this, 'memstdes01')"
+                  id="memstdesnote"
+                  onmouseover="handleMouseover(this, 'memstdesnote')"
                 >
                   {{ df[df['tag'] == "memstdesnote"]['value'].iloc[0] |
                   default('') | safe }}</span
@@ -1603,8 +1603,13 @@
                 >
               </td>
               <td>
-                {{ df[df['tag'] == "memslots"]['value'].iloc[0] | default('') |
-                safe }}
+                <span
+                  id="memslots"
+                  onmouseover="handleMouseover(this, 'memslots')"
+                >
+                  {{ df[df['tag'] == "memslots"]['value'].iloc[0] | default('')
+                  | safe }}</span
+                >
               </td>
             </tr>
             {% endif %} {% if df[df['tag'] == "hd01des"].shape[0] > 0 %}
@@ -1616,10 +1621,15 @@
                 >
               </td>
               <td>
-                {{ df[df['tag'] == "hd01des"]['value'].iloc[0] | default('') |
-                safe }} {% if df[df['tag'] == "hd01desftntnbr"].shape[0] > 0 %}
-                {{ df[df['tag'] == "hd01desftntnbr"]['value'].iloc[0] |
-                default('') | safe }} {% endif %}
+                <span
+                  id="hd01des"
+                  onmouseover="handleMouseover(this, 'hd01des')"
+                >
+                  {{ df[df['tag'] == "hd01des"]['value'].iloc[0] | default('') |
+                  safe }} </span
+                >{% if df[df['tag'] == "hd01desftntnbr"].shape[0] > 0 %} {{
+                df[df['tag'] == "hd01desftntnbr"]['value'].iloc[0] | default('')
+                | safe }} {% endif %}
               </td>
             </tr>
             {% endif %} {% if df[df['tag'] == "hd02des"].shape[0] > 0 %}
@@ -1631,8 +1641,12 @@
                 >
               </td>
               <td>
+                <span
+                id="hd02des"
+                onmouseover="handleMouseover(this, 'hd02des')"
+              >
                 {{ df[df['tag'] == "hd02des"]['value'].iloc[0] | default('') |
-                safe }} {% if df[df['tag'] == "hd02desftntnbr"].shape[0] > 0 %}
+                safe }} </span>{% if df[df['tag'] == "hd02desftntnbr"].shape[0] > 0 %}
                 {{ df[df['tag'] == "hd02desftntnbr"]['value'].iloc[0] |
                 default('') | safe }} {% endif %}
               </td>
@@ -1646,9 +1660,15 @@
                 >
               </td>
               <td>
-                {{ df[df['tag'] == "hd03des"]['value'].iloc[0] | default('') |
-                safe }}
-              </td>
+                <span
+                id="hd03des"
+                onmouseover="handleMouseover(this, 'hd03des')"
+              >
+              {{ df[df['tag'] == "hd03des"]['value'].iloc[0] | default('') |
+              safe }} </span>{% if df[df['tag'] == "hd03desftntnbr"].shape[0] > 0 %}
+              {{ df[df['tag'] == "hd03desftntnbr"]['value'].iloc[0] |
+              default('') | safe }} {% endif %}
+            </td>
             </tr>
             {% endif %} {% if df[df['tag'] == "cloudserv"].shape[0] > 0 %}
             <tr>
@@ -1659,8 +1679,12 @@
                 >
               </td>
               <td>
+                <span
+                id="cloudserv"
+                onmouseover="handleMouseover(this, 'cloudserv')"
+              >
                 {{ df[df['tag'] == "cloudserv"]['value'].iloc[0] | default('') |
-                safe }} {% if df[df['tag'] == "cloudservftntnbr"].shape[0] > 0
+                safe }}</span> {% if df[df['tag'] == "cloudservftntnbr"].shape[0] > 0
                 %} {{ df[df['tag'] == "cloudservftntnbr"]['value'].iloc[0] |
                 default('') | safe }} {% endif %}
               </td>
@@ -1674,8 +1698,12 @@
                 >
               </td>
               <td>
+                <span
+                id="cdromdvd"
+                onmouseover="handleMouseover(this, 'cdromdvd')"
+              >
                 {{ df[df['tag'] == "cdromdvd"]['value'].iloc[0] | default('') |
-                safe }} {% if df[df['tag'] == "cdromdvdftntnbr"].shape[0] > 0 %}
+                safe }}</span> {% if df[df['tag'] == "cdromdvdftntnbr"].shape[0] > 0 %}
                 {{ df[df['tag'] == "cdromdvdftntnbr"]['value'].iloc[0] |
                 default('') | safe }} {% endif %}
               </td>
@@ -1690,8 +1718,12 @@
                 >
               </td>
               <td>
+                <span
+                id="graphicseg_01card_01"
+                onmouseover="handleMouseover(this, 'graphicseg_01card_01')"
+              >
                 {{ df[df['tag'] == "graphicseg_01card_01"]['value'].iloc[0] |
-                default('') | safe }}
+                default('') | safe }}</span>
               </td>
             </tr>
             {% endif %} {% if df[df['tag'] == "ioports"].shape[0] > 0 %}
@@ -1703,8 +1735,12 @@
                 >
               </td>
               <td>
+                <span
+                id="ioports"
+                onmouseover="handleMouseover(this, 'ioports')"
+              >
                 {{ df[df['tag'] == "ioports"]['value'].iloc[0] | default('') |
-                safe }}
+                safe }}</span>
               </td>
             </tr>
             {% endif %} {% if df[df['tag'] == "expanslots"].shape[0] > 0 %}
