@@ -1385,7 +1385,7 @@
             </td>
             {% endif %}
             <td style="vertical-align: middle; padding-left: 10px">
-              <h1><b>Ports:</b></h1>
+              <h3><b>Ports:</b></h3>
               <br />
               <ul>
                 {% if 'ioports' in df['tag'].values %} {% set content_ioports =
@@ -1430,7 +1430,7 @@
               {% if 'flex_value_prop_1_headline' in df['tag'].values %} {% set
               content_flex_value_prop_1_headline = df[df['tag'] ==
               'flex_value_prop_1_headline']['value'].iloc[0] | default('') %}
-              <h1>
+              <h3>
                 <b
                   ><span
                     id="flex_value_prop_1_headline"
@@ -1438,7 +1438,7 @@
                     >{{ content_flex_value_prop_1_headline | safe }}</span
                   ></b
                 >
-              </h1>
+              </h3>
               {% endif %}
               <br />
               {% if 'flex_value_prop_1_suppt' in df['tag'].values %} {% set
