@@ -59,6 +59,11 @@ def get_product():
         if api_response.status_code == 200:
             logging.info("Request successful!")
             response_json = api_response.json()
+            
+            #filename = "api_response.json"  # Set the filename for the JSON file
+            #with open(filename, 'w') as json_file:   
+            #    json.dump(response_json, json_file)
+            
             return process_response(response_json, sku)
         else:
             logging.error(f"Request failed with status code {api_response.status_code}")
