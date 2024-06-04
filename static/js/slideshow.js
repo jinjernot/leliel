@@ -1,5 +1,8 @@
 let slideIndex = 1;
 let slideInterval;
+let isDragging = false;
+let startX;
+let scrollLeft;
 
 document.addEventListener('DOMContentLoaded', (event) => {
   showSlides(slideIndex);
@@ -11,6 +14,34 @@ document.addEventListener('DOMContentLoaded', (event) => {
       let index = this.getAttribute('data-slide-index');
       currentSlide(parseInt(index));
     });
+  });
+
+  // Dragging functionality
+  const thumbnailContainer = document.querySelector('.thumbnail-container');
+
+  thumbnailContainer.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    thumbnailContainer.classList.add('active');
+    startX = e.pageX - thumbnailContainer.offsetLeft;
+    scrollLeft = thumbnailContainer.scrollLeft;
+  });
+
+  thumbnailContainer.addEventListener('mouseleave', () => {
+    isDragging = false;
+    thumbnailContainer.classList.remove('active');
+  });
+
+  thumbnailContainer.addEventListener('mouseup', () => {
+    isDragging = false;
+    thumbnailContainer.classList.remove('active');
+  });
+
+  thumbnailContainer.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const x = e.pageX - thumbnailContainer.offsetLeft;
+    const walk = (x - startX) * 2; // Scroll speed
+    thumbnailContainer.scrollLeft = scrollLeft - walk;
   });
 });
 

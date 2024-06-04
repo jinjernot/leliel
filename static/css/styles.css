@@ -304,8 +304,8 @@ sup {
 }
 
 .slideshow-container {
-  max-width: 1000px;
   position: relative;
+  max-width: 100%;
   margin: auto;
 }
 
@@ -348,7 +348,11 @@ sup {
 }
 
 .thumbnail-container {
-  text-align: center;
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden; 
+  white-space: nowrap;
+  cursor: grab; 
 }
 
 .thumbnail {
@@ -361,10 +365,12 @@ sup {
   width: 100px;
   cursor: pointer;
   opacity: 0.6;
+  transition: transform 0.2s;
 }
 
 .thumbnail img:hover {
   opacity: 1;
+  transform: scale(1.1);
 }
 
 .active,
