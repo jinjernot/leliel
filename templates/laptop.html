@@ -70,49 +70,48 @@
         <tr>
           <td>
             <div class="slideshow-container">
-              {% set num_images = 0 %}
-              {% set orientations = ['Center facing', 'Left facing', 'Right facing', 'Rear facing', 'Left rear facing', 'Top view closed', 'Detail view', 'Left profile closed', 'Right profile closed', 'Right rear facing'] %}
-              {% for orientation in orientations %}
-                {% set found = false %}
-                {% for index, row in df_images.iterrows() %}
-                  {% if row['pixelWidth'] == '573' and row['orientation'] == orientation and row['type'] == 'png' %}
-                    {% set found = true %}
-                    <div class="mySlides fade">
-                      <center>
-                        <!-- Add an ID to the main image -->
-                        <img src="{{ row['imageUrlHttps'] | default('') | safe }}" id="main-image" onclick="openModal(`{{ row['imageUrlHttps'] | default('') | safe }}`)" />
-                      </center>
-                    </div>
-                    {% set num_images = num_images + 1 %}
-                  {% endif %}
-                {% endfor %}
-                {% if found %}
-                  {% set num_images = num_images + 1 %}
-                {% endif %}
-              {% endfor %}
+              {% set num_images = 0 %} {% set orientations = ['Center facing',
+              'Left facing', 'Right facing', 'Rear facing', 'Left rear facing',
+              'Top view closed', 'Detail view', 'Left profile closed', 'Right
+              profile closed', 'Right rear facing'] %} {% for orientation in
+              orientations %} {% set found = false %} {% for index, row in
+              df_images.iterrows() %} {% if row['pixelWidth'] == '573' and
+              row['orientation'] == orientation and row['type'] == 'png' %} {%
+              set found = true %}
+              <div class="mySlides fade">
+                <center>
+                  <img
+                    src="{{ row['imageUrlHttps'] | default('') | safe }}"
+                    id="main-image"
+                    onclick="openModal(`{{ row['imageUrlHttps'] | default('') | safe }}`)"
+                  />
+                </center>
+              </div>
+              {% set num_images = num_images + 1 %} {% endif %} {% endfor %} {%
+              if found %} {% set num_images = num_images + 1 %} {% endif %} {%
+              endfor %}
               <a class="prev" onclick="plusSlides(-1)">❮</a>
               <a class="next" onclick="plusSlides(1)">❯</a>
             </div>
-            
+
             <div class="thumbnail-container">
-              {% for orientation in orientations %}
-                {% set found = false %}
-                {% for index, row in df_images.iterrows() %}
-                  {% if row['pixelWidth'] == '99' and row['orientation'] == orientation and row['type'] == 'png' %}
-                    {% set found = true %}
-                    <div class="thumbnail">
-                      <img src="{{ row['imageUrlHttps'] | default('') | safe }}" data-slide-index="{{ loop.index0 + 1 }}" />
-                    </div>
-                  {% endif %}
-                {% endfor %}
-                {% if found %}
-                  {% set num_images = num_images + 1 %}
-                {% endif %}
-              {% endfor %}
+              {% for orientation in orientations %} {% set found = false %} {%
+              for index, row in df_images.iterrows() %} {% if row['pixelWidth']
+              == '99' and row['orientation'] == orientation and row['type'] ==
+              'png' %} {% set found = true %}
+              <div class="thumbnail">
+                <img
+                  src="{{ row['imageUrlHttps'] | default('') | safe }}"
+                  data-slide-index="{{ loop.index0 + 1 }}"
+                />
+              </div>
+              {% endif %} {% endfor %} {% if found %} {% set num_images =
+              num_images + 1 %} {% endif %} {% endfor %}
             </div>
-            
+
             <br />
-          </td>          <td>
+          </td>
+          <td>
             <!--product name, should be prodlongnamespecs -->
             <b>
               <h1>
@@ -1460,7 +1459,6 @@
                 height="400"
               />
             </td>
-            
           </tr>
         </table>
 
@@ -1662,13 +1660,14 @@
               </td>
               <td>
                 <span
-                id="hd02des"
-                onmouseover="handleMouseover(this, 'hd02des')"
-              >
-                {{ df[df['tag'] == "hd02des"]['value'].iloc[0] | default('') |
-                safe }} </span>{% if df[df['tag'] == "hd02desftntnbr"].shape[0] > 0 %}
-                {{ df[df['tag'] == "hd02desftntnbr"]['value'].iloc[0] |
-                default('') | safe }} {% endif %}
+                  id="hd02des"
+                  onmouseover="handleMouseover(this, 'hd02des')"
+                >
+                  {{ df[df['tag'] == "hd02des"]['value'].iloc[0] | default('') |
+                  safe }} </span
+                >{% if df[df['tag'] == "hd02desftntnbr"].shape[0] > 0 %} {{
+                df[df['tag'] == "hd02desftntnbr"]['value'].iloc[0] | default('')
+                | safe }} {% endif %}
               </td>
             </tr>
             {% endif %} {% if df[df['tag'] == "hd03des"].shape[0] > 0 %}
@@ -1681,14 +1680,15 @@
               </td>
               <td>
                 <span
-                id="hd03des"
-                onmouseover="handleMouseover(this, 'hd03des')"
-              >
-              {{ df[df['tag'] == "hd03des"]['value'].iloc[0] | default('') |
-              safe }} </span>{% if df[df['tag'] == "hd03desftntnbr"].shape[0] > 0 %}
-              {{ df[df['tag'] == "hd03desftntnbr"]['value'].iloc[0] |
-              default('') | safe }} {% endif %}
-            </td>
+                  id="hd03des"
+                  onmouseover="handleMouseover(this, 'hd03des')"
+                >
+                  {{ df[df['tag'] == "hd03des"]['value'].iloc[0] | default('') |
+                  safe }} </span
+                >{% if df[df['tag'] == "hd03desftntnbr"].shape[0] > 0 %} {{
+                df[df['tag'] == "hd03desftntnbr"]['value'].iloc[0] | default('')
+                | safe }} {% endif %}
+              </td>
             </tr>
             {% endif %} {% if df[df['tag'] == "cloudserv"].shape[0] > 0 %}
             <tr>
@@ -1700,12 +1700,14 @@
               </td>
               <td>
                 <span
-                id="cloudserv"
-                onmouseover="handleMouseover(this, 'cloudserv')"
-              >
-                {{ df[df['tag'] == "cloudserv"]['value'].iloc[0] | default('') |
-                safe }}</span> {% if df[df['tag'] == "cloudservftntnbr"].shape[0] > 0
-                %} {{ df[df['tag'] == "cloudservftntnbr"]['value'].iloc[0] |
+                  id="cloudserv"
+                  onmouseover="handleMouseover(this, 'cloudserv')"
+                >
+                  {{ df[df['tag'] == "cloudserv"]['value'].iloc[0] | default('')
+                  | safe }}</span
+                >
+                {% if df[df['tag'] == "cloudservftntnbr"].shape[0] > 0 %} {{
+                df[df['tag'] == "cloudservftntnbr"]['value'].iloc[0] |
                 default('') | safe }} {% endif %}
               </td>
             </tr>
@@ -1719,12 +1721,14 @@
               </td>
               <td>
                 <span
-                id="cdromdvd"
-                onmouseover="handleMouseover(this, 'cdromdvd')"
-              >
-                {{ df[df['tag'] == "cdromdvd"]['value'].iloc[0] | default('') |
-                safe }}</span> {% if df[df['tag'] == "cdromdvdftntnbr"].shape[0] > 0 %}
-                {{ df[df['tag'] == "cdromdvdftntnbr"]['value'].iloc[0] |
+                  id="cdromdvd"
+                  onmouseover="handleMouseover(this, 'cdromdvd')"
+                >
+                  {{ df[df['tag'] == "cdromdvd"]['value'].iloc[0] | default('')
+                  | safe }}</span
+                >
+                {% if df[df['tag'] == "cdromdvdftntnbr"].shape[0] > 0 %} {{
+                df[df['tag'] == "cdromdvdftntnbr"]['value'].iloc[0] |
                 default('') | safe }} {% endif %}
               </td>
             </tr>
@@ -1739,44 +1743,186 @@
               </td>
               <td>
                 <span
-                id="graphicseg_01card_01"
-                onmouseover="handleMouseover(this, 'graphicseg_01card_01')"
-              >
-                {{ df[df['tag'] == "graphicseg_01card_01"]['value'].iloc[0] |
-                default('') | safe }}</span>
+                  id="graphicseg_01card_01"
+                  onmouseover="handleMouseover(this, 'graphicseg_01card_01')"
+                >
+                  {{ df[df['tag'] == "graphicseg_01card_01"]['value'].iloc[0] |
+                  default('') | safe }}</span
+                >
               </td>
             </tr>
-            {% endif %} {% if df[df['tag'] == "ioports"].shape[0] > 0 %}
+            {% endif %} {% if df[df['tag'] == "gcnote"].shape[0] > 0 %}
             <tr>
               <td>
                 <b
-                  >{{ df[df['tag'] == "ioports"]['name'].iloc[0] | default('') |
+                  >{{ df[df['tag'] == "gcnote"]['name'].iloc[0] | default('') |
                   safe }}</b
                 >
               </td>
               <td>
-                <span
-                id="ioports"
-                onmouseover="handleMouseover(this, 'ioports')"
-              >
-                {{ df[df['tag'] == "ioports"]['value'].iloc[0] | default('') |
-                safe }}</span>
+                <span id="gcnote" onmouseover="handleMouseover(this, 'gcnote')">
+                  {{ df[df['tag'] == "gcnote"]['value'].iloc[0] | default('') |
+                  safe }}</span
+                >
               </td>
             </tr>
-            {% endif %} {% if df[df['tag'] == "expanslots"].shape[0] > 0 %}
+            {% endif %}  {% if df[df['tag'] == "ioports"].shape[0] > 0 %}
             <tr>
               <td>
                 <b
-                  >{{ df[df['tag'] == "expanslots"]['name'].iloc[0] |
-                  default('') | safe }}</b
+                  >{{ df[df['tag'] == "ioports"]['name'].iloc[0] | default('')
+                  | safe }}</b
                 >
               </td>
               <td>
-                {{ df[df['tag'] == "expanslots"]['value'].iloc[0] | default('')
-                | safe }}
+                <span
+                  id="ioports"
+                  onmouseover="handleMouseover(this, 'ioports')"
+                >
+                  {{ df[df['tag'] == "ioports"]['value'].iloc[0] | default('')
+                  | safe }}</span
+                >
+                {% if df[df['tag'] == "ioportsftntnbr"].shape[0] > 0 %} {{
+                df[df['tag'] == "ioportsftntnbr"]['value'].iloc[0] |
+                default('') | safe }} {% endif %}
               </td>
             </tr>
-            {% endif %} {% if df[df['tag'] == "webcam"].shape[0] > 0 %}
+            {% endif %}  {% if df[df['tag'] == "ioportsnote"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "ioportsnote"]['name'].iloc[0] | default('') |
+                  safe }}</b
+                >
+              </td>
+              <td>
+                <span id="ioportsnote" onmouseover="handleMouseover(this, 'ioportsnote')">
+                  {{ df[df['tag'] == "ioportsnote"]['value'].iloc[0] | default('') |
+                  safe }}</span
+                >
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "ioports_02"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "ioports_02"]['name'].iloc[0] | default('')
+                  | safe }}</b
+                >
+              </td>
+              <td>
+                <span
+                  id="ioports_02"
+                  onmouseover="handleMouseover(this, 'ioports_02')"
+                >
+                  {{ df[df['tag'] == "ioports_02"]['value'].iloc[0] | default('')
+                  | safe }}</span
+                >
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "ioports_03"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "ioports_03"]['name'].iloc[0] | default('')
+                  | safe }}</b
+                >
+              </td>
+              <td>
+                <span
+                  id="ioports_03"
+                  onmouseover="handleMouseover(this, 'ioports_03')"
+                >
+                  {{ df[df['tag'] == "ioports_03"]['value'].iloc[0] | default('')
+                  | safe }}</span
+                >
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "ioports_04"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "ioports_04"]['name'].iloc[0] | default('')
+                  | safe }}</b
+                >
+              </td>
+              <td>
+                <span
+                  id="ioports_04"
+                  onmouseover="handleMouseover(this, 'ioports_04')"
+                >
+                  {{ df[df['tag'] == "ioports_04"]['value'].iloc[0] | default('')
+                  | safe }}</span
+                >
+              </td>
+            </tr>
+            {% endif %} {% if df[df['tag'] == "ioports_05"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "ioports_05"]['name'].iloc[0] | default('')
+                  | safe }}</b
+                >
+              </td>
+              <td>
+                <span
+                  id="ioports_05"
+                  onmouseover="handleMouseover(this, 'ioports_05')"
+                >
+                  {{ df[df['tag'] == "ioports_05"]['value'].iloc[0] | default('')
+                  | safe }}</span
+                >
+              </td>
+            </tr>
+            {% endif %} 
+            
+            {% if df[df['tag'] == "wirelesstech"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "wirelesstech"]['name'].iloc[0] | default('')
+                  | safe }}</b
+                >
+              </td>
+              <td>
+                <span
+                  id="wirelesstech"
+                  onmouseover="handleMouseover(this, 'wirelesstech')"
+                >
+                  {{ df[df['tag'] == "wirelesstech"]['value'].iloc[0] | default('')
+                  | safe }}</span
+                >
+                {% if df[df['tag'] == "wirelesstechftntnbr"].shape[0] > 0 %} {{
+                df[df['tag'] == "wirelesstechftntnbr"]['value'].iloc[0] |
+                default('') | safe }} {% endif %}
+              </td>
+            </tr>
+            {% endif %}  
+
+
+            {% if df[df['tag'] == "wirelesstechnonote"].shape[0] > 0 %}
+            <tr>
+              <td>
+                <b
+                  >{{ df[df['tag'] == "wirelesstechnonote"]['name'].iloc[0] | default('')
+                  | safe }}</b
+                >
+              </td>
+              <td>
+                <span
+                  id="wirelesstechnonote"
+                  onmouseover="handleMouseover(this, 'wirelesstechnonote')"
+                >
+                  {{ df[df['tag'] == "wirelesstechnonote"]['value'].iloc[0] | default('')
+                  | safe }}</span
+                >
+              </td>
+            </tr>
+            {% endif %}  
+
+            
+            
+            {% if df[df['tag'] == "webcam"].shape[0] > 0 %}
             <tr>
               <td>
                 <b
@@ -2183,10 +2329,9 @@
       />
     </div>
 
-
     <div id="myModal" class="modal">
       <span class="close" onclick="closeModal()">&times;</span>
-      <img class="modal-content" id="modal-img">
+      <img class="modal-content" id="modal-img" />
     </div>
   </body>
 </html>
