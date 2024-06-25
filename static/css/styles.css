@@ -434,3 +434,8 @@ sup {
   text-decoration: none;
   cursor: pointer;
 }
+
+.table_index {
+  margin: 0 auto; /* Center the table */
+  border-collapse: collapse; /* Remove space between table cells */
+}

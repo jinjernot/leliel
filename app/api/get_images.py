@@ -2,11 +2,11 @@ from flask import render_template, request
 import requests
 import json
 
-from app.api.process_product import process_api_response
+from app.api.process_image import process_api_response
 from app.api.api_error import process_api_error
 from config import client_cert_path, client_key_path, api_productcontent
 
-def get_product():
+def get_images():
     try:
         # Extract data from the request
         client_cert = (client_cert_path, client_key_path)
