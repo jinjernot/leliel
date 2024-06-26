@@ -8,10 +8,50 @@
    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
 </head>
 <body>
+
+   <table class="table_index">
+      <tr>
+        <td>
+          <div class="blue-form-container">
+            <form method="POST" action="{{ url_for('call_get_product') }}">
+              <label for="sku">SKU:</label>
+              <input type="text" id="sku" name="sku" maxlength="10" required />
+    
+              <label for="country">Locale:</label>
+              <input type="text" id="country" name="country" maxlength="2" required />
+    
+              <label for="language">Language:</label>
+              <input type="text" id="language" name="language" maxlength="2" required />
+    
+              <button type="submit">GO</button>
+            </form>
+          </div>
+        </td>
+        <td>
+          <div class="blue-form-container">
+            <form method="POST" action="{{ url_for('call_get_images') }}">
+              <label for="sku">SKU:</label>
+              <input type="text" id="sku" name="sku" maxlength="10" required />
+    
+              <label for="country">Locale:</label>
+              <input type="text" id="country" name="country" maxlength="2" required />
+    
+              <label for="language">Language:</label>
+              <input type="text" id="language" name="language" maxlength="2" required />
+    
+              <button type="submit">GO</button>
+            </form>
+          </div>
+        </td>
+      </tr>
+    </table>
+
    <div id="error-message">
       <center><h1> (╯°□°)╯︵ ɹoɹɹƎ </h1></center>
       <br>
       <center><p>{{ error_message }}</p></center>
    </div>
+
+
 </body>
 </html>
