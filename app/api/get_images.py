@@ -21,7 +21,7 @@ def get_images():
             "languageCode": language_code,
             "layoutName": "ALL-Specs",
             "requestor": "APIQA-PRO",
-            "reqContent": ["chunks", "images", "hierarchy", "plc"]
+            "reqContent": ["images"]
         }
 
         # Send POST request to the API
@@ -36,9 +36,9 @@ def get_images():
         # Check if request was successful
         if api_response.status_code == 200:
             response_json = api_response.json()
-            #filename = "api_response.json"  # Set the filename for the JSON file
-            #with open(filename, 'w') as json_file:   
-            #    json.dump(response_json, json_file)
+            filename = "api_response_images.json"  # Set the filename for the JSON file
+            with open(filename, 'w') as json_file:   
+                json.dump(response_json, json_file)
             return process_api_response(response_json, sku)
         else:
             return process_api_error(api_response)

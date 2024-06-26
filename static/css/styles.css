@@ -436,6 +436,18 @@ sup {
 }
 
 .table_index {
-  margin: 0 auto; /* Center the table */
-  border-collapse: collapse; /* Remove space between table cells */
+  margin: 0 auto; 
+  border-collapse: collapse;
+}
+
+.product-image {
+  max-width: 500px;
+  height: auto;
+  max-height: 500px;
+}
+
+.centered-hr {
+  width: 50%;
+  margin: 20px auto;
+  border: 1px groove #0096d6;
 }
