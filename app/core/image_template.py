@@ -4,6 +4,7 @@ import json
 def build_template_images(response_json, sku):
     try:
         product = response_json.get('products', {}).get(sku, {})
+        sku = product.get('sku', [])
         images = product.get('images', [])
         # Create a list to hold all image details
         all_image_details = []
@@ -13,12 +14,6 @@ def build_template_images(response_json, sku):
         for image in images:
             for detail in image['details']:
                 image_data = {
-                    "oid": product.get('oid'),
-                    "sku": product.get('sku'),
-                    "status": product.get('status'),
-                    "statusMessage": product.get('statusMessage'),
-                    "fallbackApplied": product.get('fallbackApplied'),
-                    "group": image.get('group'),
                     "pixelWidth": detail.get('pixelWidth'),
                     "pixelHeight": detail.get('pixelHeight'),
                     "orientation": detail.get('orientation'),
@@ -35,12 +30,6 @@ def build_template_images(response_json, sku):
 
         # Calculate counts for each attribute
         counts = {
-            "oid_count": len(set([image['oid'] for image in all_image_details])),
-            "sku_count": len(set([image['sku'] for image in all_image_details])),
-            "status_count": len(set([image['status'] for image in all_image_details])),
-            "statusMessage_count": len(set([image['statusMessage'] for image in all_image_details])),
-            "fallbackApplied_count": len(set([image['fallbackApplied'] for image in all_image_details])),
-            "group_count": len(set([image['group'] for image in all_image_details])),
             "pixelWidth_count": len(set([image['pixelWidth'] for image in all_image_details])),
             "pixelHeight_count": len(set([image['pixelHeight'] for image in all_image_details])),
             "orientation_count": len(set([image['orientation'] for image in all_image_details])),
@@ -53,7 +42,7 @@ def build_template_images(response_json, sku):
             "type_count": len(set([image['type'] for image in all_image_details])),
         }
 
-        return {"image_details": all_image_details, "image_count": image_count, "counts": counts}
+        return {"image_details": all_image_details, "image_count": image_count, "counts": counts, "sku":sku}
     except KeyError as e:
         # Handle missing keys in the JSON response
         error_message = f"Key error: {str(e)}"

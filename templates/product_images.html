@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <title>
-      Product Images
+      Product Images - SKU: {{ sku }}
     </title>
     <meta charset="UTF-8" />
     <link
@@ -89,8 +89,6 @@
           <tr><td>pixelHeight</td><td>{{ counts.pixelHeight_count }}</td></tr>
           <tr><td>orientation</td><td>{{ counts.orientation_count }}</td></tr>
           <tr><td>productColor</td><td>{{ counts.productColor_count }}</td></tr>
-          <tr><td>imageUrlHttp</td><td>{{ counts.imageUrlHttp_count }}</td></tr>
-          <tr><td>imageUrlHttps</td><td>{{ counts.imageUrlHttps_count }}</td></tr>
           <tr><td>masterObjectName</td><td>{{ counts.masterObjectName_count }}</td></tr>
           <tr><td>Total Images:</td><td>{{ image_count }}</td></tr>
       </table>
@@ -99,22 +97,16 @@
       <hr class="centered-hr">
       {% for image in image_details %}
           <table id="tech-specs">
-              <tr><td>oid</td><td>{{ image.oid }}</td><td rowspan="16"><img src="{{ image.imageUrlHttps }}" alt="Product Image" class="product-image"></td></tr>
-              <tr><td>sku</td><td>{{ image.sku }}</td></tr>
-              <tr><td>status</td><td>{{ image.status }}</td></tr>
-              <tr><td>statusMessage</td><td>{{ image.statusMessage }}</td></tr>
-              <tr><td>fallbackApplied</td><td>{{ image.fallbackApplied }}</td></tr>
-              <tr><td>group</td><td>{{ image.group }}</td></tr>
-              <tr><td>pixelWidth</td><td>{{ image.pixelWidth }}</td></tr>
-              <tr><td>pixelHeight</td><td>{{ image.pixelHeight }}</td></tr>
-              <tr><td>orientation</td><td>{{ image.orientation }}</td></tr>
-              <tr><td>productColor</td><td>{{ image.productColor }}</td></tr>
-              <tr><td>documentTypeDetail</td><td>{{ image.documentTypeDetail }}</td></tr>
-              <tr><td>imageUrlHttp</td><td><a href="{{ image.imageUrlHttp }}">{{ image.imageUrlHttp }}</a></td></tr>
-              <tr><td>imageUrlHttps</td><td><a href="{{ image.imageUrlHttps }}">{{ image.imageUrlHttps }}</a></td></tr>
-              <tr><td>background</td><td>{{ image.background }}</td></tr>
-              <tr><td>masterObjectName</td><td>{{ image.masterObjectName }}</td></tr>
-              <tr><td>type</td><td>{{ image.type }}</td></tr>
+              <tr><td><b>masterObjectName</b></td><td>{{ image.masterObjectName }}</td><td rowspan="10"><img src="{{ image.imageUrlHttps }}" alt="Product Image" class="product-image"></td></tr>
+              <tr><td><b>pixelWidth</b></td><td>{{ image.pixelWidth }}</td></tr>
+              <tr><td><b>pixelHeight</b></td><td>{{ image.pixelHeight }}</td></tr>
+              <tr><td><b>orientation</b></td><td>{{ image.orientation }}</td></tr>
+              <tr><td><b>productColor</b></td><td>{{ image.productColor }}</td></tr>
+              <tr><td><b>documentTypeDetail</b></td><td>{{ image.documentTypeDetail }}</td></tr>
+              <tr><td><b>imageUrlHttp</b></td><td>{{ image.imageUrlHttp }}</a></td></tr>
+              <tr><td><b>imageUrlHttps</b></td><td>{{ image.imageUrlHttps }}</a></td></tr>
+              <tr><td><b>background</b></td><td>{{ image.background }}</td></tr>
+              <tr><td><b>type</b></td><td>{{ image.type }}</td></tr>
           </table>
           <hr class="centered-hr">
       {% endfor %}
