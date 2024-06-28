@@ -2,7 +2,6 @@ from app.core.ink_printer_template import build_template_ink
 from app.core.monitor_template import build_template_monitor
 from app.core.laptop_template import build_template_laptop
 from flask import render_template
-import json
 
 def process_api_response(response_json, sku):
     # Extract data from the response using the SKU

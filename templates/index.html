@@ -51,6 +51,22 @@
       </tr>
     </table>
 
+    <div class="blue-form-container">
+      <form method="POST" action="{{ url_for('call_get_rich_media') }}">
+        <label for="sku">SKU:</label>
+        <input type="text" id="sku" name="sku" maxlength="10" required />
+
+        <label for="country">Locale:</label>
+        <input type="text" id="country" name="country" maxlength="2" required />
+
+        <label for="language">Language:</label>
+        <input type="text" id="language" name="language" maxlength="2" required />
+
+        <button type="submit">GO</button>
+      </form>
+    </div>
+
+
     <div class="image-container">
       <img
         src="{{ url_for('static', filename='images/favicon.png') }}"

@@ -1,4 +1,6 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template
+
+from app.api.get_rich_media import get_rich_media
 from app.api.get_product import get_product
 from app.api.get_images import get_images
 
@@ -28,6 +30,19 @@ def call_get_product():
 def call_get_images():
     try:
         response = get_images()
+        if response is None:
+            raise ValueError("No response from get_images")
+        return response
+    except Exception as e:
+        # Handle the error and render the error template
+        return render_template('error.html', error_message=str(e))
+    
+    
+# Route to get product data for rich_media template
+@app.route('/get_rich_media', methods=['POST'])
+def call_get_rich_media():
+    try:
+        response = get_rich_media()
         if response is None:
             raise ValueError("No response from get_images")
         return response

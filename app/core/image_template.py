@@ -1,6 +1,3 @@
-import pandas as pd
-import json
-
 def build_template_images(response_json, sku):
     try:
         product = response_json.get('products', {}).get(sku, {})
