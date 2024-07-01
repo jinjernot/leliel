@@ -35,18 +35,9 @@ def build_template_rich_media(response_json, sku):
 
         # Calculate counts for each attribute
         counts = {
-            "pixelWidth_count": len(set([image['pixelWidth'] for image in all_image_details])),
-            "pixelHeight_count": len(set([image['pixelHeight'] for image in all_image_details])),
-            "orientation_count": len(set([image['orientation'] for image in all_image_details])),
-            "background_count": len(set([image['background'] for image in all_image_details])),
             "assetCategory_count": len(set([image['assetCategory'] for image in all_image_details])),
             "languageCodes_count": len(set([image['languageCodes'] for image in all_image_details])),
             "assetId_count": len(set([image['assetId'] for image in all_image_details])),
-            "assetModifiedDate_count": len(set([image['assetModifiedDate'] for image in all_image_details])),
-            "assetName_count": len(set([image['assetName'] for image in all_image_details])),
-            "assetTitle_count": len(set([image['assetTitle'] for image in all_image_details])),
-            "keyword_count": len(set([item for image in all_image_details for item in image['keyword']])),
-            "renditionId_count": len(set([image['renditionId'] for image in all_image_details])),
         }
 
         return {"image_details": all_image_details, "image_count": image_count, "counts": counts, "sku": sku}
