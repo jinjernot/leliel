@@ -44,7 +44,6 @@
   </head>
 
   <body>
-
     <div id="ATF" class="superscript-content">
       <table>
         <tr>
@@ -1746,12 +1745,12 @@
                 >
               </td>
             </tr>
-            {% endif %}  {% if df[df['tag'] == "ioports"].shape[0] > 0 %}
+            {% endif %} {% if df[df['tag'] == "ioports"].shape[0] > 0 %}
             <tr>
               <td>
                 <b
-                  >{{ df[df['tag'] == "ioports"]['name'].iloc[0] | default('')
-                  | safe }}</b
+                  >{{ df[df['tag'] == "ioports"]['name'].iloc[0] | default('') |
+                  safe }}</b
                 >
               </td>
               <td>
@@ -1759,26 +1758,29 @@
                   id="ioports"
                   onmouseover="handleMouseover(this, 'ioports')"
                 >
-                  {{ df[df['tag'] == "ioports"]['value'].iloc[0] | default('')
-                  | safe }}</span
+                  {{ df[df['tag'] == "ioports"]['value'].iloc[0] | default('') |
+                  safe }}</span
                 >
                 {% if df[df['tag'] == "ioportsftntnbr"].shape[0] > 0 %} {{
-                df[df['tag'] == "ioportsftntnbr"]['value'].iloc[0] |
-                default('') | safe }} {% endif %}
+                df[df['tag'] == "ioportsftntnbr"]['value'].iloc[0] | default('')
+                | safe }} {% endif %}
               </td>
             </tr>
-            {% endif %}  {% if df[df['tag'] == "ioportsnote"].shape[0] > 0 %}
+            {% endif %} {% if df[df['tag'] == "ioportsnote"].shape[0] > 0 %}
             <tr>
               <td>
                 <b
-                  >{{ df[df['tag'] == "ioportsnote"]['name'].iloc[0] | default('') |
-                  safe }}</b
+                  >{{ df[df['tag'] == "ioportsnote"]['name'].iloc[0] |
+                  default('') | safe }}</b
                 >
               </td>
               <td>
-                <span id="ioportsnote" onmouseover="handleMouseover(this, 'ioportsnote')">
-                  {{ df[df['tag'] == "ioportsnote"]['value'].iloc[0] | default('') |
-                  safe }}</span
+                <span
+                  id="ioportsnote"
+                  onmouseover="handleMouseover(this, 'ioportsnote')"
+                >
+                  {{ df[df['tag'] == "ioportsnote"]['value'].iloc[0] |
+                  default('') | safe }}</span
                 >
               </td>
             </tr>
@@ -1786,8 +1788,8 @@
             <tr>
               <td>
                 <b
-                  >{{ df[df['tag'] == "ioports_02"]['name'].iloc[0] | default('')
-                  | safe }}</b
+                  >{{ df[df['tag'] == "ioports_02"]['name'].iloc[0] |
+                  default('') | safe }}</b
                 >
               </td>
               <td>
@@ -1795,8 +1797,8 @@
                   id="ioports_02"
                   onmouseover="handleMouseover(this, 'ioports_02')"
                 >
-                  {{ df[df['tag'] == "ioports_02"]['value'].iloc[0] | default('')
-                  | safe }}</span
+                  {{ df[df['tag'] == "ioports_02"]['value'].iloc[0] |
+                  default('') | safe }}</span
                 >
               </td>
             </tr>
@@ -1804,8 +1806,8 @@
             <tr>
               <td>
                 <b
-                  >{{ df[df['tag'] == "ioports_03"]['name'].iloc[0] | default('')
-                  | safe }}</b
+                  >{{ df[df['tag'] == "ioports_03"]['name'].iloc[0] |
+                  default('') | safe }}</b
                 >
               </td>
               <td>
@@ -1813,8 +1815,8 @@
                   id="ioports_03"
                   onmouseover="handleMouseover(this, 'ioports_03')"
                 >
-                  {{ df[df['tag'] == "ioports_03"]['value'].iloc[0] | default('')
-                  | safe }}</span
+                  {{ df[df['tag'] == "ioports_03"]['value'].iloc[0] |
+                  default('') | safe }}</span
                 >
               </td>
             </tr>
@@ -1822,8 +1824,8 @@
             <tr>
               <td>
                 <b
-                  >{{ df[df['tag'] == "ioports_04"]['name'].iloc[0] | default('')
-                  | safe }}</b
+                  >{{ df[df['tag'] == "ioports_04"]['name'].iloc[0] |
+                  default('') | safe }}</b
                 >
               </td>
               <td>
@@ -1831,8 +1833,8 @@
                   id="ioports_04"
                   onmouseover="handleMouseover(this, 'ioports_04')"
                 >
-                  {{ df[df['tag'] == "ioports_04"]['value'].iloc[0] | default('')
-                  | safe }}</span
+                  {{ df[df['tag'] == "ioports_04"]['value'].iloc[0] |
+                  default('') | safe }}</span
                 >
               </td>
             </tr>
@@ -1840,8 +1842,8 @@
             <tr>
               <td>
                 <b
-                  >{{ df[df['tag'] == "ioports_05"]['name'].iloc[0] | default('')
-                  | safe }}</b
+                  >{{ df[df['tag'] == "ioports_05"]['name'].iloc[0] |
+                  default('') | safe }}</b
                 >
               </td>
               <td>
@@ -1849,19 +1851,17 @@
                   id="ioports_05"
                   onmouseover="handleMouseover(this, 'ioports_05')"
                 >
-                  {{ df[df['tag'] == "ioports_05"]['value'].iloc[0] | default('')
-                  | safe }}</span
+                  {{ df[df['tag'] == "ioports_05"]['value'].iloc[0] |
+                  default('') | safe }}</span
                 >
               </td>
             </tr>
-            {% endif %} 
-            
-            {% if df[df['tag'] == "wirelesstech"].shape[0] > 0 %}
+            {% endif %} {% if df[df['tag'] == "wirelesstech"].shape[0] > 0 %}
             <tr>
               <td>
                 <b
-                  >{{ df[df['tag'] == "wirelesstech"]['name'].iloc[0] | default('')
-                  | safe }}</b
+                  >{{ df[df['tag'] == "wirelesstech"]['name'].iloc[0] |
+                  default('') | safe }}</b
                 >
               </td>
               <td>
@@ -1869,23 +1869,21 @@
                   id="wirelesstech"
                   onmouseover="handleMouseover(this, 'wirelesstech')"
                 >
-                  {{ df[df['tag'] == "wirelesstech"]['value'].iloc[0] | default('')
-                  | safe }}</span
+                  {{ df[df['tag'] == "wirelesstech"]['value'].iloc[0] |
+                  default('') | safe }}</span
                 >
                 {% if df[df['tag'] == "wirelesstechftntnbr"].shape[0] > 0 %} {{
                 df[df['tag'] == "wirelesstechftntnbr"]['value'].iloc[0] |
                 default('') | safe }} {% endif %}
               </td>
             </tr>
-            {% endif %}  
-
-
-            {% if df[df['tag'] == "wirelesstechnonote"].shape[0] > 0 %}
+            {% endif %} {% if df[df['tag'] == "wirelesstechnonote"].shape[0] > 0
+            %}
             <tr>
               <td>
                 <b
-                  >{{ df[df['tag'] == "wirelesstechnonote"]['name'].iloc[0] | default('')
-                  | safe }}</b
+                  >{{ df[df['tag'] == "wirelesstechnonote"]['name'].iloc[0] |
+                  default('') | safe }}</b
                 >
               </td>
               <td>
@@ -1893,16 +1891,12 @@
                   id="wirelesstechnonote"
                   onmouseover="handleMouseover(this, 'wirelesstechnonote')"
                 >
-                  {{ df[df['tag'] == "wirelesstechnonote"]['value'].iloc[0] | default('')
-                  | safe }}</span
+                  {{ df[df['tag'] == "wirelesstechnonote"]['value'].iloc[0] |
+                  default('') | safe }}</span
                 >
               </td>
             </tr>
-            {% endif %}  
-
-            
-            
-            {% if df[df['tag'] == "webcam"].shape[0] > 0 %}
+            {% endif %} {% if df[df['tag'] == "webcam"].shape[0] > 0 %}
             <tr>
               <td>
                 <b
