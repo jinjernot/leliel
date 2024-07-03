@@ -2633,7 +2633,6 @@ body {
 /*     Input    */
 .form-group, .form-check {
   margin-bottom: 0;
-  padding: 15px 10px;
 }
 
 .form-group label, .form-check label {
@@ -2642,6 +2641,8 @@ body {
   font-weight: 400;
   font-size: 1rem;
 }
+
+
 
 .form-inline label {
   margin-bottom: 0 !important;
