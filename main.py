@@ -9,7 +9,7 @@ app = Flask(__name__)
 app.use_static_for = 'static'
 
 # Route for the index page
-@app.route('/app4')
+@app.route('/main')
 def index():
     return render_template('index.html')
 
