@@ -11,7 +11,7 @@ def build_template_laptop(api_response):
             return {}
 
     # Load tag data from JSON file
-    with open("/opt/ais/app/python/api/app/data/tags_laptop.json", "r") as f: # Server
+    with open("/opt/ais/app/python/contentcraft/app/data/tags_laptop.json", "r") as f: # Server
     #with open("app/data/tags_laptop.json", "r") as f: # Local
         tags_data = json.load(f)
 
