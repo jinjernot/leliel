@@ -68,7 +68,7 @@ body {
   src: url(fonts/forma-djr-display.otf?#iefix) format("embedded-opentype"),
     url("fonts/forma-djr-display.woff") format("woff"),
     url("fonts/forma-djr-display.ttf") format("truetype");
-  font-size: 1rem;
+  font-size: 1.5rem;
   font-weight: 400;
   line-height: 1.5;
   color: #212529;
@@ -232,7 +232,18 @@ textarea {
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
+  text-align: center;
 }
+
+/* Specific width adjustments for #country and #language inputs */
+input#country,
+input#language {
+  width: 40px;
+}
+input#sku {
+  width: 100px;
+}
+
 button,
 input {
   overflow: visible;
@@ -2305,7 +2316,7 @@ select.form-control-lg:not([size]):not([multiple]) {
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
-    margin-bottom: 0;
+    margin-bottom: 110;
   }
   .form-inline .form-control {
     display: inline-block;

@@ -62,6 +62,11 @@
 .ui-helper-reset {
   text-decoration: none;
 }
+.mapael .zoomButton,
+.toggle-group {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+}
 .bg-default {
   background: #607d8b !important;
 }
@@ -2039,6 +2044,7 @@ body {
   border-bottom: 1px solid #eee;
 }
 .main-header .logo-header {
+  float: left;
   width: 260px;
   height: 55px;
   line-height: 55px;
@@ -2891,11 +2897,44 @@ img.img-header {
   vertical-align: middle;
   color: #555;
 }
-
+.profile-pic:focus,
+.profile-pic:hover {
+  text-decoration: none;
+}
 .hidden-caret .dropdown-toggle::after {
   display: none !important;
 }
-
+.profile-pic .img-circle {
+  border-radius: 50%;
+}
+.profile-pic span {
+  font-size: 14px;
+  font-weight: 600;
+  padding: 0 10px;
+  color: #555;
+}
+.nav-search .input-group {
+  border: 1px solid #eee;
+  background: #eee;
+  border-radius: 50px;
+}
+.nav-search .input-group:focus,
+.nav-search .input-group:hover {
+  border: 1px solid #ddd;
+}
+.nav-search .form-control {
+  border: 0;
+  background: 0 0;
+  font-size: 14px;
+}
+.nav-search .input-group-text {
+  border: 0;
+  background: 0 0;
+}
+.nav-search .search-icon {
+  font-size: 21px;
+  color: #666;
+}
 .badge {
   border-radius: 50px;
   margin-left: auto;
@@ -3074,6 +3113,7 @@ img.img-header {
 }
 .ct-chart-donut .ct-label,
 .ct-chart-pie .ct-label {
+  dominant-baseline: central;
   fill: #fff !important;
   color: #fff !important;
 }
@@ -3089,6 +3129,7 @@ img.img-header {
   height: 15px;
   border-radius: 2px;
   display: inline-block;
+  float: left;
   padding-top: 3px;
   margin: 2px 5px 0 0;
 }
@@ -3543,6 +3584,7 @@ img.img-header {
 .mapael .mapTooltip {
   position: absolute;
   background-color: #474c4b;
+  moz-opacity: 0.7;
   opacity: 0.7;
   filter: alpha(opacity=70);
   border-radius: 10px;
@@ -3640,6 +3682,11 @@ img.img-header {
     color: #545454;
     cursor: pointer;
   }
+  .nav-search {
+    width: 100%;
+    margin-right: 0 !important;
+    margin-top: 12px;
+  }
   .navbar-header {
     border-top: 1px solid #eee;
     position: absolute;
@@ -3675,5 +3722,8 @@ img.img-header {
     right: 0;
     margin: 0 auto;
     max-width: 280px;
+  }
+  .profile-pic span {
+    display: none;
   }
 }
