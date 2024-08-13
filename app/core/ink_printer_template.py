@@ -1,7 +1,6 @@
 import pandas as pd
 import json
 
-
 def build_template_ink(api_response):
 
     # Ensure api_response is a dictionary
