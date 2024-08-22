@@ -172,6 +172,7 @@
         </tr>
       </table>
       <br />
+
       <div id="MM" class="superscript-content">
         <table>
           <tbody>
@@ -187,6 +188,7 @@
                 />
                 {% endif %}
               </td>
+
               <td class="MM-text">
                 {% if 'ksp_01_headline_medium' in df['tag'].values %}
                 <h3>
@@ -311,205 +313,51 @@
           </tbody>
         </table>
       </div>
+      
       <br />
 
       <div id="features">
         <table>
           <tbody>
-            <tr>
-              <td>
-                <b
-                  id="feature_01_headline_01_statement"
-                  onmouseover="handleMouseover(this, 'feature_01_headline_01_statement')"
-                >
-                  {{ df[df['tag'] ==
-                  'feature_01_headline_01_statement']['value'].iloc[0] |
-                  default('') | safe }}
-                </b>
-                <br />
-                {% if 'feature_01_suppt_01_medium' in df['tag'].values %}
-                <span
-                  id="feature_01_suppt_01_medium"
-                  onmouseover="handleMouseover(this, 'feature_01_suppt_01_medium')"
-                >
-                  {{ df[df['tag'] ==
-                  'feature_01_suppt_01_medium']['value'].iloc[0] | default('') |
-                  safe }}
-                </span>
-                {% endif %} {% if 'feature_01_suppt_01_ftntnbr' in
-                df['tag'].values %}
-                <span
-                  id="feature_01_suppt_01_ftntnbr"
-                  onmouseover="handleMouseover(this, 'feature_01_suppt_01_ftntnbr')"
-                >
-                  {{ df[df['tag'] ==
-                  'feature_01_suppt_01_ftntnbr']['value'].iloc[0] | default('')
-                  | safe }}
-                </span>
-                {% endif %}
-              </td>
-              <td>
-                <b
-                  id="feature_01_headline_02_statement"
-                  onmouseover="handleMouseover(this, 'feature_01_headline_02_statement')"
-                >
-                  {{ df[df['tag'] ==
-                  'feature_01_headline_02_statement']['value'].iloc[0] |
-                  default('') | safe }}
-                </b>
-                <br />
-                {% if 'feature_01_suppt_02_medium' in df['tag'].values %}
-                <span
-                  id="feature_01_suppt_02_medium"
-                  onmouseover="handleMouseover(this, 'feature_01_suppt_02_medium')"
-                >
-                  {{ df[df['tag'] ==
-                  'feature_01_suppt_02_medium']['value'].iloc[0] | default('') |
-                  safe }}
-                </span>
-                {% endif %} {% if 'feature_01_suppt_02_ftntnbr' in
-                df['tag'].values %}
-                <span
-                  id="feature_01_suppt_02_ftntnbr"
-                  onmouseover="handleMouseover(this, 'feature_01_suppt_02_ftntnbr')"
-                >
-                  {{ df[df['tag'] ==
-                  'feature_01_suppt_02_ftntnbr']['value'].iloc[0] | default('')
-                  | safe }}
-                </span>
-                {% endif %}
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <b
-                  id="feature_01_headline_03_statement"
-                  onmouseover="handleMouseover(this, 'feature_01_headline_03_statement')"
-                >
-                  {{ df[df['tag'] ==
-                  'feature_01_headline_03_statement']['value'].iloc[0] |
-                  default('') | safe }}
-                </b>
-                <br />
-                {% if 'feature_01_suppt_03_medium' in df['tag'].values %}
-                <span
-                  id="feature_01_suppt_03_medium"
-                  onmouseover="handleMouseover(this, 'feature_01_suppt_03_medium')"
-                >
-                  {{ df[df['tag'] ==
-                  'feature_01_suppt_03_medium']['value'].iloc[0] | default('') |
-                  safe }}
-                </span>
-                {% endif %} {% if 'feature_01_suppt_03_ftntnbr' in
-                df['tag'].values %}
-                <span
-                  id="feature_01_suppt_03_ftntnbr"
-                  onmouseover="handleMouseover(this, 'feature_01_suppt_03_ftntnbr')"
-                >
-                  {{ df[df['tag'] ==
-                  'feature_01_suppt_03_ftntnbr']['value'].iloc[0] | default('')
-                  | safe }}
-                </span>
-                {% endif %}
-              </td>
-              <td>
-                <b
-                  id="feature_01_headline_04_statement"
-                  onmouseover="handleMouseover(this, 'feature_01_headline_04_statement')"
-                >
-                  {{ df[df['tag'] ==
-                  'feature_01_headline_04_statement']['value'].iloc[0] |
-                  default('') | safe }}
-                </b>
-                <br />
-                {% if 'feature_01_suppt_04_medium' in df['tag'].values %}
-                <span
-                  id="feature_01_suppt_04_medium"
-                  onmouseover="handleMouseover(this, 'feature_01_suppt_04_medium')"
-                >
-                  {{ df[df['tag'] ==
-                  'feature_01_suppt_04_medium']['value'].iloc[0] | default('') |
-                  safe }}
-                </span>
-                {% endif %} {% if 'feature_01_suppt_04_ftntnbr' in
-                df['tag'].values %}
-                <span
-                  id="feature_01_suppt_04_ftntnbr"
-                  onmouseover="handleMouseover(this, 'feature_01_suppt_04_ftntnbr')"
-                >
-                  {{ df[df['tag'] ==
-                  'feature_01_suppt_04_ftntnbr']['value'].iloc[0] | default('')
-                  | safe }}
-                </span>
-                {% endif %}
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <b
-                  id="feature_01_headline_05_statement"
-                  onmouseover="handleMouseover(this, 'feature_01_headline_05_statement')"
-                >
-                  {{ df[df['tag'] ==
-                  'feature_01_headline_05_statement']['value'].iloc[0] |
-                  default('') | safe }}
-                </b>
-                <br />
-                {% if 'feature_01_suppt_05_medium' in df['tag'].values %}
-                <span
-                  id="feature_01_suppt_05_medium"
-                  onmouseover="handleMouseover(this, 'feature_01_suppt_05_medium')"
-                >
-                  {{ df[df['tag'] ==
-                  'feature_01_suppt_05_medium']['value'].iloc[0] | default('') |
-                  safe }}
-                </span>
-                {% endif %} {% if 'feature_01_suppt_05_ftntnbr' in
-                df['tag'].values %}
-                <span
-                  id="feature_01_suppt_05_ftntnbr"
-                  onmouseover="handleMouseover(this, 'feature_01_suppt_05_ftntnbr')"
-                >
-                  {{ df[df['tag'] ==
-                  'feature_01_suppt_05_ftntnbr']['value'].iloc[0] | default('')
-                  | safe }}
-                </span>
-                {% endif %}
-              </td>
-              <td>
-                <b
-                  id="feature_01_headline_06_statement"
-                  onmouseover="handleMouseover(this, 'feature_01_headline_06_statement')"
-                >
-                  {{ df[df['tag'] ==
-                  'feature_01_headline_06_statement']['value'].iloc[0] |
-                  default('') | safe }}
-                </b>
-                <br />
-                {% if 'feature_01_suppt_06_medium' in df['tag'].values %}
-                <span
-                  id="feature_01_suppt_06_medium"
-                  onmouseover="handleMouseover(this, 'feature_01_suppt_06_medium')"
-                >
-                  {{ df[df['tag'] ==
-                  'feature_01_suppt_06_medium']['value'].iloc[0] | default('') |
-                  safe }}
-                </span>
-                {% endif %} {% if 'feature_01_suppt_06_ftntnbr' in
-                df['tag'].values %}
-                <span
-                  id="feature_01_suppt_06_ftntnbr"
-                  onmouseover="handleMouseover(this, 'feature_01_suppt_06_ftntnbr')"
-                >
-                  {{ df[df['tag'] ==
-                  'feature_01_suppt_06_ftntnbr']['value'].iloc[0] | default('')
-                  | safe }}
-                </span>
-                {% endif %}
-              </td>
-            </tr>
+            {% for i in range(1, 7) %}
+              <tr>
+                <td>
+                  <b>
+                    {{ df[df['tag'] == 'feature_01_headline_0' ~ i ~ '_statement']['value'].iloc[0] | default('') | safe }}
+                  </b>
+                  <br>
+                  {% if 'feature_01_suppt_0' ~ i ~ '_medium' in df['tag'].values %}
+                    <span>
+                      {{ df[df['tag'] == 'feature_01_suppt_0' ~ i ~ '_medium']['value'].iloc[0] | default('') | safe }}
+                    </span>
+                  {% endif %}
+                  {% if 'feature_01_suppt_0' ~ i ~ '_ftntnbr' in df['tag'].values %}
+                    <span>
+                      {{ df[df['tag'] == 'feature_01_suppt_0' ~ i ~ '_ftntnbr']['value'].iloc[0] | default('') | safe }}
+                    </span>
+                  {% endif %}
+                </td>
+                <td>
+                  <b>
+                    {{ df[df['tag'] == 'feature_01_headline_0' ~ (i + 1) ~ '_statement']['value'].iloc[0] | default('') | safe }}
+                  </b>
+                  <br>
+                  {% if 'feature_01_suppt_0' ~ (i + 1) ~ '_medium' in df['tag'].values %}
+                    <span>
+                      {{ df[df['tag'] == 'feature_01_suppt_0' ~ (i + 1) ~ '_medium']['value'].iloc[0] | default('') | safe }}
+                    </span>
+                  {% endif %}
+                  {% if 'feature_01_suppt_0' ~ (i + 1) ~ '_ftntnbr' in df['tag'].values %}
+                    <span>
+                      {{ df[df['tag'] == 'feature_01_suppt_0' ~ (i + 1) ~ '_ftntnbr']['value'].iloc[0] | default('') | safe }}
+                    </span>
+                  {% endif %}
+                </td>
+              </tr>
+            {% endfor %}
           </tbody>
         </table>
+        
 
         <table>
           <tbody>
