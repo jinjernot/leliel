@@ -503,144 +503,46 @@
         <br />
 
         <table id="icon_table" style="text-align: center">
-          <tr>
-            <td style="vertical-align: middle">
-              <img
-                src="https://h10003.www1.hp.com/digmedialib/prodimg/lowres/c08169167.png"
-              /><br />
-              {% if 'displaymet' in df['tag'].values %} {% set
-              content_displaymet = df[df['tag'] ==
-              'displaymet']['value'].iloc[0] | default('') %} {% endif %}
-              <span
-                id="icon_displaymet"
-                onmouseover="handleMouseover(this, 'displaymet')"
-              >
-                {{ content_displaymet | safe }}</span
-              >
-              {% if content_displaymet %}{% endif %}
-            </td>
-            <td style="vertical-align: middle">
-              <img
-                src="https://h10003.www1.hp.com/digmedialib/prodimg/lowres/c08169181.png"
-              /><br />
-              {% if 'processorname' in df['tag'].values %} {% set
-              content_processorname = df[df['tag'] ==
-              'processorname']['value'].iloc[0] | default('') %} {% endif %}
-              <span
-                id="icon_processorname"
-                onmouseover="handleMouseover(this, 'processorname')"
-                >{{ content_processorname | safe }}</span
-              >
-              {% if content_processorname %}{% endif %}
-            </td>
-            <td style="vertical-align: middle">
-              <img
-                src="https://h10003.www1.hp.com/digmedialib/prodimg/lowres/c08267700.png"
-              /><br />
-              {% if 'memstdes_01' in df['tag'].values %} {% set
-              content_memstdes_01 = df[df['tag'] ==
-              'memstdes_01']['value'].iloc[0] | default('') %} {% endif %}<span
-                id="icon_memstdes_01"
-                onmouseover="handleMouseover(this, 'memstdes_01')"
-              >
-                {{ content_memstdes_01 | safe }} </span
-              >{% if content_memstdes_01 %}{% endif %}
-            </td>
-          </tr>
-          <tr>
-            <td style="vertical-align: middle">
-              <img
-                src="https://h10003.www1.hp.com/digmedialib/prodimg/lowres/c03795626.png"
-              /><br />
-              {% if 'hd_01des' in df['tag'].values %} {% set content_hd_01des =
-              df[df['tag'] == 'hd_01des']['value'].iloc[0] | default('') %} {%
-              endif %}<span
-                id="icon_hd_01des"
-                onmouseover="handleMouseover(this, 'hd_01des')"
-              >
-                {{ content_hd_01des | safe }}</span
-              >
-              {% if content_hd_01des %}{% endif %}
-            </td>
-            <td style="vertical-align: middle">
-              <img
-                src="https://h10003.www1.hp.com/digmedialib/prodimg/lowres/c08169202.png"
-              /><br />
-              {% if 'graphicseg_01card_01' in df['tag'].values %} {% set
-              content_graphicseg_01card_01 = df[df['tag'] ==
-              'graphicseg_01card_01']['value'].iloc[0] | default('') %} {% endif
-              %}<span
-                id="icon_graphicseg_01card_01"
-                onmouseover="handleMouseover(this, 'graphicseg_01card_01')"
-              >
-                {{ content_graphicseg_01card_01 | safe }}</span
-              >
-              {% if content_graphicseg_01card_01 %}{% endif %}
-            </td>
-            <td style="vertical-align: middle">
-              <img
-                src="https://h10003.www1.hp.com/digmedialib/prodimg/lowres/c08169087.png"
-              /><br />
-              {% if 'wirelesstech' in df['tag'].values %} {% set
-              content_wirelesstech = df[df['tag'] ==
-              'wirelesstech']['value'].iloc[0] | default('') %} {% endif %}<span
-                id="icon_wirelesstech"
-                onmouseover="handleMouseover(this, 'graphicseg_01card_01')"
-              >
-                {{ content_wirelesstech | safe }}</span
-              >
-              {% if content_wirelesstech %}{% endif %}
-            </td>
-          </tr>
-          <tr>
-            <td style="vertical-align: middle">
-              <img
-                src="https://h10003.www1.hp.com/digmedialib/prodimg/lowres/c03905482.png"
-              /><br />
-              {% if 'osinstalled' in df['tag'].values %} {% set
-              content_osinstalled = df[df['tag'] ==
-              'osinstalled']['value'].iloc[0] | default('') %} {% endif %}
-              <span
-                id="icon_osinstalled"
-                onmouseover="handleMouseover(this, 'osinstalled')"
-                >{{ content_osinstalled | safe }}</span
-              >
-              {% if content_osinstalled %}{% endif %}
-            </td>
-            <td style="vertical-align: middle">
-              <img
-                src="https://h10003.www1.hp.com/digmedialib/prodimg/lowres/c03795557.png"
-              /><br />
-              {% if 'batterylife' in df['tag'].values %} {% set
-              content_batterylife = df[df['tag'] ==
-              'batterylife']['value'].iloc[0] | default('') %} {% endif %}
-              <span
-                id="icon_batterylife"
-                onmouseover="handleMouseover(this, 'batterylife')"
-                >{{ content_batterylife | safe }}</span
-              >
-              {% if content_batterylife %}{% endif %}
-            </td>
-            <td style="vertical-align: middle">
-              <img
-                src="https://h10003.www1.hp.com/digmedialib/prodimg/lowres/c08267650.png"
-              /><br />
-              {% if 'weightmet' in df['tag'].values %} {% set content_weightmet
-              = df[df['tag'] == 'weightmet']['value'].iloc[0] | default('') %}
-              {% endif %}
-              <span
-                id="icon_weightmet"
-                onmouseover="handleMouseover(this, 'weightmet')"
-                >{{ content_weightmet | safe }}</span
-              >
-              {% if content_weightmet %}{% endif %}
-            </td>
-          </tr>
+          <tbody>
+            {% set icons = [
+              {'tag': 'displaymet', 'img': 'https://h10003.www1.hp.com/digmedialib/prodimg/lowres/c08169167.png', 'id': 'icon_displaymet'},
+              {'tag': 'processorname', 'img': 'https://h10003.www1.hp.com/digmedialib/prodimg/lowres/c08169181.png', 'id': 'icon_processorname'},
+              {'tag': 'memstdes_01', 'img': 'https://h10003.www1.hp.com/digmedialib/prodimg/lowres/c08267700.png', 'id': 'icon_memstdes_01'},
+              {'tag': 'hd_01des', 'img': 'https://h10003.www1.hp.com/digmedialib/prodimg/lowres/c03795626.png', 'id': 'icon_hd_01des'},
+              {'tag': 'graphicseg_01card_01', 'img': 'https://h10003.www1.hp.com/digmedialib/prodimg/lowres/c08169202.png', 'id': 'icon_graphicseg_01card_01'},
+              {'tag': 'wirelesstech', 'img': 'https://h10003.www1.hp.com/digmedialib/prodimg/lowres/c08169087.png', 'id': 'icon_wirelesstech'},
+              {'tag': 'osinstalled', 'img': 'https://h10003.www1.hp.com/digmedialib/prodimg/lowres/c03905482.png', 'id': 'icon_osinstalled'},
+              {'tag': 'batterylife', 'img': 'https://h10003.www1.hp.com/digmedialib/prodimg/lowres/c03795557.png', 'id': 'icon_batterylife'},
+              {'tag': 'weightmet', 'img': 'https://h10003.www1.hp.com/digmedialib/prodimg/lowres/c08267650.png', 'id': 'icon_weightmet'}
+            ] %}
+            
+            {% for i in range(0, icons|length, 3) %}
+              <tr>
+                {% for j in range(3) %}
+                  {% set index = i + j %}
+                  {% if index < icons|length %}
+                    {% set icon = icons[index] %}
+                    {% if icon['tag'] in df['tag'].values %}
+                      {% set content = df[df['tag'] == icon['tag']]['value'].iloc[0] | default('') %}
+                      <td style="vertical-align: middle">
+                        <img src="{{ icon['img'] }}" /><br />
+                        <span
+                          id="{{ icon['id'] }}"
+                          onmouseover="handleMouseover(this, '{{ icon['tag'] }}')"
+                        >
+                          {{ content | safe }}
+                        </span>
+                      </td>
+                    {% endif %}
+                  {% endif %}
+                {% endfor %}
+              </tr>
+            {% endfor %}
+          </tbody>
         </table>
 
         <br />
         <br />
-
         <table>
           <tr>
             {% if 'Left and Right facing' in df_images['orientation'].values %}
@@ -656,22 +558,21 @@
               <h3><b>Ports:</b></h3>
               <br />
               <ul>
-                {% set ioports_tags = ['ioports', 'ioports_02', 'ioports_03',
-                'ioports_04', 'ioports_05'] %} {% for tag in ioports_tags %} {%
-                if tag in df['tag'].values %}
-                <li>
-                  {% if tag == 'ioports' %}
-                  <span
-                    id="{{ tag }}"
-                    onmouseover="handleMouseover(this, '{{ tag }}')"
-                  >
-                    {{ df[df['tag'] == tag]['value'].iloc[0] | default('') |
-                    safe }}
-                  </span>
-                  {% else %} {{ df[df['tag'] == tag]['value'].iloc[0] |
-                  default('') | safe }} {% endif %}
-                </li>
-                {% endif %} {% endfor %}
+                {% set ioports_tags = ['ioports', 'ioports_02', 'ioports_03', 'ioports_04', 'ioports_05'] %}
+                {% for tag in ioports_tags %}
+                  {% if tag in df['tag'].values %}
+                    <li>
+                      {% set value = df[df['tag'] == tag]['value'].iloc[0] | default('') | safe %}
+                      {% if tag == 'ioports' %}
+                        <span id="{{ tag }}" onmouseover="handleMouseover(this, '{{ tag }}')">
+                          {{ value }}
+                        </span>
+                      {% else %}
+                        {{ value }}
+                      {% endif %}
+                    </li>
+                  {% endif %}
+                {% endfor %}
               </ul>
             </td>
           </tr>
@@ -681,31 +582,22 @@
           <tr>
             <td style="vertical-align: middle; padding-left: 10px">
               <br />
-              {% if 'flex_value_prop_1_headline' in df['tag'].values %} {% set
-              content_flex_value_prop_1_headline = df[df['tag'] ==
-              'flex_value_prop_1_headline']['value'].iloc[0] | default('') %}
-              <h3>
-                <b
-                  ><span
-                    id="flex_value_prop_1_headline"
-                    onmouseover="handleMouseover(this, 'flex_value_prop_1_headline')"
-                    >{{ content_flex_value_prop_1_headline | safe }}</span
-                  ></b
-                >
-              </h3>
-              {% endif %}
-              <br />
-              {% if 'flex_value_prop_1_suppt' in df['tag'].values %} {% set
-              content_flex_value_prop_1_suppt = df[df['tag'] ==
-              'flex_value_prop_1_suppt']['value'].iloc[0] | default('') %}<span
-                id="flex_value_prop_1_suppt"
-                onmouseover="handleMouseover(this, 'flex_value_prop_1_suppt')"
-              >
-                {{ content_flex_value_prop_1_suppt | safe }}</span
-              >
-              {% endif %}
+              {% set headlines = {
+                'flex_value_prop_1_headline': 'flex_value_prop_1_headline',
+                'flex_value_prop_1_suppt': 'flex_value_prop_1_suppt'
+              } %}
+              {% for tag, id in headlines.items() %}
+                {% if tag in df['tag'].values %}
+                  {% set content = df[df['tag'] == tag]['value'].iloc[0] | default('') %}
+                  {% if tag == 'flex_value_prop_1_headline' %}
+                    <h3><b><span id="{{ id }}" onmouseover="handleMouseover(this, '{{ id }}')">{{ content | safe }}</span></b></h3>
+                  {% else %}
+                    <span id="{{ id }}" onmouseover="handleMouseover(this, '{{ id }}')">{{ content | safe }}</span>
+                  {% endif %}
+                  <br />
+                {% endif %}
+              {% endfor %}
             </td>
-
             <td style="vertical-align: middle">
               <img
                 id="environ_img"
