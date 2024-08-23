@@ -49,7 +49,6 @@
           <td>
             <div class="slideshow-container">
               {% set num_images = 0 %}
-              {% set orientations = ['Center facing', 'Left facing', 'Right facing', 'Rear facing', 'Left rear facing', 'Top view closed', 'Detail view', 'Left profile closed', 'Right profile closed', 'Right rear facing'] %}
               {% for orientation in orientations %}
                 {% set found = false %}
                 {% for index, row in df_images.iterrows() %}
@@ -72,6 +71,7 @@
               <a class="prev" onclick="plusSlides(-1)">❮</a>
               <a class="next" onclick="plusSlides(1)">❯</a>
             </div>
+            
 
             <br />
           </td>
@@ -526,6 +526,7 @@
 
         <br />
         <br />
+
         <table>
           <tr>
             {% if 'Left and Right facing' in df_images['orientation'].values %}

@@ -12,6 +12,10 @@ def process_api_response(response_json, sku):
     if pmoid == '321957':
         df, df_images = build_template_laptop(response_json)
         return render_template('laptop.html', df=df, df_images=df_images)
+    # Desktops
+    elif pmoid == '12454':
+        df, df_images = build_template_laptop(response_json)
+        return render_template('laptop.html', df=df, df_images=df_images)
     # Ink_Printer
     elif product_hierarchy.get('marketingCategory', {}).get('pmoid') == '238444':  
         df = build_template_ink(response_json)
