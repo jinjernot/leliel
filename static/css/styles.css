@@ -311,7 +311,8 @@ sup {
 }
 
 .mySlides {
-  display: none;
+  max-width: 100%;
+  margin: 0 auto; 
 }
 
 .prev,
@@ -346,37 +347,6 @@ sup {
   justify-content: center;
   padding-top: 5%;
   padding-bottom: 5%;
-}
-
-.thumbnail-container {
-  display: flex;
-  overflow-x: auto;
-  overflow-y: hidden; 
-  white-space: nowrap;
-  cursor: grab; 
-}
-
-.thumbnail {
-  display: inline-block;
-  margin: 3px;
-  padding: 2px;
-}
-
-.thumbnail img {
-  width: 100px;
-  cursor: pointer;
-  opacity: 0.6;
-  transition: transform 0.2s;
-}
-
-.thumbnail img:hover {
-  opacity: 1;
-  transform: scale(1.1);
-}
-
-.active,
-.thumbnail img.active {
-  opacity: 1;
 }
 
 .main-image-container {

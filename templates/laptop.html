@@ -48,43 +48,29 @@
         <tr>
           <td>
             <div class="slideshow-container">
-              {% set num_images = 0 %} {% set orientations = ['Center facing',
-              'Left facing', 'Right facing', 'Rear facing', 'Left rear facing',
-              'Top view closed', 'Detail view', 'Left profile closed', 'Right
-              profile closed', 'Right rear facing'] %} {% for orientation in
-              orientations %} {% set found = false %} {% for index, row in
-              df_images.iterrows() %} {% if row['pixelWidth'] == '573' and
-              row['orientation'] == orientation and row['type'] == 'png' %} {%
-              set found = true %}
-              <div class="mySlides fade">
-                <center>
-                  <img
-                    src="{{ row['imageUrlHttps'] | default('') | safe }}"
-                    id="main-image"
-                    onclick="openModal(`{{ row['imageUrlHttps'] | default('') | safe }}`)"
-                  />
-                </center>
-              </div>
-              {% set num_images = num_images + 1 %} {% endif %} {% endfor %} {%
-              if found %} {% set num_images = num_images + 1 %} {% endif %} {%
-              endfor %}
+              {% set num_images = 0 %}
+              {% set orientations = ['Center facing', 'Left facing', 'Right facing', 'Rear facing', 'Left rear facing', 'Top view closed', 'Detail view', 'Left profile closed', 'Right profile closed', 'Right rear facing'] %}
+              {% for orientation in orientations %}
+                {% set found = false %}
+                {% for index, row in df_images.iterrows() %}
+                  {% if row['pixelWidth'] == '573' and row['orientation'] == orientation and row['type'] == 'png' %}
+                    {% set found = true %}
+                    <div class="mySlides fade">
+                      <center>
+                        <img
+                          src="{{ row['imageUrlHttps'] | default('') | safe }}"
+                          id="main-image"
+                          onclick="openModal(`{{ row['imageUrlHttps'] | default('') | safe }}`)"
+                        />
+                      </center>
+                    </div>
+                    {% set num_images = num_images + 1 %}
+                  {% endif %}
+                {% endfor %}
+                {% if found %} {% set num_images = num_images + 1 %} {% endif %}
+              {% endfor %}
               <a class="prev" onclick="plusSlides(-1)">❮</a>
               <a class="next" onclick="plusSlides(1)">❯</a>
-            </div>
-
-            <div class="thumbnail-container">
-              {% for orientation in orientations %} {% set found = false %} {%
-              for index, row in df_images.iterrows() %} {% if row['pixelWidth']
-              == '99' and row['orientation'] == orientation and row['type'] ==
-              'png' %} {% set found = true %}
-              <div class="thumbnail">
-                <img
-                  src="{{ row['imageUrlHttps'] | default('') | safe }}"
-                  data-slide-index="{{ loop.index0 + 1 }}"
-                />
-              </div>
-              {% endif %} {% endfor %} {% if found %} {% set num_images =
-              num_images + 1 %} {% endif %} {% endfor %}
             </div>
 
             <br />
