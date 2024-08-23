@@ -512,10 +512,7 @@
                       {% set content = df[df['tag'] == icon['tag']]['value'].iloc[0] | default('') %}
                       <td style="vertical-align: middle">
                         <img src="{{ icon['img'] }}" /><br />
-                        <span
-                          id="{{ icon['id'] }}"
-                          onmouseover="handleMouseover(this, '{{ icon['tag'] }}')"
-                        >
+                        <span>
                           {{ content | safe }}
                         </span>
                       </td>
