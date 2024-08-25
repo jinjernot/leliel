@@ -76,7 +76,7 @@
             <br />
           </td>
           <td>
-            <!--product name, should be prodlongnamespecs -->
+            <!-- product name, should be prodlongnamespecs -->
             <b>
               <h1>
                 <span
@@ -90,7 +90,7 @@
               </h1>
             </b>
 
-            <!--proddes_overview_extended-->
+            <!-- proddes_overview_extended -->
             <span
               id="proddes_overview_extended"
               onmouseover="handleMouseover(this, 'proddes_overview_extended')"
@@ -128,6 +128,8 @@
             </ul>
             {% endif %} {% endmacro %}
 
+            <!-- KSP -->
+
             <div id="ksp">
               {{ generate_list('ksp_01_suppt_01_long',
               'span_ksp_01_suppt_01_long') }} {{
@@ -158,6 +160,8 @@
         </tr>
       </table>
       <br />
+
+            <!-- Messaging -->
 
       <div id="MM" class="superscript-content">
         <table>
@@ -301,6 +305,8 @@
       </div>
       
       <br />
+
+            <!-- Features -->
 
       <div id="features">
         <table>
@@ -488,6 +494,8 @@
         <br />
         <br />
 
+          <!-- Icons -->
+
         <table id="icon_table" style="text-align: center">
           <tbody>
             {% set icons = [
@@ -527,7 +535,10 @@
         <br />
         <br />
 
-        <table>
+         <!-- Ports -->
+
+
+        <table id="ports">
           <tr>
             {% if 'Left and Right facing' in df_images['orientation'].values %}
             <td style="vertical-align: middle">
@@ -562,7 +573,9 @@
           </tr>
         </table>
 
-        <table>
+      <!-- Environmental -->
+
+        <table id="env">
           <tr>
             <td style="vertical-align: middle; padding-left: 10px">
               <br />
@@ -603,6 +616,8 @@
         <h2 id="see-more" style="cursor: pointer">+Expand to see more</h2>
         <br />
 
+         <!-- Tech Specs -->
+
         <table id="tech-specs" style="display: none">
           <tbody>
             {% for tag in [ 'osinstalled', 'processorfamily', 'processorname',
@@ -640,6 +655,8 @@
         </table>
 
         <br />
+
+      <!-- Footnotes -->
 
         <table id="footnotes">
           {% for value in [ "msgfootnote_01", "msgfootnote_02" ] %} {% if
