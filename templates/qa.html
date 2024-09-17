@@ -61,6 +61,7 @@
             <th>Master Object Name Count</th>
             <th>Type Count</th>
             <th>Total Images</th>
+            <th>Notes</th> <!-- New column for Notes -->
           </tr>
         </thead>
         <tbody>
@@ -78,6 +79,7 @@
               <td style="color: {{ 'red' if sku.counts.masterObjectName_count == 0 else 'inherit' }}">{{ sku.counts.masterObjectName_count }}</td>
               <td style="color: {{ 'red' if sku.counts.type_count == 0 else 'inherit' }}">{{ sku.counts.type_count }}</td>
               <td style="color: {{ 'red' if sku.image_count == 0 else 'inherit' }}">{{ sku.image_count }}</td>
+              <td>{{ sku.notes }}</td> <!-- Display notes (duplicate orientation info) -->
             </tr>
           {% endfor %}
         </tbody>
