@@ -209,18 +209,19 @@
 								<div class="card-body">
 									<form method="POST" action="{{ url_for('call_get_qa') }}">
 										<div class="form-group row align-items-center">
-											<label for="sku" class="col-form-label col-auto">SKUs:</label>
 											<div class="col">
-												<input type="text" id="sku" name="sku"
-													class="form-control form-control-sm" placeholder="SKU" required />
+												<textarea id="sku" name="sku"
+														  class="form-control form-control-sm"
+														  placeholder="Enter SKUs, comma separated"
+														  rows="5"
+														  required></textarea>
 											</div>
 										</div>
-
+								
 										<div class="card-action">
 											<button type="submit" class="btn btn-success">
 												Submit
 											</button>
-
 										</div>
 									</form>
 								</div>

@@ -44,7 +44,7 @@
 
   <body>
     <center><h3>Product Images QA</h3></center>
-    
+
     <div id="ATF">
       <table id="tech-specs">
         <thead>
@@ -54,7 +54,12 @@
             <th>Pixel Height Count</th>
             <th>Orientation Count</th>
             <th>Product Color Count</th>
+            <th>Document Type Detail Count</th>
+            <th>Image URL HTTP Count</th>
+            <th>Image URL HTTPS Count</th>
+            <th>Background Count</th>
             <th>Master Object Name Count</th>
+            <th>Type Count</th>
             <th>Total Images</th>
           </tr>
         </thead>
@@ -66,7 +71,12 @@
               <td style="color: {{ 'red' if sku.counts.pixelHeight_count == 0 else 'inherit' }}">{{ sku.counts.pixelHeight_count }}</td>
               <td style="color: {{ 'red' if sku.counts.orientation_count == 0 else 'inherit' }}">{{ sku.counts.orientation_count }}</td>
               <td style="color: {{ 'red' if sku.counts.productColor_count == 0 else 'inherit' }}">{{ sku.counts.productColor_count }}</td>
+              <td style="color: {{ 'red' if sku.counts.documentTypeDetail_count == 0 else 'inherit' }}">{{ sku.counts.documentTypeDetail_count }}</td>
+              <td style="color: {{ 'red' if sku.counts.imageUrlHttp_count == 0 else 'inherit' }}">{{ sku.counts.imageUrlHttp_count }}</td>
+              <td style="color: {{ 'red' if sku.counts.imageUrlHttps_count == 0 else 'inherit' }}">{{ sku.counts.imageUrlHttps_count }}</td>
+              <td style="color: {{ 'red' if sku.counts.background_count == 0 else 'inherit' }}">{{ sku.counts.background_count }}</td>
               <td style="color: {{ 'red' if sku.counts.masterObjectName_count == 0 else 'inherit' }}">{{ sku.counts.masterObjectName_count }}</td>
+              <td style="color: {{ 'red' if sku.counts.type_count == 0 else 'inherit' }}">{{ sku.counts.type_count }}</td>
               <td style="color: {{ 'red' if sku.image_count == 0 else 'inherit' }}">{{ sku.image_count }}</td>
             </tr>
           {% endfor %}

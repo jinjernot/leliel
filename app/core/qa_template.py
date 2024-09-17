@@ -22,6 +22,7 @@ def build_template_qa(response_json, skus):
                         "masterObjectName": detail.get('masterObjectName'),
                         "type": detail.get('type')
                     }
+                    # Append image details for this SKU
                     sku_image_details.append(image_data)
 
             # Function to filter out non-hashable types (lists) and None values
@@ -34,7 +35,7 @@ def build_template_qa(response_json, skus):
                         filtered_values.append(tuple(v))
                     else:
                         filtered_values.append(v)
-                return len(set(filtered_values))
+                return len(set(filtered_values))  # Count unique values
 
             # Calculate counts for each attribute for this SKU
             counts = {

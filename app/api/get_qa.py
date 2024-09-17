@@ -23,7 +23,7 @@ def get_qa():
             "languageCode": "en",
             "layoutName": "ALL-Specs",
             "requestor": "APIQA-PRO",
-            "reqContent": ["images"]
+            "reqContent": ["chunks", "images", "hierarchy", "plc"]
         }
 
         # Send POST request to the API
