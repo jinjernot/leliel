@@ -44,7 +44,19 @@ def call_get_rich_media():
     try:
         response = get_rich_media()
         if response is None:
-            raise ValueError("No response from get_images")
+            raise ValueError("No response from get_rich_media")
+        return response
+    except Exception as e:
+        # Handle the error and render the error template
+        return render_template('error.html', error_message=str(e))
+    
+# Route to get product data for rich_media template
+@app.route('/get_qa', methods=['POST'])
+def call_get_qa():
+    try:
+        response = get_rich_media()
+        if response is None:
+            raise ValueError("No response from get_qa")
         return response
     except Exception as e:
         # Handle the error and render the error template
