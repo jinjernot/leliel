@@ -3,6 +3,7 @@ from flask import Flask, render_template
 from app.api.get_rich_media import get_rich_media
 from app.api.get_product import get_product
 from app.api.get_images import get_images
+from app.api.get_qa import get_qa
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -54,7 +55,7 @@ def call_get_rich_media():
 @app.route('/get_qa', methods=['POST'])
 def call_get_qa():
     try:
-        response = get_rich_media()
+        response = get_qa()
         if response is None:
             raise ValueError("No response from get_qa")
         return response

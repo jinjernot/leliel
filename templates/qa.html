@@ -1,0 +1,77 @@
+<html>
+  <head>
+    <title>
+      Product Images QA
+    </title>
+    <meta charset="UTF-8" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/styles.css') }}"
+    />
+    <link
+      rel="shortcut icon"
+      type="image/x-icon"
+      href="{{ url_for('static', filename='images/favicon.ico') }}"
+    />
+    <script
+      src="{{ url_for('static', filename='js/slideshow.js') }}"
+      defer
+    ></script>
+    <script
+      src="{{ url_for('static', filename='js/superscript.js') }}"
+      defer
+    ></script>
+    <script
+      src="{{ url_for('static', filename='js/mouseover.js') }}"
+      defer
+    ></script>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"
+    />
+    <link
+      rel="icon"
+      href="{{ url_for('static', filename='images/favicon.ico') }}"
+      type="image/x-icon"
+    />
+  </head>
+
+  <body>
+    <center><h3>Product Images QA</h3></center>
+    
+    <div id="ATF">
+      <table id="tech-specs">
+        <thead>
+          <tr>
+            <th>SKU</th>
+            <th>Pixel Width Count</th>
+            <th>Pixel Height Count</th>
+            <th>Orientation Count</th>
+            <th>Product Color Count</th>
+            <th>Master Object Name Count</th>
+            <th>Total Images</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for sku in sku_details %}
+            <tr>
+              <td>{{ sku.sku }}</td>
+              <td style="color: {{ 'red' if sku.counts.pixelWidth_count == 0 else 'inherit' }}">{{ sku.counts.pixelWidth_count }}</td>
+              <td style="color: {{ 'red' if sku.counts.pixelHeight_count == 0 else 'inherit' }}">{{ sku.counts.pixelHeight_count }}</td>
+              <td style="color: {{ 'red' if sku.counts.orientation_count == 0 else 'inherit' }}">{{ sku.counts.orientation_count }}</td>
+              <td style="color: {{ 'red' if sku.counts.productColor_count == 0 else 'inherit' }}">{{ sku.counts.productColor_count }}</td>
+              <td style="color: {{ 'red' if sku.counts.masterObjectName_count == 0 else 'inherit' }}">{{ sku.counts.masterObjectName_count }}</td>
+              <td style="color: {{ 'red' if sku.image_count == 0 else 'inherit' }}">{{ sku.image_count }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>
