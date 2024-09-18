@@ -1,8 +1,6 @@
 <html>
   <head>
-    <title>
-      Product Images QA
-    </title>
+    <title>Product Images QA</title>
     <meta charset="UTF-8" />
     <link
       rel="stylesheet"
@@ -50,6 +48,7 @@
         <thead>
           <tr>
             <th>SKU</th>
+            <th>SKU Name</th> <!-- New column for SKU Name -->
             <th>Pixel Width Count</th>
             <th>Pixel Height Count</th>
             <th>Orientation Count</th>
@@ -68,6 +67,7 @@
           {% for sku in sku_details %}
             <tr>
               <td>{{ sku.sku }}</td>
+              <td>{{ sku.sku_name }}</td> <!-- Display SKU Name here -->
               <td style="color: {{ 'red' if sku.counts.pixelWidth_count == 0 else 'inherit' }}">{{ sku.counts.pixelWidth_count }}</td>
               <td style="color: {{ 'red' if sku.counts.pixelHeight_count == 0 else 'inherit' }}">{{ sku.counts.pixelHeight_count }}</td>
               <td style="color: {{ 'red' if sku.counts.orientation_count == 0 else 'inherit' }}">{{ sku.counts.orientation_count }}</td>
@@ -84,6 +84,11 @@
           {% endfor %}
         </tbody>
       </table>
+    </div>
+
+    <!-- Button to return to the previous page -->
+    <div style="margin-top: 20px;">
+      <button onclick="window.history.back()">Return</button>
     </div>
   </body>
 </html>

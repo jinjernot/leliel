@@ -6,6 +6,10 @@ def build_template_qa(response_json, skus):
             images = product.get('images', [])
             sku_image_count = len(images)  # Count the number of images for this SKU
 
+            # Get the name from the SKU hierarchy
+            product_hierarchy = product.get('productHierarchy', {})
+            sku_hierarchy_name = product_hierarchy.get('sku', {}).get('name', 'N/A')
+
             # Create a list to hold all image details for this SKU
             sku_image_details = []
             for image in images:
@@ -73,6 +77,7 @@ def build_template_qa(response_json, skus):
             # Store SKU details and counts
             sku_data = {
                 "sku": sku,
+                "sku_name": sku_hierarchy_name,  # Include the SKU name from product hierarchy
                 "image_details": sku_image_details,  # The list of images for this SKU
                 "counts": counts,
                 "image_count": sku_image_count,  # Total images for this SKU
