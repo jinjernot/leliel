@@ -38,7 +38,6 @@ def call_get_images():
         # Handle the error and render the error template
         return render_template('error.html', error_message=str(e))
     
-    
 # Route to get product data for rich_media template
 @app.route('/get_rich_media', methods=['POST'])
 def call_get_rich_media():

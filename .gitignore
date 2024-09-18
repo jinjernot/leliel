@@ -9,3 +9,5 @@ docs
 api_response_images.json
 api_response_qa.json
 downloaded_images
+.venv
+*.h5

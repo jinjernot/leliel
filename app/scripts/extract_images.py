@@ -29,31 +29,36 @@ def download_images_from_json(json_file, image_dir):
     
     data = load_json(json_file)
     
-    # Print loaded data for debugging
-    print("Loaded JSON data:", data)
+    # Initialize a set to keep track of downloaded image URLs
+    downloaded_urls = set()
     
     # Navigate through the products
     products = data.get('products', {})
-    print("Number of products found:", len(products))
     
     for sku, product in products.items():
         images = product.get('images', [])
-        print(f"Processing product {sku} with {len(images)} image groups")
         
         for img_group_idx, image_group in enumerate(images):
             details = image_group.get('details', [])
-            print(f"Processing image group {img_group_idx} with {len(details)} details")
             
             for detail_idx, detail in enumerate(details):
                 # Apply filters
                 if (detail.get('orientation') == 'Left facing' and 
                     detail.get('pixelWidth') == '573'):
                     image_url = detail.get('imageUrlHttps')
+                    
                     if image_url:
-                        file_name = f"product_{sku}_group_{img_group_idx}_detail_{detail_idx}.png"  # Naming files incrementally
-                        file_path = os.path.join(image_dir, file_name)
-                        print(f"Downloading image {image_url}")
-                        download_image(image_url, file_path)
+                        # Check if the image has already been downloaded
+                        if image_url not in downloaded_urls:
+                            # Add URL to the set to mark it as downloaded
+                            downloaded_urls.add(image_url)
+                            
+                            file_name = f"product_{sku}_group_{img_group_idx}_detail_{detail_idx}.png"  # Naming files incrementally
+                            file_path = os.path.join(image_dir, file_name)
+                            print(f"Downloading image {image_url}")
+                            download_image(image_url, file_path)
+                        else:
+                            print(f"Skipping duplicate image {image_url}")
                     else:
                         print(f"No imageUrlHttps for entry {sku}_{img_group_idx}_{detail_idx}")
                 else:
