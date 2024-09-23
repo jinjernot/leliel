@@ -5,13 +5,13 @@ from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense
 import os
 
 # Define image dimensions
-img_height, img_width = 430, 573  # Adjust according to your images
-image_dir = 'downloaded_images'  # Directory with images
+img_height, img_width = 430, 573
+image_dir = 'downloaded_images'
 
 # Create an ImageDataGenerator for preprocessing
 datagen = ImageDataGenerator(
-    rescale=1./255,  # Normalize pixel values to [0, 1]
-    validation_split=0.2  # Split data into training and validation sets
+    rescale=1./255,
+    validation_split=0.2
 )
 
 # Load training data
@@ -19,7 +19,7 @@ train_generator = datagen.flow_from_directory(
     directory=image_dir,
     target_size=(img_height, img_width),
     batch_size=32,
-    class_mode='binary',  # Adjust according to your problem
+    class_mode='binary',
     subset='training'
 )
 
@@ -28,7 +28,7 @@ validation_generator = datagen.flow_from_directory(
     directory=image_dir,
     target_size=(img_height, img_width),
     batch_size=32,
-    class_mode='binary',  # Adjust according to your problem
+    class_mode='binary',
     subset='validation'
 )
 
@@ -42,12 +42,12 @@ model = Sequential([
     MaxPooling2D((2, 2)),
     Flatten(),
     Dense(512, activation='relu'),
-    Dense(1, activation='sigmoid')  # Adjust for binary classification
+    Dense(1, activation='sigmoid')
 ])
 
 # Compile the model
 model.compile(optimizer='adam',
-              loss='binary_crossentropy',  # Adjust based on your task
+              loss='binary_crossentropy',
               metrics=['accuracy'])
 
 # Print model summary
@@ -56,7 +56,7 @@ model.summary()
 # Train the model
 history = model.fit(
     train_generator,
-    epochs=10,  # Adjust the number of epochs
+    epochs=10,
     validation_data=validation_generator
 )
 

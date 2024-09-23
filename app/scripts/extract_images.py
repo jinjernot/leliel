@@ -25,7 +25,7 @@ def load_json(json_file):
 
 # Main function to download only "Left facing" images with pixelWidth 573 from JSON
 def download_images_from_json(json_file, image_dir):
-    os.makedirs(image_dir, exist_ok=True)  # Create directory if it doesn't exist
+    os.makedirs(image_dir, exist_ok=True)
     
     data = load_json(json_file)
     
@@ -65,7 +65,7 @@ def download_images_from_json(json_file, image_dir):
                     print(f"Skipping image {sku}_{img_group_idx}_{detail_idx} with orientation {detail.get('orientation')} and pixelWidth {detail.get('pixelWidth')}")
 
 # Example usage
-json_file = 'api_response_qa.json'  # Path to your JSON file
-image_dir = 'downloaded_images'  # Directory to save the images
+json_file = 'api_response_qa.json'
+image_dir = 'downloaded_images'
 
 download_images_from_json(json_file, image_dir)
