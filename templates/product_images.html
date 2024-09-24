@@ -40,43 +40,45 @@
       href="{{ url_for('static', filename='images/favicon.ico') }}"
       type="image/x-icon"
     />
-
   </head>
 
   <body>
     <center><h3>Product Images: SKU: {{ sku }}</h3></center>
-    
+
     <div id="ATF">
       <table id="tech-specs">
-          <tr><td><b>Metadata</b></td><td><b>Total</b></td></tr>
-          <tr><td>pixelWidth</td></td><td>{{ counts.pixelWidth_count }}</td></tr>
-          <tr><td>pixelHeight</td><td>{{ counts.pixelHeight_count }}</td></tr>
-          <tr><td>orientation</td><td>{{ counts.orientation_count }}</td></tr>
-          <tr><td>productColor</td><td>{{ counts.productColor_count }}</td></tr>
-          <tr><td>masterObjectName</td><td>{{ counts.masterObjectName_count }}</td></tr>
-          <tr><td>Total Images:</td><td>{{ image_count }}</td></tr>
+        <tr><td><b>Metadata</b></td><td><b>Total</b></td></tr>
+        <tr><td>pixelWidth</td><td>{{ counts.pixelWidth_count }}</td></tr>
+        <tr><td>pixelHeight</td><td>{{ counts.pixelHeight_count }}</td></tr>
+        <tr><td>orientation</td><td>{{ counts.orientation_count }}</td></tr>
+        <tr><td>productColor</td><td>{{ counts.productColor_count }}</td></tr>
+        <tr><td>masterObjectName</td><td>{{ counts.masterObjectName_count }}</td></tr>
+        <tr><td>Total Images:</td><td>{{ image_count }}</td></tr>
       </table>
-
 
       <hr class="centered-hr">
       {% for image in image_details %}
-          <table id="tech-specs">
-              <tr><td><b>masterObjectName</b></td><td>{{ image.masterObjectName }}</td><td rowspan="10"><img src="{{ image.imageUrlHttps }}" alt="Product Image" class="product-image"></td></tr>
-              <tr><td><b>pixelWidth</b></td><td>{{ image.pixelWidth }}</td></tr>
-              <tr><td><b>pixelHeight</b></td><td>{{ image.pixelHeight }}</td></tr>
-              <tr><td><b>orientation</b></td><td>{{ image.orientation }}</td></tr>
-              <tr><td><b>productColor</b></td><td>{{ image.productColor }}</td></tr>
-              <tr><td><b>documentTypeDetail</b></td><td>{{ image.documentTypeDetail }}</td></tr>
-              <tr><td><b>imageUrlHttp</b></td><td>{{ image.imageUrlHttp }}</a></td></tr>
-              <tr><td><b>imageUrlHttps</b></td><td>{{ image.imageUrlHttps }}</a></td></tr>
-              <tr><td><b>background</b></td><td>{{ image.background }}</td></tr>
-              <tr><td><b>type</b></td><td>{{ image.type }}</td></tr>
-          </table>
-          <hr class="centered-hr">
+        <table id="tech-specs">
+          <tr>
+            <td><b>masterObjectName</b></td>
+            <td>{{ image.masterObjectName }}</td>
+            <td rowspan="12">
+              <img src="{{ image.imageUrlHttps }}" alt="Product Image" class="product-image">
+            </td>
+          </tr>
+          <tr><td><b>pixelWidth</b></td><td>{{ image.pixelWidth }}</td></tr>
+          <tr><td><b>pixelHeight</b></td><td>{{ image.pixelHeight }}</td></tr>
+          <tr><td><b>orientation</b></td><td>{{ image.orientation }}</td></tr>
+          <tr><td><b>productColor</b></td><td>{{ image.productColor }}</td></tr>
+          <tr><td><b>documentTypeDetail</b></td><td>{{ image.documentTypeDetail }}</td></tr>
+          <tr><td><b>imageUrlHttp</b></td><td>{{ image.imageUrlHttp }}</td></tr>
+          <tr><td><b>imageUrlHttps</b></td><td>{{ image.imageUrlHttps }}</td></tr>
+          <tr><td><b>background</b></td><td>{{ image.background }}</td></tr>
+          <tr><td><b>type</b></td><td>{{ image.type }}</td></tr>
+          <tr><td><b>Pen Detection</b></td><td>{{ image.ml_prediction }}</td></tr> <!-- Updated to show ML prediction result -->
+        </table>
+        <hr class="centered-hr">
       {% endfor %}
-  </div>
-  
-  
-
+    </div>
   </body>
 </html>
