@@ -6,7 +6,7 @@ from io import BytesIO
 from PIL import Image
 
 # Load the trained model
-model = tf.keras.models.load_model('trained_model.h5')
+model = tf.keras.models.load_model('model.h5')
 
 # Define image dimensions
 img_height, img_width = 430, 573
@@ -67,7 +67,7 @@ def build_template_images(response_json, sku):
                     "background": detail.get('background'),
                     "masterObjectName": detail.get('masterObjectName'),
                     "type": detail.get('type'),
-                    "ml_prediction": ""  # Placeholder for ML prediction
+                    "ml_prediction": ""
                 }
 
                 # Check for pen detection using the ML model

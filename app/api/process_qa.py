@@ -1,5 +1,7 @@
 from app.core.qa_template import build_template_qa
 from flask import render_template
+import json
+import pandas as pd
 
 def process_api_response(response_json, skus):
     try:
