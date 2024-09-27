@@ -23,7 +23,7 @@ def get_qa():
             "languageCode": "en",
             "layoutName": "ALL-Specs",
             "requestor": "APIQA-PRO",
-            "reqContent": ["images"]
+            "reqContent": ["chunks", "images", "hierarchy", "plc"]
         }
 
         # Send POST request to the API
@@ -38,9 +38,9 @@ def get_qa():
         # Check if request was successful
         if api_response.status_code == 200:
             response_json = api_response.json()
-            filename = "api_response_qa.json"  # Set the filename for the JSON file
-            with open(filename, 'w') as json_file:   
-                json.dump(response_json, json_file)
+            #filename = "api_response_qa.json"  # Set the filename for the JSON file
+            #with open(filename, 'w') as json_file:   
+            #    json.dump(response_json, json_file)
             return process_api_response(response_json, skus)
         else:
             return process_api_error(api_response)

@@ -54,6 +54,16 @@ def build_template_qa(response_json, skus):
                         filtered_values.append(v)
                 return filtered_values, len(set(filtered_values))  # Return both filtered values and unique count
 
+            # Count each unique value for documentTypeDetail
+            document_type_detail_counts = {}
+            for image in sku_image_details:
+                document_type_detail = image.get('documentTypeDetail')
+                if document_type_detail:
+                    if document_type_detail not in document_type_detail_counts:
+                        document_type_detail_counts[document_type_detail] = 1
+                    else:
+                        document_type_detail_counts[document_type_detail] += 1
+
             # Calculate counts for each attribute for this SKU
             counts = {
                 "pixelWidth_count": filter_values('pixelWidth')[1],
@@ -61,6 +71,7 @@ def build_template_qa(response_json, skus):
                 "orientation_count": filter_values('orientation')[1],
                 "productColor_count": filter_values('productColor')[1],
                 "documentTypeDetail_count": filter_values('documentTypeDetail')[1],
+                "documentTypeDetail_breakdown": document_type_detail_counts,  # Include the breakdown
                 "imageUrlHttp_count": filter_values('imageUrlHttp')[1],
                 "imageUrlHttps_count": filter_values('imageUrlHttps')[1],
                 "background_count": filter_values('background')[1],
