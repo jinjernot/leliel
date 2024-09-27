@@ -22,7 +22,7 @@ def build_excel(sku_details):
 
     # Define header styles (bold, background color)
     header_font = Font(bold=True)
-    header_fill = PatternFill("solid", fgColor="D9EAD3")
+    header_fill = PatternFill("solid", color="0096D6")
     for col in range(1, len(headers) + 1):
         sheet.cell(row=1, column=col).font = header_font
         sheet.cell(row=1, column=col).fill = header_fill

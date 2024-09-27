@@ -77,12 +77,7 @@ def export_excel():
         excel_file_buffer = build_excel(sku_details)
 
         # Send the Excel file as a response
-        return send_file(
-            excel_file_buffer,
-            mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            as_attachment=True,
-            attachment_filename='product_images_qa.xlsx'
-        )
+        return send_file(excel_file_buffer, attachment_filename='product_images_qa.xlsx', as_attachment=True)
     except Exception as e:
         return render_template('error.html', error_message=str(e))
 

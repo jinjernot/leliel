@@ -43,7 +43,7 @@
   <body>
     <center><h3>Product Images QA</h3></center>
 
-    <form action="/export-excel" method="POST">
+    <form method="POST" action="{{ url_for('export_excel') }}">
       <!-- Properly serialize sku_details to JSON with double quotes -->
       <input type="hidden" name="sku_details" value='{{ sku_details|tojson }}'>
       <button type="submit" class="btn btn-primary">Export</button>
