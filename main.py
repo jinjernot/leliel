@@ -64,6 +64,7 @@ def call_get_qa():
     except Exception as e:
         # Handle the error and render the error template
         return render_template('error.html', error_message=str(e))
+        
     
     
 @app.route('/export-excel', methods=['POST'])

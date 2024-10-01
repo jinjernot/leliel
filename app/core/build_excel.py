@@ -12,8 +12,10 @@ def build_excel(sku_details):
     # Define headers matching your HTML table
     headers = [
         "SKU", "SKU Name", "Orientation Count", 
-        "Product Color Count", "Document Type Details",  # Updated header
-        "Master Object Name Count", "Type Count", "Total Images", "Notes"
+        "Product Color Count", "Document Type Count",  # Added "Document Type Count" column
+        "Document Type Breakdown",                    # Added "Document Type Breakdown" column
+        "Master Object Name Count", "Type Count", 
+        "Total Images", "Notes"
     ]
 
     # Add headers to the Excel sheet
@@ -29,11 +31,13 @@ def build_excel(sku_details):
     # Add SKU data rows
     for sku in sku_details:
         counts = sku["counts"]
-        document_types = ", ".join(sku.get("document_types", []))  # Join document types with commas
+        document_type_breakdown = "; ".join([f"{k}: {v}" for k, v in counts["documentTypeDetail_breakdown"].items()])  # Format document type breakdown as "key: value"
+        
         row = [
             sku["sku"], sku["sku_name"], 
             counts["orientation_count"], counts["productColor_count"], 
-            document_types,  # Include detailed document types here
+            counts["documentTypeDetail_count"],    # Include the documentTypeDetail count here
+            document_type_breakdown,               # Include detailed breakdown of document types here
             counts["masterObjectName_count"], counts["type_count"], 
             sku["image_count"], sku.get("notes", "")
         ]
