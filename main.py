@@ -65,8 +65,6 @@ def call_get_qa():
         # Handle the error and render the error template
         return render_template('error.html', error_message=str(e))
         
-    
-    
 @app.route('/export-excel', methods=['POST'])
 def export_excel():
     try:
@@ -81,7 +79,6 @@ def export_excel():
         return send_file(excel_file_buffer, attachment_filename='product_images_qa.xlsx', as_attachment=True)
     except Exception as e:
         return render_template('error.html', error_message=str(e))
-
 
 if __name__ == '__main__':
     app.run(debug=True)

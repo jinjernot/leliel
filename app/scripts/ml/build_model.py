@@ -61,7 +61,7 @@ history = model.fit(
 )
 
 # Save the trained model
-model.save('trained_model.h5')
+model.save('model.h5')
 
 # Evaluate the model
 val_loss, val_accuracy = model.evaluate(validation_generator)
