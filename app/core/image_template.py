@@ -6,7 +6,7 @@ from io import BytesIO
 from PIL import Image
 
 # Load the trained model
-model = tf.keras.models.load_model('model.h5')
+model = tf.keras.models.load_model('/app/core/pigo.h5')
 
 # Define image dimensions
 img_height, img_width = 430, 573
@@ -30,23 +30,42 @@ def preprocess_image_from_url(img_url):
         print(f"Error processing image from URL: {img_url}, error: {str(e)}")
         return None
 
-# Function to make predictions from URL
-def predict_image_from_url(model, img_url):
+# Function to make predictions for color and orientation
+def predict_color_orientation(model, img_url, productColor, orientation):
     img_array = preprocess_image_from_url(img_url)
     if img_array is not None:
-        prediction = model.predict(img_array)[0][0]
-        if prediction > 0.5:
-            return "Pen Detected"
-        else:
-            return "No Pen Detected"
-    else:
-        return "Image Processing Failed"
+        predictions = model.predict(img_array)
+        
+        # Assuming your model outputs two probabilities: one for color and one for orientation
+        predicted_color_idx = np.argmax(predictions[0])  # Index of predicted color
+        predicted_orientation_idx = np.argmax(predictions[1])  # Index of predicted orientation
+        
+        # Map indices to the actual color and orientation classes
+        color_labels = list(train_generator.class_indices.keys())  # Assuming you have a list of color labels
+        orientation_labels = list(train_generator.class_indices.keys())  # Assuming you have a list of orientation labels
+        
+        predicted_color = color_labels[predicted_color_idx]
+        predicted_orientation = orientation_labels[predicted_orientation_idx]
 
-# Updated build_template_images function with ML check
+        # Check if predicted values match the actual values
+        color_match = predicted_color.lower() == productColor.lower()
+        orientation_match = predicted_orientation.lower() == orientation.lower()
+
+        return {
+            "predicted_color": predicted_color,
+            "color_match": color_match,
+            "predicted_orientation": predicted_orientation,
+            "orientation_match": orientation_match
+        }
+    else:
+        return {
+            "error": "Image processing failed"
+        }
+
+# Updated build_template_images function with color and orientation check
 def build_template_images(response_json, sku):
     try:
         product = response_json.get('products', {}).get(sku, {})
-        sku = product.get('sku', [])
         images = product.get('images', [])
         
         # Create a list to hold all image details
@@ -67,13 +86,16 @@ def build_template_images(response_json, sku):
                     "background": detail.get('background'),
                     "masterObjectName": detail.get('masterObjectName'),
                     "type": detail.get('type'),
-                    "ml_prediction": ""
+                    "ml_prediction": {}
                 }
 
-                # Check for pen detection using the ML model
+                # Check color and orientation using the ML model
                 img_url = detail.get('imageUrlHttp') or detail.get('imageUrlHttps')
+                product_color = detail.get('productColor')
+                orientation = detail.get('orientation')
+                
                 if img_url:
-                    prediction = predict_image_from_url(model, img_url)
+                    prediction = predict_color_orientation(model, img_url, product_color, orientation)
                     image_data["ml_prediction"] = prediction  # Add the ML result to the image data
                 
                 all_image_details.append(image_data)
