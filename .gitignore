@@ -11,3 +11,4 @@ api_response_qa.json
 downloaded_images
 .venv
 *.h5
+*.keras

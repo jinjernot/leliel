@@ -3,6 +3,7 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras import layers, models
 from tensorflow.keras.preprocessing import image
 import numpy as np
+import json
 
 # Set constants
 img_height, img_width = 430, 573
@@ -71,6 +72,11 @@ print(f"Validation accuracy: {val_acc:.4f}")
 # Step 5: Save the Model
 model.save('color_orientation_classifier.keras')
 
+# After fitting the model
+class_indices = train_generator.class_indices
+with open('class_indices.json', 'w') as f:
+    json.dump(class_indices, f)
+
 # Step 6: Predict on New Images
 def predict_image(img_path):
     # Load the image
@@ -85,8 +91,3 @@ def predict_image(img_path):
     # Get the class label
     class_label = list(train_generator.class_indices.keys())[predicted_class[0]]
     return class_label
-
-# Example usage for a prediction
-img_path = 'path_to_image.png'  # Replace with your image path
-predicted_label = predict_image(img_path)
-print(f"Predicted label: {predicted_label}")
