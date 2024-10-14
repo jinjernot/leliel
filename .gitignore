@@ -3,12 +3,9 @@ config.py
 __pycache__
 leliel_env
 *.xlsx
-response.json
-api_response.json
 docs
-api_response_images.json
-api_response_qa.json
 downloaded_images
 .venv
 *.h5
 *.keras
+.json

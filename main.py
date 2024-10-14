@@ -5,7 +5,9 @@ import json
 from app.api.get_rich_media import get_rich_media
 from app.api.get_product import get_product
 from app.api.get_images import get_images
-from app.api.get_qa import get_qa
+from app.api.get_qa import get_qa, get_qa_rich_media
+
+
 from app.core.build_excel import build_excel
 
 # Initialize Flask app
@@ -60,6 +62,18 @@ def call_get_qa():
         response = get_qa()
         if response is None:
             raise ValueError("No response from get_qa")
+        return response
+    except Exception as e:
+        # Handle the error and render the error template
+        return render_template('error.html', error_message=str(e))
+    
+# Route to get product data for rich_media template
+@app.route('/get_qa_rich_media', methods=['POST'])
+def call_get_qa_rich_media():
+    try:
+        response = get_qa_rich_media()
+        if response is None:
+            raise ValueError("No response from get_qa_rich_media")
         return response
     except Exception as e:
         # Handle the error and render the error template

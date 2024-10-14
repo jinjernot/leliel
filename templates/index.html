@@ -200,11 +200,12 @@
 							</div>
 						</div>
 					</div>
+
 					<div class="row">
 						<div class="col-md-4">
 							<div class="card">
 								<div class="card-header">
-									<div class="card-title">Image QA</div>
+									<div class="card-title">Image QA - Product Images</div>
 								</div>
 								<div class="card-body">
 									<form method="POST" action="{{ url_for('call_get_qa') }}">
@@ -213,11 +214,23 @@
 												<textarea id="sku" name="sku"
 														  class="form-control form-control-sm"
 														  placeholder="Enter SKUs, comma separated"
-														  rows="5"
+														  rows="3"
 														  required></textarea>
 											</div>
 										</div>
-								
+										<div class="form-group row align-items-center">
+											<label for="country" class="col-form-label col-auto">Locale:</label>
+
+											<input type="text" id="country" name="country"
+												class="form-control form-control-sm" placeholder="CC" maxlength="2"
+												required />
+
+											<label for="language" class="col-form-label col-auto">Language:</label>
+
+											<input type="text" id="language" name="language"
+												class="form-control form-control-sm" placeholder="LC" maxlength="2"
+												required />
+										</div>
 										<div class="card-action">
 											<button type="submit" class="btn btn-success">
 												Submit
@@ -227,7 +240,52 @@
 								</div>
 							</div>
 						</div>
-				</div>
+
+						<div class="col-md-4">
+							<div class="card">
+								<div class="card-header">
+									<div class="card-title">Image QA - Rich Media</div>
+								</div>
+								<div class="card-body">
+									<form method="POST" action="{{ url_for('call_get_qa_rich_media') }}">
+										<div class="form-group row align-items-center">
+											<div class="col">
+												<textarea id="sku" name="sku"
+														  class="form-control form-control-sm"
+														  placeholder="Enter SKUs, comma separated"
+														  rows="3"
+														  required></textarea>
+											</div>
+										</div>
+										<div class="form-group row align-items-center">
+											<label for="country" class="col-form-label col-auto">Locale:</label>
+
+											<input type="text" id="country" name="country"
+												class="form-control form-control-sm" placeholder="CC" maxlength="2"
+												required />
+
+											<label for="language" class="col-form-label col-auto">Language:</label>
+
+											<input type="text" id="language" name="language"
+												class="form-control form-control-sm" placeholder="LC" maxlength="2"
+												required />
+										</div>
+
+										<div class="card-action">
+											<button type="submit" class="btn btn-success">
+												Submit
+											</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+
+
+
 			</div>
 			<footer class="footer">
 				<div class="container-fluid">
