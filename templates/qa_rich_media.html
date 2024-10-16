@@ -26,12 +26,20 @@
         <thead>
           <tr>
             <th>SKU</th>
+            <th>Asset Category Count</th>
+            <th>Asset Description Count</th>
+            <th>Asset ID Count</th>
+            <th>Asset Modified Date Count</th>
+            <th>Asset Name Count</th>
+            <th>Asset Title Count</th>
+            <th>Image Detail Count</th>
+            <th>Keyword Count</th>
+            <th>Language Codes Count</th>
             <th>Orientation Count</th>
-            <th>Product Color Count</th>
-            <th>Document Type Detail Count</th>
-            <th>Master Object Name Count</th>
-            <th>Type Count</th>
+            <th>Pixel Height Count</th>
+            <th>Pixel Width Count</th>
             <th>Total Images</th>
+            <th>Asset Category Breakdown</th>
             <th>Notes</th>
           </tr>
         </thead>
@@ -39,17 +47,25 @@
           {% for sku in sku_details %}
             <tr>
               <td>{{ sku.sku }}</td>
+              <td style="color: {{ 'red' if sku.counts.assetCategory_count == 0 else 'inherit' }}">{{ sku.counts.assetCategory_count }}</td>
+              <td style="color: {{ 'red' if sku.counts.assetDescription_count == 0 else 'inherit' }}">{{ sku.counts.assetDescription_count }}</td>
+              <td style="color: {{ 'red' if sku.counts.assetId_count == 0 else 'inherit' }}">{{ sku.counts.assetId_count }}</td>
+              <td style="color: {{ 'red' if sku.counts.assetModifiedDate_count == 0 else 'inherit' }}">{{ sku.counts.assetModifiedDate_count }}</td>
+              <td style="color: {{ 'red' if sku.counts.assetName_count == 0 else 'inherit' }}">{{ sku.counts.assetName_count }}</td>
+              <td style="color: {{ 'red' if sku.counts.assetTitle_count == 0 else 'inherit' }}">{{ sku.counts.assetTitle_count }}</td>
+              <td style="color: {{ 'red' if sku.counts.imageDetail_count == 0 else 'inherit' }}">{{ sku.counts.imageDetail_count }}</td>
+              <td style="color: {{ 'red' if sku.counts.keyword_count == 0 else 'inherit' }}">{{ sku.counts.keyword_count }}</td>
+              <td style="color: {{ 'red' if sku.counts.languageCodes_count == 0 else 'inherit' }}">{{ sku.counts.languageCodes_count }}</td>
               <td style="color: {{ 'red' if sku.counts.orientation_count == 0 else 'inherit' }}">{{ sku.counts.orientation_count }}</td>
-              <td style="color: {{ 'red' if sku.counts.productColor_count == 0 else 'inherit' }}">{{ sku.counts.productColor_count }}</td>
+              <td style="color: {{ 'red' if sku.counts.pixelHeight_count == 0 else 'inherit' }}">{{ sku.counts.pixelHeight_count }}</td>
+              <td style="color: {{ 'red' if sku.counts.pixelWidth_count == 0 else 'inherit' }}">{{ sku.counts.pixelWidth_count }}</td>
+              <td style="color: {{ 'red' if sku.image_count == 0 else 'inherit' }}">{{ sku.image_count }}</td>
               <td>
-                <!-- Display the breakdown for documentTypeDetail -->
-                {% for doc_type, count in sku.counts.documentTypeDetail_breakdown.items() %}
-                  {{ doc_type }}: {{ count }}<br>
+                <!-- Display the breakdown for assetCategory -->
+                {% for asset_category, count in sku.counts.assetCategory_breakdown.items() %}
+                  {{ asset_category }}: {{ count }}<br>
                 {% endfor %}
               </td>
-              <td style="color: {{ 'red' if sku.counts.masterObjectName_count == 0 else 'inherit' }}">{{ sku.counts.masterObjectName_count }}</td>
-              <td style="color: {{ 'red' if sku.counts.type_count == 0 else 'inherit' }}">{{ sku.counts.type_count }}</td>
-              <td style="color: {{ 'red' if sku.image_count == 0 else 'inherit' }}">{{ sku.image_count }}</td>
               <td>{{ sku.notes }}</td>
             </tr>
           {% endfor %}
@@ -61,3 +77,4 @@
       <button onclick="window.history.back()">Return</button>
     </div>
   </body>
+</html>
