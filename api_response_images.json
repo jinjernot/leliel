@@ -1,1 +1,0 @@
-{"request": {"countryCode": "ww", "languageCode": "en", "skus": ["9E8X2EA"], "oids": null, "layoutName": "RICHMEDIA", "requestor": "APIQA-PRO"}, "status": "success", "products": {"9E8X2EA": {"oid": "2102082202", "sku": "9E8X2EA", "status": false, "statusMessage": "no rich media data for this oid"}}}
