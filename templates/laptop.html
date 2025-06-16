@@ -4,9 +4,8 @@
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
     <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}" />
-    <script src="{{ url_for('static', filename='js/slideshow.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='js/superscript.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='js/mouseover.js') }}" defer></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
   </head>
 
   <body>
@@ -14,21 +13,28 @@
       <table>
         <tr>
           <td>
-            <div class="slideshow-container">
+            <div class="main-slideshow">
                 {% set orientations = ['Center facing', 'Left facing', 'Right facing', 'Rear facing', 'Left rear facing', 'Top view closed', 'Detail view', 'Left profile closed', 'Right profile closed', 'Right rear facing'] %}
                 {% for orientation in orientations %}
                     {% for index, row in df_images.iterrows() %}
                         {% if row['pixelWidth'] == '573' and row['orientation'] == orientation and row['type'] == 'png' %}
-                        <div class="mySlides fade">
+                        <div>
                             <center>
-                            <img src="{{ row['imageUrlHttps'] | default('') | safe }}" id="main-image-{{loop.index}}" onclick="openModal('{{ row['imageUrlHttps'] | default('') | safe }}')"/>
+                            <img src="{{ row['imageUrlHttps'] | default('') | safe }}" onclick="openModal('{{ row['imageUrlHttps'] | default('') | safe }}')"/>
                             </center>
                         </div>
                         {% endif %}
                     {% endfor %}
                 {% endfor %}
-                <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-                <a class="next" onclick="plusSlides(1)">&#10095;</a>
+            </div>
+            <div class="thumbnail-carousel">
+                {% for orientation in ['Center facing', 'Left facing', 'Right facing', 'Rear facing', 'Left rear facing', 'Top view closed', 'Detail view', 'Left profile closed', 'Right profile closed', 'Right rear facing'] %}
+                    {% for index, row in df_images.iterrows() %}
+                        {% if row['pixelWidth'] == '573' and row['orientation'] == orientation and row['type'] == 'png' %}
+                            <div><img class="thumbnail" src="{{ row['imageUrlHttps'] | default('') | safe }}" alt="{{ orientation }}"></div>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
             </div>
           </td>
           <td>
@@ -94,7 +100,7 @@
           </tbody>
         </table>
       </div>
-      
+
       <br/>
 
       <div id="features">
@@ -115,11 +121,11 @@
             </tbody>
         </table>
       </div>
-      
+
       <br/>
       <h2 id="see-more" style="cursor: pointer;">+Expand to see more</h2>
       <br/>
-      
+
       <table id="tech-specs" style="display: none;">
         <tbody>
             {% set tech_spec_tags = ['osinstalled', 'processorfamily', 'processorname', 'chipset', 'memstdes_01', 'hd_01des', 'graphicseg_01card_01', 'displaymet', 'batterylife', 'weightmet', 'colour', 'prodfinish', 'securitymgmt', 'wrntyfeatures', 'swincluded'] %}
@@ -140,5 +146,11 @@
         </tbody>
       </table>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script src="{{ url_for('static', filename='js/slideshow.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/superscript.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/mouseover.js') }}"></script>
   </body>
 </html>

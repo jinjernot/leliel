@@ -422,3 +422,67 @@ sup {
   margin: 20px auto;
   border: 1px groove #0096d6;
 }
+
+.thumbnail {
+  width: 150px;
+  height: auto;
+  margin: 0 auto;
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+.thumbnail:hover {
+  opacity: 1;
+}
+
+.slick-current .thumbnail {
+  opacity: 1;
+}
+
+/* Main slideshow arrows */
+.main-slideshow .slick-prev,
+.main-slideshow .slick-next {
+    background: #333;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    z-index: 1;
+}
+.main-slideshow .slick-prev:before,
+.main-slideshow .slick-next:before {
+    color: white;
+    font-size: 20px;
+}
+.main-slideshow .slick-prev {
+    left: 25px;
+}
+.main-slideshow .slick-next {
+    right: 25px;
+}
+
+/* Thumbnail carousel arrows */
+.thumbnail-carousel {
+    margin: 10px 30px 0;
+}
+
+.thumbnail-carousel .slick-slide {
+    padding: 0 5px;
+}
+
+.thumbnail-carousel .slick-prev,
+.thumbnail-carousel .slick-next {
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+}
+.thumbnail-carousel .slick-prev:before,
+.thumbnail-carousel .slick-next:before {
+    font-size: 30px;
+    color: black;
+}
+.thumbnail-carousel .slick-prev {
+    left: -35px;
+}
+.thumbnail-carousel .slick-next {
+    right: -35px;
+}
