@@ -1,33 +1,31 @@
-$(document).ready(function(){
-  $('.main-slideshow').slick({
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    arrows: false, // Changed from true
-    fade: true,
-    asNavFor: '.thumbnail-carousel'
-  });
-  $('.thumbnail-carousel').slick({
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    asNavFor: '.main-slideshow',
-    dots: false,
-    arrows: true,
-    centerMode: true,
-    focusOnSelect: true,
-    autoplay: false, // Changed from true
-  });
+document.addEventListener('DOMContentLoaded', function() {
+    const mainImageContainer = document.querySelector('.gallery-main-image');
+    const thumbnails = document.querySelectorAll('.gallery-thumbnails .thumbnail');
+
+    if (mainImageContainer && thumbnails.length > 0) {
+        // Function to set the main image
+        const setMainImage = (url) => {
+            mainImageContainer.innerHTML = `<img src="${url}" alt="Main product image">`;
+        };
+
+        // Set the first image as the main image on load
+        const firstImageUrl = thumbnails[0].getAttribute('data-full-image');
+        setMainImage(firstImageUrl);
+        thumbnails[0].classList.add('active');
+
+        // Add click listeners to all thumbnails
+        thumbnails.forEach(thumbnail => {
+            thumbnail.addEventListener('click', function() {
+                // Get the full image URL from the data attribute
+                const newImageUrl = this.getAttribute('data-full-image');
+                
+                // Update the main image
+                setMainImage(newImageUrl);
+
+                // Update the active thumbnail styling
+                thumbnails.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    }
 });
-
-// Function to open the modal with the clicked image
-function openModal(imageUrl) {
-  var modal = document.getElementById("myModal");
-  var modalImg = document.getElementById("modal-img");
-  modal.style.display = "block";
-  modalImg.src = imageUrl;
-}
-
-// Function to close the modal
-function closeModal() {
-  var modal = document.getElementById("myModal");
-  modal.style.display = "none";
-}

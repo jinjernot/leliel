@@ -4,122 +4,104 @@
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
     <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}" />
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
   </head>
-
   <body>
     <div id="ATF" class="superscript-content">
-      <table>
-        <tr>
-          <td>
-            <div class="main-slideshow">
-                {% set orientations = ['Center facing', 'Left facing', 'Right facing', 'Rear facing', 'Left rear facing', 'Top view closed', 'Detail view', 'Left profile closed', 'Right profile closed', 'Right rear facing'] %}
-                {% for orientation in orientations %}
-                    {% for index, row in df_images.iterrows() %}
-                        {% if row['pixelWidth'] == '573' and row['orientation'] == orientation and row['type'] == 'png' %}
-                        <div>
-                            <center>
-                            <img src="{{ row['imageUrlHttps'] | default('') | safe }}" onclick="openModal('{{ row['imageUrlHttps'] | default('') | safe }}')"/>
-                            </center>
-                        </div>
-                        {% endif %}
-                    {% endfor %}
-                {% endfor %}
-            </div>
-            <div class="thumbnail-carousel">
-                {% for orientation in ['Center facing', 'Left facing', 'Right facing', 'Rear facing', 'Left rear facing', 'Top view closed', 'Detail view', 'Left profile closed', 'Right profile closed', 'Right rear facing'] %}
-                    {% for index, row in df_images.iterrows() %}
-                        {% if row['pixelWidth'] == '573' and row['orientation'] == orientation and row['type'] == 'png' %}
-                            <div><img class="thumbnail" src="{{ row['imageUrlHttps'] | default('') | safe }}" alt="{{ orientation }}"></div>
-                        {% endif %}
-                    {% endfor %}
-                {% endfor %}
-            </div>
-          </td>
-          <td>
-            <b><h1><span id="prodname">{{ df[df['tag'] == 'prodname']['value'].iloc[0] | default('') | safe }}</span></h1></b>
-            <span id="proddes_overview_extended">{{ df[df['tag'] == 'proddes_overview_extended']['value'].iloc[0] | default('') | safe }}</span>
-            <br /><br />
-            <div id="ksp">
-                <ul>
-                {% set ksp_tags = [
-                    ('ksp_01_suppt_01_long', None), ('ksp_02_suppt_01_long', None), ('ksp_03_suppt_01_long', None),
-                    ('ksp_04_suppt_01_long', None), ('ksp_05_suppt_01_long', None), ('osinstalled', 'osinstalledftntnbr'),
-                    ('processorname', 'processornameftntnbr'), ('memstdes_01', 'memstdes_01ftntnbr'),
-                    ('hd_01des', 'hd_01desftntnbr'), ('hd_02des', 'hd_02desftntnbr'), ('hd_03des', 'hd_03desftntnbr'),
-                    ('displaymet', 'displaymetftntnbr'), ('graphicseg_01header', None), ('graphicseg_01card_01', None),
-                    ('batterylife', 'batterylifeftntnbr'), ('batterylifedes', 'batterylifedesftntnbr'), ('colour', None)
-                ] %}
-                {% for tag, ftnt_tag in ksp_tags %}
-                    {% if tag in df['tag'].values %}
-                    <li>
-                        <span>{{ df[df['tag'] == tag]['value'].iloc[0] | default('') | safe }}</span>
-                        {% if ftnt_tag and ftnt_tag in df['tag'].values %}
-                        <span>{{ df[df['tag'] == ftnt_tag]['value'].iloc[0] | default('') | safe }}</span>
-                        {% endif %}
-                    </li>
-                    {% endif %}
-                {% endfor %}
-                </ul>
-            </div>
-          </td>
-        </tr>
-      </table>
+
+      <center><h1><span id="prodname">{{ df[df['tag'] == 'prodname']['value'].iloc[0] | default('') | safe }}</span></h1></center>
+      <br>
+
+      <div class="gallery-container">
+        <div class="gallery-main-image">
+          </div>
+        <div class="gallery-thumbnails">
+          {% set image_found = false %}
+          {% for orientation in ['Center facing', 'Left facing', 'Right facing', 'Rear facing', 'Left rear facing', 'Top view closed', 'Detail view', 'Left profile closed', 'Right profile closed', 'Right rear facing'] %}
+              {% for index, row in df_images.iterrows() %}
+                  {% if row['pixelWidth'] == '573' and row['orientation'] == orientation and row['type'] == 'png' %}
+                      <img class="thumbnail" src="{{ row['imageUrlHttps'] | default('') | safe }}" data-full-image="{{ row['imageUrlHttps'] | default('') | safe }}" alt="{{ row['orientation'] | default('') }}">
+                      {% set image_found = true %}
+                  {% endif %}
+              {% endfor %}
+          {% endfor %}
+          {% if not image_found %}
+            <p>No images available for this product.</p>
+          {% endif %}
+        </div>
+      </div>
+      <br>
+
+      <div class="product-description">
+        <p>{{ df[df['tag'] == 'proddes_overview_extended']['value'].iloc[0] | default('') | safe }}</p>
+      </div>
+      
+      <br>
+
+      <div id="ksp">
+          {% set ksp_tags = [
+              ('ksp_01_suppt_01_long', None), ('ksp_02_suppt_01_long', None), ('ksp_03_suppt_01_long', None),
+              ('ksp_04_suppt_01_long', None), ('ksp_05_suppt_01_long', None), ('osinstalled', 'osinstalledftntnbr'),
+              ('processorname', 'processornameftntnbr'), ('memstdes_01', 'memstdes_01ftntnbr'),
+              ('hd_01des', 'hd_01desftntnbr'), ('hd_02des', 'hd_02desftntnbr'), ('hd_03des', 'hd_03desftntnbr'),
+              ('displaymet', 'displaymetftntnbr'), ('graphicseg_01header', None), ('graphicseg_01card_01', None),
+              ('batterylife', 'batterylifeftntnbr'), ('batterylifedes', 'batterylifedesftntnbr'), ('colour', None)
+          ] %}
+          {% for tag, ftnt_tag in ksp_tags %}
+              {% if tag in df['tag'].values %}
+              <div class="ksp-item">
+                  <span>- {{ df[df['tag'] == tag]['value'].iloc[0] | default('') | safe }}</span>
+                  {% if ftnt_tag and ftnt_tag in df['tag'].values %}
+                  <span>{{ df[df['tag'] == ftnt_tag]['value'].iloc[0] | default('') | safe }}</span>
+                  {% endif %}
+              </div>
+              {% endif %}
+          {% endfor %}
+      </div>
+
       <br />
       <div id="MM" class="superscript-content">
-        <table>
-          <tbody>
-            {% set mm_blocks = [
-                { 'headline': 'ksp_01_headline_medium', 'support': 'ksp_01_suppt_01_long', 'orientation': 'Center facing', 'img_first': True },
-                { 'headline': 'ksp_02_headline_medium', 'support': 'ksp_02_suppt_01_long', 'orientation': 'Left facing', 'img_first': False },
-                { 'headline': 'ksp_03_headline_medium', 'support': 'ksp_03_suppt_01_long', 'orientation': 'Right facing', 'img_first': True },
-                { 'headline': 'ksp_04_headline_medium', 'support': 'ksp_04_suppt_01_long', 'orientation': 'Top view closed', 'img_first': False }
-            ] %}
-            {% for block in mm_blocks %}
-                {% if block.headline in df['tag'].values or block.orientation in df_images['orientation'].values %}
-                <tr>
-                    {% set text_content %}
-                        {% if block.headline in df['tag'].values %}<h3><strong>{{ df[df['tag'] == block.headline]['value'].iloc[0] }}</strong></h3>{% endif %}
-                        {% if block.support in df['tag'].values %}<p>{{ df[df['tag'] == block.support]['value'].iloc[0] }}</p>{% endif %}
-                    {% endset %}
-                    {% set image_content %}
-                        {% if block.orientation in df_images['orientation'].values %}<img src="{{ df_images[df_images['orientation'] == block.orientation]['imageUrlHttps'].iloc[0] | default('') | escape }}" alt="Product Image">{% endif %}
-                    {% endset %}
+        {% set mm_blocks = [
+            { 'headline': 'ksp_01_headline_medium', 'support': 'ksp_01_suppt_01_long', 'orientation': 'Center facing', 'img_first': True },
+            { 'headline': 'ksp_02_headline_medium', 'support': 'ksp_02_suppt_01_long', 'orientation': 'Left facing', 'img_first': False },
+            { 'headline': 'ksp_03_headline_medium', 'support': 'ksp_03_suppt_01_long', 'orientation': 'Right facing', 'img_first': True },
+            { 'headline': 'ksp_04_headline_medium', 'support': 'ksp_04_suppt_01_long', 'orientation': 'Top view closed', 'img_first': False }
+        ] %}
+        {% for block in mm_blocks %}
+            {% if block.headline in df['tag'].values or block.orientation in df_images['orientation'].values %}
+            <div class="mm-block">
+                {% set text_content %}
+                    {% if block.headline in df['tag'].values %}<h3><strong>{{ df[df['tag'] == block.headline]['value'].iloc[0] }}</strong></h3>{% endif %}
+                    {% if block.support in df['tag'].values %}<p>{{ df[df['tag'] == block.support]['value'].iloc[0] }}</p>{% endif %}
+                {% endset %}
+                {% set image_content %}
+                    {% if block.orientation in df_images['orientation'].values %}<img src="{{ df_images[df_images['orientation'] == block.orientation]['imageUrlHttps'].iloc[0] | default('') | escape }}" alt="Product Image">{% endif %}
+                {% endset %}
 
-                    {% if block.img_first %}
-                        <td class="MM-image">{{ image_content }}</td>
-                        <td class="MM-text">{{ text_content }}</td>
-                    {% else %}
-                        <td class="MM-text">{{ text_content }}</td>
-                        <td class="MM-image">{{ image_content }}</td>
-                    {% endif %}
-                </tr>
+                {% if block.img_first %}
+                    <div class="mm-image">{{ image_content }}</div>
+                    <div class="mm-text">{{ text_content }}</div>
+                {% else %}
+                    <div class="mm-text">{{ text_content }}</div>
+                    <div class="mm-image">{{ image_content }}</div>
                 {% endif %}
-            {% endfor %}
-          </tbody>
-        </table>
+            </div>
+            {% endif %}
+        {% endfor %}
       </div>
 
       <br/>
 
       <div id="features">
-        <table>
-            <tbody>
-            {% for i in range(1, 4) %}
-                <tr>
-                {% for j in range(1, 3) %}
-                    {% set feature_num = (i - 1) * 2 + j %}
-                    <td>
-                        <b>{{ df[df['tag'] == 'feature_0' ~ i ~ '_headline_0' ~ j ~ '_statement']['value'].iloc[0] | default('') | safe }}</b><br>
-                        {{ df[df['tag'] == 'feature_0' ~ i ~ '_suppt_0' ~ j ~ '_medium']['value'].iloc[0] | default('') | safe }}
-                        {{ df[df['tag'] == 'feature_0' ~ i ~ '_suppt_0' ~ j ~ '_ftntnbr']['value'].iloc[0] | default('') | safe }}
-                    </td>
-                {% endfor %}
-                </tr>
+        {% for i in range(1, 4) %}
+            {% for j in range(1, 3) %}
+                {% set feature_num = (i - 1) * 2 + j %}
+                <div class="feature-block">
+                    <b>{{ df[df['tag'] == 'feature_0' ~ i ~ '_headline_0' ~ j ~ '_statement']['value'].iloc[0] | default('') | safe }}</b><br>
+                    {{ df[df['tag'] == 'feature_0' ~ i ~ '_suppt_0' ~ j ~ '_medium']['value'].iloc[0] | default('') | safe }}
+                    {{ df[df['tag'] == 'feature_0' ~ i ~ '_suppt_0' ~ j ~ '_ftntnbr']['value'].iloc[0] | default('') | safe }}
+                </div>
             {% endfor %}
-            </tbody>
-        </table>
+        {% endfor %}
       </div>
 
       <br/>
@@ -147,8 +129,6 @@
       </table>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     <script src="{{ url_for('static', filename='js/slideshow.js') }}"></script>
     <script src="{{ url_for('static', filename='js/superscript.js') }}"></script>
     <script src="{{ url_for('static', filename='js/mouseover.js') }}"></script>
