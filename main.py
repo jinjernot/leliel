@@ -39,9 +39,15 @@ def call_get_product_from_qr():
         country = request.args.get('cc')
         language = request.args.get('ll')
 
-        if not all([sku, country, language]):
-            return render_template('error.html', error_message='Missing required URL parameters: pn, cc, ll'), 400
+        if not sku:
+            return render_template('error.html', error_message='Missing required URL parameter: pn'), 400
 
+        # If country or language are missing, render the laptop template
+        # which will then handle the JS-based redirection.
+        if not country or not language:
+            return render_template('laptop.html', pn=sku)
+
+        # If all params are present, proceed with data fetching
         response = get_product_by_params(sku, country, language)
         if response is None:
             raise ValueError("No response from get_product_by_params")

@@ -64,36 +64,42 @@ sup {
   text-align: justify;
 }
 
-/* NEW CUSTOM GALLERY STYLES */
-.gallery-container {
+/* ================================================================== */
+/* ========= CORRECTED AND IMPROVED GALLERY STYLES ================== */
+/* ================================================================== */
+
+.product-gallery {
   max-width: 600px;
   margin: 20px auto;
 }
 
-.gallery-main-image {
+.product-gallery-main {
   margin-bottom: 15px;
   text-align: center;
-  min-height: 300px; /* Prevents container collapse before image loads */
+  min-height: 430px;
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  box-shadow: none;
 }
 
-.gallery-main-image img {
+.product-gallery-main img {
   max-width: 100%;
   height: auto;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  border-radius: 2px;
 }
 
-.gallery-thumbnails {
+.product-gallery-thumbs {
   display: flex;
-  overflow-x: auto;
-  padding-bottom: 10px; /* Space for scrollbar */
+  flex-wrap: wrap; /* Allows thumbnails to wrap to the next line */
+  justify-content: center; /* Center the thumbnails horizontally */
+  gap: 10px; /* Provides consistent space between thumbnails */
 }
 
-.gallery-thumbnails .thumbnail {
+.product-gallery-thumbs .thumb-item {
   width: 100px;
   height: 75px;
-  object-fit: cover;
-  margin-right: 10px;
+  object-fit: cover; /* Ensures image covers the area without distortion */
   cursor: pointer;
   opacity: 0.7;
   border: 2px solid transparent;
@@ -101,15 +107,17 @@ sup {
   transition: all 0.2s ease-in-out;
 }
 
-.gallery-thumbnails .thumbnail:hover {
+.product-gallery-thumbs .thumb-item:hover {
   opacity: 1;
+  transform: scale(1.05);
 }
 
-.gallery-thumbnails .thumbnail.active {
+/* Style for the currently active thumbnail */
+.product-gallery-thumbs .thumb-item.active {
   opacity: 1;
-  border-color: #0096d6;
+  border-color: #0096d6; /* Highlight color for the active thumbnail */
+  box-shadow: 0 0 5px rgba(0, 150, 214, 0.5);
 }
-
 
 /* KSP, MM, and FEATURES SECTIONS */
 #ksp {
@@ -156,51 +164,6 @@ sup {
   padding: 20px;
   margin-bottom: 20px;
   text-align: center;
-}
-
-/* MODAL STYLES */
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 1000;
-  padding-top: 50px;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.9);
-}
-
-.modal-content {
-  margin: auto;
-  display: block;
-  max-width: 80%;
-  max-height: 80%;
-}
-
-.modal-content img {
-  display: block;
-  max-width: 100%;
-  max-height: 100%;
-  margin: auto;
-}
-
-.close {
-  position: absolute;
-  top: 15px;
-  right: 35px;
-  color: #f1f1f1;
-  font-size: 40px;
-  font-weight: bold;
-  transition: 0.3s;
-  cursor: pointer;
-}
-
-.close:hover,
-.close:focus {
-  color: #999;
-  text-decoration: none;
 }
 
 /* FOOTNOTES AND TECH-SPECS TABLES */
