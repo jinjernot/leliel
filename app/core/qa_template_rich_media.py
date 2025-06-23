@@ -10,14 +10,12 @@ def build_template_qa_rich_media(response_json, skus):
             
             # Create a list to hold all image details for this SKU
             sku_image_details = []
-            print("antes del for")
 
             # Access specified image types directly from richmedia
             if 'richmedia' in product:
                 for image_type in image_types:
                     images = product['richmedia'].get(image_type, [])
                     for detail in images:  # Iterate directly over the list of details
-                        print("despuescito del for")
                         image_data = {
                             "assetCategory": detail.get('assetCategory'),
                             "assetDescription": detail.get('assetDescription'),
@@ -41,7 +39,6 @@ def build_template_qa_rich_media(response_json, skus):
 
             # Function to filter out non-hashable types (lists) and None values
             def filter_values(attribute):
-                print("entro al filter")
                 values = [image[attribute] for image in sku_image_details if image[attribute] is not None]
                 filtered_values = []
                 for v in values:
@@ -53,7 +50,6 @@ def build_template_qa_rich_media(response_json, skus):
                 return filtered_values, len(set(filtered_values))  # Return both filtered values and unique count
 
             # Count each unique value for assetCategory
-            print("cuentame")
             document_type_detail_counts = {}
             for image in sku_image_details:
                 document_type_detail = image.get('assetCategory')
@@ -99,7 +95,7 @@ def build_template_qa_rich_media(response_json, skus):
             all_sku_details.append(sku_data)
 
         # Return the processed details and counts for all SKUs
-        print("paso todo?")
+
         return {"sku_details": all_sku_details}
     
     except KeyError as e:
