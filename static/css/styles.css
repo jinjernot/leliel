@@ -158,7 +158,11 @@ sup {
   margin: 20px auto;
   padding: 0 20px;
 }
-
+#MM {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 0 20px;
+}
 #features .feature-block {
   background-color: lightgray;
   padding: 20px;
