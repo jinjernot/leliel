@@ -3,7 +3,7 @@ import pandas as pd
 import json
 
 from app.api.get_rich_media import get_rich_media
-from app.api.get_product import get_product
+from app.api.get_product import get_product, get_product_by_params
 from app.api.get_images import get_images
 from app.api.get_qa import get_qa, get_qa_rich_media
 
@@ -19,7 +19,7 @@ app.use_static_for = 'static'
 def index():
     return render_template('index.html')
 
-# Route to get product data for template
+# Route to get product data for template from form
 @app.route('/get_product', methods=['POST'])
 def call_get_product():
     try:
@@ -30,6 +30,25 @@ def call_get_product():
     except Exception as e:
         # Handle the error and render the error template
         return render_template('error.html', error_message=str(e))
+
+# Route to get product data from URL parameters
+@app.route('/qr')
+def call_get_product_from_qr():
+    try:
+        sku = request.args.get('pn')
+        country = request.args.get('cc')
+        language = request.args.get('ll')
+
+        if not all([sku, country, language]):
+            return render_template('error.html', error_message='Missing required URL parameters: pn, cc, ll'), 400
+
+        response = get_product_by_params(sku, country, language)
+        if response is None:
+            raise ValueError("No response from get_product_by_params")
+        return response
+    except Exception as e:
+        return render_template('error.html', error_message=str(e))
+
 
 # Route to get product data for images template
 @app.route('/get_images', methods=['POST'])
@@ -42,7 +61,7 @@ def call_get_images():
     except Exception as e:
         # Handle the error and render the error template
         return render_template('error.html', error_message=str(e))
-    
+
 # Route to get product data for rich_media template
 @app.route('/get_rich_media', methods=['POST'])
 def call_get_rich_media():
@@ -54,7 +73,7 @@ def call_get_rich_media():
     except Exception as e:
         # Handle the error and render the error template
         return render_template('error.html', error_message=str(e))
-    
+
 # Route to get product data for rich_media template
 @app.route('/get_qa', methods=['POST'])
 def call_get_qa():
@@ -66,7 +85,7 @@ def call_get_qa():
     except Exception as e:
         # Handle the error and render the error template
         return render_template('error.html', error_message=str(e))
-    
+
 # Route to get product data for rich_media template
 @app.route('/get_qa_rich_media', methods=['POST'])
 def call_get_qa_rich_media():
@@ -78,7 +97,7 @@ def call_get_qa_rich_media():
     except Exception as e:
         # Handle the error and render the error template
         return render_template('error.html', error_message=str(e))
-        
+
 @app.route('/export-excel', methods=['POST'])
 def export_excel():
     try:

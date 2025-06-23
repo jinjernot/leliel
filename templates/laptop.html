@@ -11,15 +11,15 @@
       <center><h1><span id="prodname">{{ df[df['tag'] == 'prodname']['value'].iloc[0] | default('') | safe }}</span></h1></center>
       <br>
 
-      <div class="product-gallery">
-        <div class="product-gallery-main">
+      <div class="gallery-container">
+        <div class="gallery-main-image">
           </div>
-        <div class="product-gallery-thumbs">
+        <div class="gallery-thumbnails">
           {% set image_found = false %}
           {% for orientation in ['Center facing', 'Left facing', 'Right facing', 'Rear facing', 'Left rear facing', 'Top view closed', 'Detail view', 'Left profile closed', 'Right profile closed', 'Right rear facing'] %}
               {% for index, row in df_images.iterrows() %}
                   {% if row['pixelWidth'] == '573' and row['orientation'] == orientation and row['type'] == 'png' %}
-                      <img class="thumb-item" src="{{ row['imageUrlHttps'] | default('') | safe }}" data-full-image="{{ row['imageUrlHttps'] | default('') | safe }}" alt="{{ row['orientation'] | default('') }}">
+                      <img class="thumbnail" src="{{ row['imageUrlHttps'] | default('') | safe }}" data-full-image="{{ row['imageUrlHttps'] | default('') | safe }}" alt="{{ row['orientation'] | default('') }}">
                       {% set image_found = true %}
                   {% endif %}
               {% endfor %}
@@ -127,26 +127,10 @@
             {% endfor %}
         </tbody>
       </table>
-
-      <br>
-      <div id="footnotes">
-        <table>
-          <tbody>
-            {% for i in range(1, 21) %}
-              {% set footnote_tag = 'msgfootnote_' ~ '%02d' | format(i) %}
-              {% if footnote_tag in df['tag'].values %}
-              <tr>
-                <td>{{ df[df['tag'] == footnote_tag]['value'].iloc[0] | default('') | safe }}</td>
-              </tr>
-              {% endif %}
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-
     </div>
 
     <script src="{{ url_for('static', filename='js/slideshow.js') }}"></script>
     <script src="{{ url_for('static', filename='js/superscript.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/mouseover.js') }}"></script>
   </body>
 </html>
