@@ -10,22 +10,7 @@ def build_template_laptop(api_response):
             print("Error: Unable to convert the response to a dictionary.")
             return pd.DataFrame(), pd.DataFrame()
 
-    # Load tag data from JSON file
-    # Use the appropriate path for your server or local environment
-    try:
-        with open("app/data/tags_laptop.json", "r") as f: # Server
-            tags_data = json.load(f)
-    except FileNotFoundError:
-        with open("app/data/tags_laptop.json", "r") as f: # Local
-            tags_data = json.load(f)
-
-
-    # Extract tags
-    all_tags = tags_data.get("atf_tags", []) + tags_data.get("btf_tags", [])
-    image_tags = tags_data.get("image_tags", [])
-
-    # Initialize lists to hold data
-    df_data = []
+    all_details_with_order = []
     df_images_data = []
 
     # Extract product data
@@ -35,14 +20,20 @@ def build_template_laptop(api_response):
         chunks = product_data.get('chunks', [])
         images = product_data.get('images', [])
 
-        # Process chunks
+        # Process chunks to get all tech specs and their display order
         for chunk in chunks:
             if 'details' in chunk:
+                # Get the display order for the whole group
+                group_order = chunk.get('contentDisplayOrder', 0)
                 for detail in chunk['details']:
-                    if detail.get('tag') in all_tags and 'value' in detail:
-                        df_data.append({'tag': detail['tag'], 'name': detail.get('name', ''), 'value': detail['value']})
-
+                    if 'tag' in detail and 'value' in detail:
+                        # Add the group's order to each individual detail
+                        detail_with_order = detail.copy()
+                        detail_with_order['groupOrder'] = group_order
+                        all_details_with_order.append(detail_with_order)
+        
         # Process images
+        image_tags = ["Center facing", "Left facing", "Right facing", "Rear facing", "Left rear facing", "Top view closed", "Detail view", "Left profile closed", "Right profile closed", "Right rear facing", "Left and Right facing"]
         for image in images:
             if 'details' in image:
                 for detail in image['details']:
@@ -54,8 +45,11 @@ def build_template_laptop(api_response):
                             'imageUrlHttps': detail.get('imageUrlHttps')
                         })
 
-    # Create DataFrames from lists
-    df = pd.DataFrame(df_data)
+    # Sort all details based on the group order first, then by their own order
+    all_details_with_order.sort(key=lambda x: (x.get('groupOrder', 0), x.get('displayOrder', 0)))
+
+    # Create DataFrames from the sorted list
+    df = pd.DataFrame(all_details_with_order)
     df_images = pd.DataFrame(df_images_data)
 
     return df, df_images

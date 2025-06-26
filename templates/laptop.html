@@ -48,7 +48,27 @@
           <p>{{ df[df['tag'] == 'proddes_overview_extended']['value'].iloc[0] | default('') | safe }}</p>
         </div>
         <br>
-
+        <div id="ksp">
+            {% set ksp_tags = [
+                ('ksp_01_suppt_01_long', None), ('ksp_02_suppt_01_long', None), ('ksp_03_suppt_01_long', None),
+                ('ksp_04_suppt_01_long', None), ('ksp_05_suppt_01_long', None), ('osinstalled', 'osinstalledftntnbr'),
+                ('processorname', 'processornameftntnbr'), ('memstdes_01', 'memstdes_01ftntnbr'),
+                ('hd_01des', 'hd_01desftntnbr'), ('hd_02des', 'hd_02desftntnbr'), ('hd_03des', 'hd_03desftntnbr'),
+                ('displaymet', 'displaymetftntnbr'), ('graphicseg_01header', None), ('graphicseg_01card_01', None),
+                ('batterylife', 'batterylifeftntnbr'), ('batterylifedes', 'batterylifedesftntnbr'), ('colour', None)
+            ] %}
+            {% for tag, ftnt_tag in ksp_tags %}
+                {% if tag in df['tag'].values %}
+                <div class="ksp-item">
+                    <span>- {{ df[df['tag'] == tag]['value'].iloc[0] | default('') | safe }}</span>
+                    {% if ftnt_tag and ftnt_tag in df['tag'].values %}
+                    <span>{{ df[df['tag'] == ftnt_tag]['value'].iloc[0] | default('') | safe }}</span>
+                    {% endif %}
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <br />
         <div id="MM" class="superscript-content">
           {% set mm_blocks = [
               { 'headline': 'ksp_01_headline_medium', 'support': 'ksp_01_suppt_01_long', 'orientation': 'Center facing', 'img_first': True },
@@ -92,18 +112,20 @@
           {% endfor %}
         </div>
         <br/>
-        <h2 id="see-more" style="cursor: pointer;">+Expand to see more</h2>
+        <h2 id="see-more" class="expand-button">+Expand to see more Techspecs</h2>
         <br/>
         <table id="tech-specs" style="display: none;">
           <tbody>
-              {% set tech_spec_tags = ['osinstalled', 'processorfamily', 'processorname', 'chipset', 'memstdes_01', 'hd_01des', 'graphicseg_01card_01', 'displaymet', 'batterylife', 'weightmet', 'colour', 'prodfinish', 'securitymgmt', 'wrntyfeatures', 'swincluded'] %}
-              {% for tag in tech_spec_tags %}
-                  {% if tag in df['tag'].values %}
+              {% for index, row in df.iterrows() %}
+                  {# Skip footnote tags in the main loop #}
+                  {% if not row['tag'].endswith('ftntnbr') %}
                   <tr>
-                      <td><b>{{ df[df['tag'] == tag]['name'].iloc[0] | default('') | safe }}</b></td>
+                      <td><b>{{ row['name'] | safe }}</b></td>
                       <td>
-                          {{ df[df['tag'] == tag]['value'].iloc[0] | default('') | safe }}
-                          {% set ftnt_tag = tag ~ 'ftntnbr' %}
+                          {{ row['value'] | safe }}
+                          
+                          {# Check for and display the corresponding footnote #}
+                          {% set ftnt_tag = row['tag'] ~ 'ftntnbr' %}
                           {% if ftnt_tag in df['tag'].values %}
                               {{ df[df['tag'] == ftnt_tag]['value'].iloc[0] | default('') | safe }}
                           {% endif %}
@@ -114,6 +136,22 @@
           </tbody>
         </table>
         <br>
+        <h2 id="see-more-companions" class="expand-button">+Expand to see companions</h2>
+        <br/>
+        <div id="companions" style="display: none;">
+          
+          <div class="companion-list">
+            {% for companion in companions %}
+              <div class="companion-item">
+                <img src="{{ companion.image_url }}" alt="{{ companion.name }}">
+                <div class="companion-details">
+                  <p><b>{{ companion.name }}</b></p>
+                  <p>SKU: {{ companion.sku }}</p>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
         <div id="footnotes">
           <table>
             <tbody>

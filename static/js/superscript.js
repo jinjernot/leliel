@@ -40,3 +40,19 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+// Script to show/hide the companions list
+document.addEventListener('DOMContentLoaded', function() {
+    var seeMoreCompanionsButton = document.getElementById('see-more-companions');
+    var companionsList = document.getElementById('companions');
+
+    if (seeMoreCompanionsButton && companionsList) {
+        seeMoreCompanionsButton.addEventListener('click', function() {
+            if (companionsList.style.display === 'none' || companionsList.style.display === '') {
+                companionsList.style.display = 'block';
+            } else {
+                companionsList.style.display = 'none';
+            }
+        });
+    }
+});
