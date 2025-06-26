@@ -7,12 +7,18 @@ from config import client_cert_path, client_key_path, api_companions
 
 def get_companions(sku, country_code, language_code):
     try:
+        
+        api_language_code = language_code
+        if country_code == 'mx' and language_code == 'mx':
+            api_language_code = 'mx'
+        
+        
         client_cert = (client_cert_path, client_key_path)
         json_data = {
             "sku": [sku],
             "reqLinkType": ["services", "accessories"],
             "countryCode": country_code,
-            "languageCode": language_code,
+            "languageCode": api_language_code, # Use the mapped language code
             "requestor": "TEST",
             "biDirectional": True,
             "layoutName": "IMAGE",
@@ -31,9 +37,9 @@ def get_companions(sku, country_code, language_code):
             response_json = api_response.json()
             
             # Save the response to a JSON file
-            #filename = f"api_response_companions_{sku}.json"
-            #with open(filename, 'w') as json_file:
-            #    json.dump(response_json, json_file, indent=4)
+            filename = f"api_response_companions_{sku}.json"
+            with open(filename, 'w') as json_file:
+                json.dump(response_json, json_file, indent=4)
                 
             return response_json
         else:

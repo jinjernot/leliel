@@ -42,16 +42,16 @@ def call_get_product_from_qr():
         if not sku:
             return render_template('error.html', error_message='Missing required URL parameter: pn'), 400
 
-        # If country or language are missing, render the laptop template
-        # which will then handle the JS-based redirection.
-        if not country or not language:
+        # If country and language are present, fetch the product data.
+        # Otherwise, render the template to handle the redirect.
+        if country and language:
+            response = get_product_by_params(sku, country, language)
+            if response is None:
+                raise ValueError("No response from get_product_by_params")
+            return response
+        else:
             return render_template('product_template.html', pn=sku)
-
-        # If all params are present, proceed with data fetching
-        response = get_product_by_params(sku, country, language)
-        if response is None:
-            raise ValueError("No response from get_product_by_params")
-        return response
+            
     except Exception as e:
         return render_template('error.html', error_message=str(e))
 
