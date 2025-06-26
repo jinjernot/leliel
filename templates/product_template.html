@@ -145,14 +145,13 @@
         <div id="footnotes">
           <table>
             <tbody>
-              {% for i in range(1, 21) %}
-                {% set footnote_tag = 'msgfootnote_' ~ '%02d' | format(i) %}
-                {% if footnote_tag in df['tag'].values %}
-                <tr>
-                  <td>{{ df[df['tag'] == footnote_tag]['value'].iloc[0] | default('') | safe }}</td>
-                </tr>
-                {% endif %}
-              {% endfor %}
+              {% if df_footnotes is defined and not df_footnotes.empty %}
+                {% for index, row in df_footnotes.iterrows() %}
+                  <tr>
+                    <td>{{ row['value'] | default('') | safe }}</td>
+                  </tr>
+                {% endfor %}
+              {% endif %}
             </tbody>
           </table>
         </div>
