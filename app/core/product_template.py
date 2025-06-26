@@ -1,7 +1,7 @@
 import pandas as pd
 import json
 
-def build_template_laptop(api_response):
+def build_product_template(api_response):
     # Check if api_response is a dictionary
     if not isinstance(api_response, dict):
         try:
@@ -31,7 +31,7 @@ def build_template_laptop(api_response):
                         detail_with_order = detail.copy()
                         detail_with_order['groupOrder'] = group_order
                         all_details_with_order.append(detail_with_order)
-        
+
         # Process images
         image_tags = ["Center facing", "Left facing", "Right facing", "Rear facing", "Left rear facing", "Top view closed", "Detail view", "Left profile closed", "Right profile closed", "Right rear facing", "Left and Right facing"]
         for image in images:

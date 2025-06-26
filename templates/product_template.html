@@ -80,18 +80,27 @@
           {% endfor %}
         </div>
         <br/>
-        <div id="features">
-          {% for i in range(1, 4) %}
+          <div id="features">
+            {% for i in range(1, 4) %}
               {% for j in range(1, 3) %}
-                  {% set feature_num = (i - 1) * 2 + j %}
+                {% set headline_tag = 'feature_0' ~ i ~ '_headline_0' ~ j ~ '_statement' %}
+                {% set support_tag = 'feature_0' ~ i ~ '_suppt_0' ~ j ~ '_medium' %}
+                {% set footnote_tag = 'feature_0' ~ i ~ '_suppt_0' ~ j ~ '_ftntnbr' %}
+
+                {% if headline_tag in df['tag'].values %}
                   <div class="feature-block">
-                      <b>{{ df[df['tag'] == 'feature_0' ~ i ~ '_headline_0' ~ j ~ '_statement']['value'].iloc[0] | default('') | safe }}</b><br>
-                      {{ df[df['tag'] == 'feature_0' ~ i ~ '_suppt_0' ~ j ~ '_medium']['value'].iloc[0] | default('') | safe }}
-                      {{ df[df['tag'] == 'feature_0' ~ i ~ '_suppt_0' ~ j ~ '_ftntnbr']['value'].iloc[0] | default('') | safe }}
+                      <b>{{ df[df['tag'] == headline_tag]['value'].iloc[0] | default('') | safe }}</b><br>
+                      {% if support_tag in df['tag'].values %}
+                          {{ df[df['tag'] == support_tag]['value'].iloc[0] | default('') | safe }}
+                      {% endif %}
+                      {% if footnote_tag in df['tag'].values %}
+                          {{ df[df['tag'] == footnote_tag]['value'].iloc[0] | default('') | safe }}
+                      {% endif %}
                   </div>
+                {% endif %}
               {% endfor %}
-          {% endfor %}
-        </div>
+            {% endfor %}
+          </div>
         <br/>
         <h2 id="see-more" class="expand-button">+Expand to see more Techspecs</h2>
         <br/>

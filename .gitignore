@@ -9,3 +9,4 @@ downloaded_images
 *.h5
 *.keras
 .json
+api_response_*.json

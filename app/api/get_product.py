@@ -36,9 +36,9 @@ def get_product():
         # Check if request was successful
         if api_response.status_code == 200:
             response_json = api_response.json()
-            #filename = "api_response.json"  # Set the filename for the JSON file
-            #with open(filename, 'w') as json_file:   
-            #    json.dump(response_json, json_file)
+            filename = f"api_response_product_{sku}.json"  # Set the filename for the JSON file
+            with open(filename, 'w') as json_file:
+                json.dump(response_json, json_file, indent=4)
 
             return process_api_response(response_json, sku)
         else:
@@ -72,6 +72,9 @@ def get_product_by_params(sku, country_code, language_code):
         # Check if request was successful
         if api_response.status_code == 200:
             response_json = api_response.json()
+            filename = f"api_response_product_{sku}.json"
+            with open(filename, 'w') as json_file:
+                json.dump(response_json, json_file, indent=4)
             return process_api_response(response_json, sku)
         else:
             return process_api_error(api_response)
