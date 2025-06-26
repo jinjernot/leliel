@@ -31,9 +31,9 @@ def get_companions(sku, country_code, language_code):
             response_json = api_response.json()
             
             # Save the response to a JSON file
-            filename = f"api_response_companions_{sku}.json"
-            with open(filename, 'w') as json_file:
-                json.dump(response_json, json_file, indent=4)
+            #filename = f"api_response_companions_{sku}.json"
+            #with open(filename, 'w') as json_file:
+            #    json.dump(response_json, json_file, indent=4)
                 
             return response_json
         else:

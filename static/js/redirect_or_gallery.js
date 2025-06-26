@@ -21,12 +21,21 @@ document.addEventListener("DOMContentLoaded", async function () {
                 return cc + '-' + lc;
             };
 
-            const locale = await getGeoLocale();
-            const cc = locale.split('-')[0];
-            const lc = locale.split('-')[1];
+            const detectedLocale = await getGeoLocale();
+            let cc = detectedLocale.split('-')[0];
+            let lc = detectedLocale.split('-')[1];
+
+            // START: WORKAROUND FOR MX LOCALE
+            // If the country is Mexico (mx), force the language to also be 'mx'.
+            if (cc === 'mx') {
+                lc = 'mx';
+            }
+            // END: WORKAROUND
+
+            const finalLocale = cc + '-' + lc;
 
             // Confirm with the user before redirecting.
-            if (confirm("Your locale: " + locale + "\n\nClick OK to redirect")) {
+            if (confirm("Your locale: " + finalLocale + "\n\nClick OK to redirect")) {
                 window.location.href = `${redirectBaseUrl}?pn=${pn}&cc=${cc}&ll=${lc}`;
             }
 

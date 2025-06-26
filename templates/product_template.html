@@ -1,172 +1,178 @@
 <html>
-  <head>
-    <title>
-        {% if df is defined and not df.empty %}
-            {{ df[df['tag'] == 'prodname']['value'].iloc[0] | default('') | safe }}
-        {% else %}
-            HP Product Information
-        {% endif %}
-    </title>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
-    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}" />
-  </head>
-  <body>
 
+<head>
+  <title>
     {% if df is defined and not df.empty %}
-      <div id="ATF" class="superscript-content">
-        <center><h1><span id="prodname">{{ df[df['tag'] == 'prodname']['value'].iloc[0] | default('') | safe }}</span></h1></center>
-        <br>
-        <div class="product-gallery">
-          <div class="product-gallery-main"></div>
-<div class="product-gallery-thumbs">
-            {% set image_found = false %}
-            {# Use a namespace to create a mutable counter variable #}
-            {% set thumbnail_count = namespace(value=0) %}
-            
-            {% for orientation in ['Center facing', 'Left facing', 'Right facing', 'Rear facing', 'Left rear facing', 'Top view closed', 'Detail view', 'Left profile closed', 'Right profile closed', 'Right rear facing'] %}
-                {% for index, row in df_images.iterrows() %}
-                    {# Only proceed if we still need to render more thumbnails #}
-                    {% if thumbnail_count.value < 3 %}
-                        {% if row['pixelWidth'] == '573' and row['orientation'] == orientation and row['type'] == 'png' %}
-                            
-                            <img class="thumb-item" src="{{ row['imageUrlHttps'] | default('') | safe }}" data-full-image="{{ row['imageUrlHttps'] | default('') | safe }}" alt="{{ row['orientation'] | default('') }}">
-                            
-                            {% set image_found = true %}
-                            {# Increment the counter after rendering a thumbnail #}
-                            {% set thumbnail_count.value = thumbnail_count.value + 1 %}
-
-                        {% endif %}
-                    {% endif %}
-                {% endfor %}
-            {% endfor %}
-
-          </div>
-                </div>
-        <br>
-        <div class="product-description">
-          <p>{{ df[df['tag'] == 'proddes_overview_extended']['value'].iloc[0] | default('') | safe }}</p>
-        </div>
-        <br>
-
-        <br />
-        <div id="MM" class="superscript-content">
-          {% set mm_blocks = [
-              { 'headline': 'ksp_01_headline_medium', 'support': 'ksp_01_suppt_01_long', 'orientation': 'Center facing', 'img_first': True },
-              { 'headline': 'ksp_02_headline_medium', 'support': 'ksp_02_suppt_01_long', 'orientation': 'Left facing', 'img_first': False },
-              { 'headline': 'ksp_03_headline_medium', 'support': 'ksp_03_suppt_01_long', 'orientation': 'Right facing', 'img_first': True },
-              { 'headline': 'ksp_04_headline_medium', 'support': 'ksp_04_suppt_01_long', 'orientation': 'Top view closed', 'img_first': False }
-          ] %}
-          {% for block in mm_blocks %}
-              {% if block.headline in df['tag'].values or block.orientation in df_images['orientation'].values %}
-              <div class="mm-block">
-                  {% set text_content %}
-                      {% if block.headline in df['tag'].values %}<h3><strong>{{ df[df['tag'] == block.headline]['value'].iloc[0] }}</strong></h3>{% endif %}
-                      {% if block.support in df['tag'].values %}<p>{{ df[df['tag'] == block.support]['value'].iloc[0] }}</p>{% endif %}
-                  {% endset %}
-                  {% set image_content %}
-                      {% if block.orientation in df_images['orientation'].values %}<img src="{{ df_images[df_images['orientation'] == block.orientation]['imageUrlHttps'].iloc[0] | default('') | escape }}" alt="Product Image">{% endif %}
-                  {% endset %}
-
-                  {% if block.img_first %}
-                      <div class="mm-image">{{ image_content }}</div>
-                      <div class="mm-text">{{ text_content }}</div>
-                  {% else %}
-                      <div class="mm-text">{{ text_content }}</div>
-                      <div class="mm-image">{{ image_content }}</div>
-                  {% endif %}
-              </div>
-              {% endif %}
-          {% endfor %}
-        </div>
-        <br/>
-          <div id="features">
-            {% for i in range(1, 4) %}
-              {% for j in range(1, 3) %}
-                {% set headline_tag = 'feature_0' ~ i ~ '_headline_0' ~ j ~ '_statement' %}
-                {% set support_tag = 'feature_0' ~ i ~ '_suppt_0' ~ j ~ '_medium' %}
-                {% set footnote_tag = 'feature_0' ~ i ~ '_suppt_0' ~ j ~ '_ftntnbr' %}
-
-                {% if headline_tag in df['tag'].values %}
-                  <div class="feature-block">
-                      <b>{{ df[df['tag'] == headline_tag]['value'].iloc[0] | default('') | safe }}</b><br>
-                      {% if support_tag in df['tag'].values %}
-                          {{ df[df['tag'] == support_tag]['value'].iloc[0] | default('') | safe }}
-                      {% endif %}
-                      {% if footnote_tag in df['tag'].values %}
-                          {{ df[df['tag'] == footnote_tag]['value'].iloc[0] | default('') | safe }}
-                      {% endif %}
-                  </div>
-                {% endif %}
-              {% endfor %}
-            {% endfor %}
-          </div>
-        <br/>
-        <h2 id="see-more" class="expand-button">+Expand to see more Techspecs</h2>
-        <br/>
-        <table id="tech-specs" style="display: none;">
-          <tbody>
-              {% for index, row in df.iterrows() %}
-                  {# Skip footnote tags in the main loop #}
-                  {% if not row['tag'].endswith('ftntnbr') %}
-                  <tr>
-                      <td><b>{{ row['name'] | safe }}</b></td>
-                      <td>
-                          {{ row['value'] | safe }}
-                          
-                          {# Check for and display the corresponding footnote #}
-                          {% set ftnt_tag = row['tag'] ~ 'ftntnbr' %}
-                          {% if ftnt_tag in df['tag'].values %}
-                              {{ df[df['tag'] == ftnt_tag]['value'].iloc[0] | default('') | safe }}
-                          {% endif %}
-                      </td>
-                  </tr>
-                  {% endif %}
-              {% endfor %}
-          </tbody>
-        </table>
-        <br>
-        <h2 id="see-more-companions" class="expand-button">+Expand to see companions</h2>
-        <br/>
-        <div id="companions" style="display: none;">
-          
-          <div class="companion-list">
-            {% for companion in companions %}
-              <div class="companion-item">
-                <img src="{{ companion.image_url }}" alt="{{ companion.name }}">
-                <div class="companion-details">
-                  <p><b>{{ companion.name }}</b></p>
-                  <p>SKU: {{ companion.sku }}</p>
-                </div>
-              </div>
-            {% endfor %}
-          </div>
-        </div>
-        <div id="footnotes">
-          <table>
-            <tbody>
-              {% if df_footnotes is defined and not df_footnotes.empty %}
-                {% for index, row in df_footnotes.iterrows() %}
-                  <tr>
-                    <td>{{ row['value'] | default('') | safe }}</td>
-                  </tr>
-                {% endfor %}
-              {% endif %}
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <script src="{{ url_for('static', filename='js/superscript.js') }}"></script>
-
+    {{ df[df['tag'] == 'prodname']['value'].iloc[0] | default('') | safe }}
     {% else %}
-      <p>Detecting your location and redirecting you to the correct HP page...</p>
-
-      <div id="redirect-info"
-           data-pn="{{ pn }}"
-           data-redirect-url="{{ url_for('call_get_product_from_qr') }}">
-      </div>
+    HP Product Information
     {% endif %}
+  </title>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+  <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}" />
+</head>
 
-    <script src="{{ url_for('static', filename='js/redirect_or_gallery.js') }}"></script>
-  </body>
+<body>
+
+  {% if df is defined and not df.empty %}
+  <div id="ATF" class="superscript-content">
+    <center>
+      <h1><span id="prodname">{{ df[df['tag'] == 'prodname']['value'].iloc[0] | default('') | safe }}</span></h1>
+    </center>
+    <br>
+    <div class="product-gallery">
+      <div class="product-gallery-main"></div>
+      <div class="product-gallery-thumbs">
+        {% set image_found = false %}
+        {# Use a namespace to create a mutable counter variable #}
+        {% set thumbnail_count = namespace(value=0) %}
+
+        {% for orientation in ['Center facing', 'Left facing', 'Right facing', 'Rear facing', 'Left rear facing', 'Top
+        view closed', 'Detail view', 'Left profile closed', 'Right profile closed', 'Right rear facing'] %}
+        {% for index, row in df_images.iterrows() %}
+        {# Only proceed if we still need to render more thumbnails #}
+        {% if thumbnail_count.value < 3 %} {% if row['pixelWidth']=='573' and row['orientation']==orientation and
+          row['type']=='png' %} <img class="thumb-item" src="{{ row['imageUrlHttps'] | default('') | safe }}"
+          data-full-image="{{ row['imageUrlHttps'] | default('') | safe }}"
+          alt="{{ row['orientation'] | default('') }}">
+
+          {% set image_found = true %}
+          {# Increment the counter after rendering a thumbnail #}
+          {% set thumbnail_count.value = thumbnail_count.value + 1 %}
+
+          {% endif %}
+          {% endif %}
+          {% endfor %}
+          {% endfor %}
+
+      </div>
+    </div>
+    <br>
+    <div class="product-description">
+      <p>{{ df[df['tag'] == 'proddes_overview_extended']['value'].iloc[0] | default('') | safe }}</p>
+    </div>
+    <br>
+
+    <br />
+    <div id="MM" class="superscript-content">
+      {% set mm_blocks = [
+      { 'headline': 'ksp_01_headline_medium', 'support': 'ksp_01_suppt_01_long', 'orientation': 'Center facing' },
+      { 'headline': 'ksp_02_headline_medium', 'support': 'ksp_02_suppt_01_long', 'orientation': 'Left facing' },
+      { 'headline': 'ksp_03_headline_medium', 'support': 'ksp_03_suppt_01_long', 'orientation': 'Right facing' },
+      { 'headline': 'ksp_04_headline_medium', 'support': 'ksp_04_suppt_01_long', 'orientation': 'Top view closed' }
+      ] %}
+      {% for block in mm_blocks %}
+      {# Check if both image and text content exist before rendering the block #}
+      {% if (block.headline in df['tag'].values or block.support in df['tag'].values) and (block.orientation in
+      df_images['orientation'].values) %}
+      <div class="mm-block">
+        {% set text_content %}
+        {% if block.headline in df['tag'].values %}<h3><strong>{{ df[df['tag'] == block.headline]['value'].iloc[0]
+            }}</strong></h3>{% endif %}
+        {% if block.support in df['tag'].values %}<p>{{ df[df['tag'] == block.support]['value'].iloc[0] }}</p>{% endif
+        %}
+        {% endset %}
+        {% set image_content %}
+        {% if block.orientation in df_images['orientation'].values %}<img
+          src="{{ df_images[df_images['orientation'] == block.orientation]['imageUrlHttps'].iloc[0] | default('') | escape }}"
+          alt="Product Image">{% endif %}
+        {% endset %}
+
+        <div class="mm-image">{{ image_content }}</div>
+        <div class="mm-text">{{ text_content }}</div>
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+
+    <br />
+    <div id="features">
+      {% for i in range(1, 4) %}
+      {% for j in range(1, 3) %}
+      {% set headline_tag = 'feature_0' ~ i ~ '_headline_0' ~ j ~ '_statement' %}
+      {% set support_tag = 'feature_0' ~ i ~ '_suppt_0' ~ j ~ '_medium' %}
+      {% set footnote_tag = 'feature_0' ~ i ~ '_suppt_0' ~ j ~ '_ftntnbr' %}
+
+      {% if headline_tag in df['tag'].values %}
+      <div class="feature-block">
+        <b>{{ df[df['tag'] == headline_tag]['value'].iloc[0] | default('') | safe }}</b><br>
+        {% if support_tag in df['tag'].values %}
+        {{ df[df['tag'] == support_tag]['value'].iloc[0] | default('') | safe }}
+        {% endif %}
+        {% if footnote_tag in df['tag'].values %}
+        {{ df[df['tag'] == footnote_tag]['value'].iloc[0] | default('') | safe }}
+        {% endif %}
+      </div>
+      {% endif %}
+      {% endfor %}
+      {% endfor %}
+    </div>
+    <br />
+    <h2 id="see-more" class="expand-button">Show All Specifications</h2>
+    <br />
+    <table id="tech-specs" style="display: none;">
+      <tbody>
+        {% for index, row in df.iterrows() %}
+        {# Skip footnote tags in the main loop #}
+        {% if not row['tag'].endswith('ftntnbr') %}
+        <tr>
+          <td><b>{{ row['name'] | safe }}</b></td>
+          <td>
+            {{ row['value'] | safe }}
+
+            {# Check for and display the corresponding footnote #}
+            {% set ftnt_tag = row['tag'] ~ 'ftntnbr' %}
+            {% if ftnt_tag in df['tag'].values %}
+            {{ df[df['tag'] == ftnt_tag]['value'].iloc[0] | default('') | safe }}
+            {% endif %}
+          </td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+      </tbody>
+    </table>
+    <br>
+    <h2 id="see-more-companions" class="expand-button">View Recommended Accessories</h2>
+    <br />
+    <div id="companions" style="display: none;">
+
+      <div class="companion-list">
+        {% for companion in companions %}
+        <div class="companion-item">
+          <img src="{{ companion.image_url }}" alt="{{ companion.name }}">
+          <div class="companion-details">
+            <p><b>{{ companion.name }}</b></p>
+            <p>SKU: {{ companion.sku }}</p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <div id="footnotes">
+      <table>
+        <tbody>
+          {% if df_footnotes is defined and not df_footnotes.empty %}
+          {% for index, row in df_footnotes.iterrows() %}
+          <tr>
+            <td>{{ row['value'] | default('') | safe }}</td>
+          </tr>
+          {% endfor %}
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <script src="{{ url_for('static', filename='js/superscript.js') }}"></script>
+
+  {% else %}
+  <p>Detecting your location and redirecting you to the correct HP page...</p>
+
+  <div id="redirect-info" data-pn="{{ pn }}" data-redirect-url="{{ url_for('call_get_product_from_qr') }}">
+  </div>
+  {% endif %}
+
+  <script src="{{ url_for('static', filename='js/redirect_or_gallery.js') }}"></script>
+</body>
+
 </html>

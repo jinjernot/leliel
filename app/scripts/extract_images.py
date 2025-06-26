@@ -72,9 +72,3 @@ def download_images_from_json(json_file, image_dir):
                         print(f"No imageUrlHttps for entry {sku}_{img_group_idx}_{detail_idx}")
                 else:
                     print(f"Skipping image {sku}_{img_group_idx}_{detail_idx} with orientation {orientation}, color {color}, and pixelWidth {pixel_width}")
-
-# Example usage
-json_file = 'api_response_qa.json'
-image_dir = 'downloaded_images'
-
-download_images_from_json(json_file, image_dir)

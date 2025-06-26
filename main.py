@@ -45,7 +45,7 @@ def call_get_product_from_qr():
         # If country or language are missing, render the laptop template
         # which will then handle the JS-based redirection.
         if not country or not language:
-            return render_template('laptop.html', pn=sku)
+            return render_template('product_template.html', pn=sku)
 
         # If all params are present, proceed with data fetching
         response = get_product_by_params(sku, country, language)
