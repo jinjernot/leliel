@@ -8,11 +8,12 @@ def build_product_template(api_response):
             api_response = api_response.json()
         except AttributeError:
             print("Error: Unable to convert the response to a dictionary.")
-            return pd.DataFrame(), pd.DataFrame(), pd.DataFrame()
+            return pd.DataFrame(), pd.DataFrame(), pd.DataFrame(), pd.DataFrame()
 
     all_details_with_order = []
     df_images_data = []
     footnotes_data = []
+    legal_disclaimers_data = []
 
     # Extract product data
     products = api_response.get('products', {})
@@ -27,6 +28,8 @@ def build_product_template(api_response):
                 # Check if this chunk is for footnotes
                 if chunk.get('group') == 'PRISM_Footnotes':
                     footnotes_data.extend(chunk['details'])
+                elif chunk.get('group') == 'PRISM_Legal Information':
+                    legal_disclaimers_data.extend(chunk['details'])
                 else:
                     # Get the display order for the whole group
                     group_order = chunk.get('contentDisplayOrder', 0)
@@ -57,5 +60,6 @@ def build_product_template(api_response):
     df = pd.DataFrame(all_details_with_order)
     df_images = pd.DataFrame(df_images_data)
     df_footnotes = pd.DataFrame(footnotes_data)
+    df_legal_disclaimers = pd.DataFrame(legal_disclaimers_data)
 
-    return df, df_images, df_footnotes
+    return df, df_images, df_footnotes, df_legal_disclaimers

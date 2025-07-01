@@ -171,19 +171,19 @@ sup {
 }
 
 /* FOOTNOTES AND TECH-SPECS TABLES */
-#footnotes, #tech-specs {
+#footnotes, #tech-specs, #legal_disclaimers {
     margin: 20px auto;
     width: 100%;
     max-width: 800px;
     border-collapse: collapse;
 }
 
-#footnotes td, #tech-specs td {
+#footnotes td, #tech-specs td, #legal_disclaimers td {
     padding: 10px;
     border: 1px solid #ddd;
 }
 
-#footnotes {
+#footnotes, #legal_disclaimers {
     font-size: 9px;
 }
 

@@ -162,6 +162,21 @@
         </tbody>
       </table>
     </div>
+
+    <div id="legal_disclaimers">
+      <table>
+        <tbody>
+          {% if df_legal_disclaimers is defined and not df_legal_disclaimers.empty %}
+          {% for index, row in df_legal_disclaimers.iterrows() %}
+          <tr>
+            <td>{{ row['value'] | default('') | safe }}</td>
+          </tr>
+          {% endfor %}
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+
   </div>
   <script src="{{ url_for('static', filename='js/superscript.js') }}"></script>
 

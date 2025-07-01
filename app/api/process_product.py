@@ -14,5 +14,5 @@ def process_api_response(response_json, sku):
     companions = build_template_companions(companions_response, sku)
 
     # Always use the product template
-    df, df_images, df_footnotes = build_product_template(response_json)
-    return render_template('product_template.html', df=df, df_images=df_images, companions=companions, df_footnotes=df_footnotes)
+    df, df_images, df_footnotes, df_legal_disclaimers = build_product_template(response_json)
+    return render_template('product_template.html', df=df, df_images=df_images, companions=companions, df_footnotes=df_footnotes, df_legal_disclaimers=df_legal_disclaimers)
