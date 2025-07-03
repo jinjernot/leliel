@@ -29,7 +29,7 @@ def build_product_template(api_response):
                 if group_name == 'PRISM_Footnotes':
                     footnotes_data.extend(chunk['details'])
                 # Exclude specified groups, but still process "PRISM_Legal Information" for disclaimers
-                elif group_name in ['PRISM_Legal Information', 'PRISM_Playbook Icons', 'PRISM_Metadata', 'PRISM_System Internal', 'PRISM_Key Selling Points', 'PRISM_Product Description', 'PRISM_Features', 'PRISM_Product Names', 'PRISM_Category', 'PRISM_PSG_Accessories_Headsets[TS]']:
+                elif group_name in ['PRISM_Legal Information', 'PRISM_Playbook Icons', 'PRISM_Metadata', 'PRISM_System Internal', 'PRISM_Features', 'PRISM_Product Names', 'PRISM_Category', 'PRISM_PSG_Accessories_Headsets[TS]']:
                     if group_name == 'PRISM_Legal Information':
                         df_disclaimers_data.extend(chunk['details'])
                     continue  # Skip these chunks from the main tech specs
