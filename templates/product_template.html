@@ -24,28 +24,11 @@
     <div class="product-gallery">
       <div class="product-gallery-main"></div>
       <div class="product-gallery-thumbs">
-        {% set image_found = false %}
-        {# Use a namespace to create a mutable counter variable #}
-        {% set thumbnail_count = namespace(value=0) %}
-
-        {% for orientation in ['Center facing', 'Left facing', 'Right facing', 'Rear facing', 'Left rear facing', 'Top
-        view closed', 'Detail view', 'Left profile closed', 'Right profile closed', 'Right rear facing'] %}
         {% for index, row in df_images.iterrows() %}
-        {# Only proceed if we still need to render more thumbnails #}
-        {% if thumbnail_count.value < 3 %} {% if row['pixelWidth']=='573' and row['orientation']==orientation and
-          row['type']=='png' %} <img class="thumb-item" src="{{ row['imageUrlHttps'] | default('') | safe }}"
+        <img class="thumb-item" src="{{ row['imageUrlHttps'] | default('') | safe }}"
           data-full-image="{{ row['imageUrlHttps'] | default('') | safe }}"
           alt="{{ row['orientation'] | default('') }}">
-
-          {% set image_found = true %}
-          {# Increment the counter after rendering a thumbnail #}
-          {% set thumbnail_count.value = thumbnail_count.value + 1 %}
-
-          {% endif %}
-          {% endif %}
-          {% endfor %}
-          {% endfor %}
-
+        {% endfor %}
       </div>
     </div>
     <br>
@@ -56,33 +39,16 @@
 
     <br />
     <div id="MM" class="superscript-content">
-      {% set mm_blocks = [
-      { 'headline': 'ksp_01_headline_medium', 'support': 'ksp_01_suppt_01_long', 'orientation': 'Center facing' },
-      { 'headline': 'ksp_02_headline_medium', 'support': 'ksp_02_suppt_01_long', 'orientation': 'Left facing' },
-      { 'headline': 'ksp_03_headline_medium', 'support': 'ksp_03_suppt_01_long', 'orientation': 'Right facing' },
-      { 'headline': 'ksp_04_headline_medium', 'support': 'ksp_04_suppt_01_long', 'orientation': 'Top view closed' }
-      ] %}
       {% for block in mm_blocks %}
-      {# Check if both image and text content exist before rendering the block #}
-      {% if (block.headline in df['tag'].values or block.support in df['tag'].values) and (block.orientation in
-      df_images['orientation'].values) %}
       <div class="mm-block">
-        {% set text_content %}
-        {% if block.headline in df['tag'].values %}<h3><strong>{{ df[df['tag'] == block.headline]['value'].iloc[0]
-            }}</strong></h3>{% endif %}
-        {% if block.support in df['tag'].values %}<p>{{ df[df['tag'] == block.support]['value'].iloc[0] }}</p>{% endif
-        %}
-        {% endset %}
-        {% set image_content %}
-        {% if block.orientation in df_images['orientation'].values %}<img
-          src="{{ df_images[df_images['orientation'] == block.orientation]['imageUrlHttps'].iloc[0] | default('') | escape }}"
-          alt="Product Image">{% endif %}
-        {% endset %}
-
-        <div class="mm-image">{{ image_content }}</div>
-        <div class="mm-text">{{ text_content }}</div>
+        <div class="mm-image">
+          <img src="{{ block.image_url | escape }}" alt="Marketing Image">
+        </div>
+        <div class="mm-text">
+          {% if block.headline %}<h3><strong>{{ block.headline }}</strong></h3>{% endif %}
+          {% if block.support %}<p>{{ block.support }}</p>{% endif %}
+        </div>
       </div>
-      {% endif %}
       {% endfor %}
     </div>
 
@@ -162,21 +128,6 @@
         </tbody>
       </table>
     </div>
-
-    <div id="legal_disclaimers">
-      <table>
-        <tbody>
-          {% if df_legal_disclaimers is defined and not df_legal_disclaimers.empty %}
-          {% for index, row in df_legal_disclaimers.iterrows() %}
-          <tr>
-            <td>{{ row['value'] | default('') | safe }}</td>
-          </tr>
-          {% endfor %}
-          {% endif %}
-        </tbody>
-      </table>
-    </div>
-
   </div>
   <script src="{{ url_for('static', filename='js/superscript.js') }}"></script>
 
