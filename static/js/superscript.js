@@ -56,3 +56,19 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+// Script to show/hide the footnotes
+document.addEventListener('DOMContentLoaded', function() {
+    var seeMoreFootnotesButton = document.getElementById('see-more-footnotes');
+    var footnotesContent = document.getElementById('footnotes-content');
+
+    if (seeMoreFootnotesButton && footnotesContent) {
+        seeMoreFootnotesButton.addEventListener('click', function() {
+            if (footnotesContent.style.display === 'none' || footnotesContent.style.display === '') {
+                footnotesContent.style.display = 'block';
+            } else {
+                footnotesContent.style.display = 'none';
+            }
+        });
+    }
+});

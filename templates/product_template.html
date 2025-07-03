@@ -109,25 +109,30 @@
         {% endfor %}
       </div>
     </div>
-    <div id="footnotes">
-      <table>
-        <tbody>
-          {% if df_disclaimers is defined and not df_disclaimers.empty %}
-          {% for index, row in df_disclaimers.iterrows() %}
-          <tr>
-            <td>{{ row['value'] | default('') | safe }}</td>
-          </tr>
-          {% endfor %}
-          {% endif %}
-          {% if df_footnotes is defined and not df_footnotes.empty %}
-          {% for index, row in df_footnotes.iterrows() %}
-          <tr>
-            <td>{{ row['value'] | default('') | safe }}</td>
-          </tr>
-          {% endfor %}
-          {% endif %}
-        </tbody>
-      </table>
+        <br>
+    <h2 id="see-more-footnotes" class="expand-button">Show Footnotes</h2>
+    <br />
+    <div id="footnotes-content" style="display: none;">
+      <div id="footnotes">
+        <table>
+          <tbody>
+            {% if df_disclaimers is defined and not df_disclaimers.empty %}
+            {% for index, row in df_disclaimers.iterrows() %}
+            <tr>
+              <td>{{ row['value'] | default('') | safe }}</td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+            {% if df_footnotes is defined and not df_footnotes.empty %}
+            {% for index, row in df_footnotes.iterrows() %}
+            <tr>
+              <td>{{ row['value'] | default('') | safe }}</td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
   <script src="{{ url_for('static', filename='js/superscript.js') }}"></script>
