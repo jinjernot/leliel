@@ -8,11 +8,12 @@ def build_product_template(api_response):
             api_response = api_response.json()
         except AttributeError:
             print("Error: Unable to convert the response to a dictionary.")
-            return pd.DataFrame(), pd.DataFrame(), pd.DataFrame()
+            return pd.DataFrame(), pd.DataFrame(), pd.DataFrame(), pd.DataFrame()
 
     all_details_with_order = []
     df_images_data = []
     footnotes_data = []
+    df_disclaimers_data = []
 
     # Extract product data
     products = api_response.get('products', {})
@@ -24,8 +25,14 @@ def build_product_template(api_response):
         # Process chunks to get all tech specs and their display order
         for chunk in chunks:
             if 'details' in chunk:
-                if chunk.get('group') == 'PRISM_Footnotes':
+                group_name = chunk.get('group')
+                if group_name == 'PRISM_Footnotes':
                     footnotes_data.extend(chunk['details'])
+                # Exclude specified groups, but still process "PRISM_Legal Information" for disclaimers
+                elif group_name in ['PRISM_Legal Information', 'PRISM_Playbook Icons', 'PRISM_Metadata', 'PRISM_System Internal', 'PRISM_Key Selling Points', 'PRISM_Product Description', 'PRISM_Features', 'PRISM_Product Names', 'PRISM_Category']:
+                    if group_name == 'PRISM_Legal Information':
+                        df_disclaimers_data.extend(chunk['details'])
+                    continue  # Skip these chunks from the main tech specs
                 else:
                     group_order = chunk.get('contentDisplayOrder', 0)
                     for detail in chunk['details']:
@@ -67,5 +74,6 @@ def build_product_template(api_response):
     df = pd.DataFrame(all_details_with_order)
     df_images = pd.DataFrame(df_images_data)
     df_footnotes = pd.DataFrame(footnotes_data)
+    df_disclaimers = pd.DataFrame(df_disclaimers_data)
 
-    return df, df_images, df_footnotes
+    return df, df_images, df_footnotes, df_disclaimers

@@ -15,7 +15,7 @@ def process_api_response(response_json, sku):
     companions = build_template_companions(companions_response, sku)
 
     # Build the product template DataFrames
-    df, df_images, df_footnotes = build_product_template(response_json)
+    df, df_images, df_footnotes, df_disclaimers = build_product_template(response_json)
 
     # --- Dynamically build MM blocks ---
     mm_blocks = []
@@ -54,4 +54,4 @@ def process_api_response(response_json, sku):
                     'image_url': image_url_series.iloc[0]
                 })
 
-    return render_template('product_template.html', df=df, df_images=df_images, companions=companions, df_footnotes=df_footnotes, mm_blocks=mm_blocks, feature_blocks=feature_blocks)
+    return render_template('product_template.html', df=df, df_images=df_images, companions=companions, df_footnotes=df_footnotes, df_disclaimers=df_disclaimers, mm_blocks=mm_blocks, feature_blocks=feature_blocks)
