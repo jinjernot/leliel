@@ -8,9 +8,14 @@ def build_template_companions(api_response, sku):
 
     companions_list = []
 
-    for companion_type in ['services', 'accessories']:
+    # Process accessories first, then services, so they appear in that order.
+    for companion_type in ['accessories', 'services']:
         if companion_type in companions_data:
-            for companion in companions_data[companion_type]:
+            # Sort the companions by the 'sortOrder' field.
+            sorted_companions = sorted(companions_data[companion_type], key=lambda x: x.get('sortOrder', 0))
+            
+            # Take the top 5 companions from the sorted list.
+            for companion in sorted_companions[:5]:
                 image_url = ''
                 if companion.get('images'):
                     for image_group in companion.get('images', []):
@@ -19,7 +24,7 @@ def build_template_companions(api_response, sku):
                             image_url = image_group['details'][0].get('imageUrlHttps', '')
                             break
                 
-                # Only add the companion if it has an image
+                # Only add the companion to the list if it has an image.
                 if image_url:
                     companions_list.append({
                         'type': companion_type,
