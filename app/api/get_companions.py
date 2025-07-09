@@ -18,7 +18,7 @@ def get_companions(sku, country_code, language_code):
             "sku": [sku],
             "reqLinkType": ["services", "accessories", "supplies"],
             "countryCode": country_code,
-            "languageCode": api_language_code, # Use the mapped language code
+            "languageCode": api_language_code,
             "requestor": "TEST",
             "biDirectional": True,
             "layoutName": "IMAGE",

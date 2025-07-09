@@ -10,3 +10,4 @@ downloaded_images
 *.keras
 .json
 api_response_*.json
+cached_pages/

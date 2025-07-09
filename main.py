@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request, send_file
+from flask import Flask, render_template, request, send_file, Response
 import pandas as pd
 import json
+import os
 
 from app.api.get_rich_media import get_rich_media
 from app.api.get_product import get_product, get_product_by_params
@@ -13,6 +14,7 @@ from app.core.build_excel import build_excel
 # Initialize Flask app
 app = Flask(__name__)
 app.use_static_for = 'static'
+CACHE_DIR = 'cached_pages'
 
 # Route for the index page
 @app.route('/main')
