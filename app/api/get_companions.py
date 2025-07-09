@@ -16,7 +16,7 @@ def get_companions(sku, country_code, language_code):
         client_cert = (client_cert_path, client_key_path)
         json_data = {
             "sku": [sku],
-            "reqLinkType": ["services", "accessories"],
+            "reqLinkType": ["services", "accessories", "supplies"],
             "countryCode": country_code,
             "languageCode": api_language_code, # Use the mapped language code
             "requestor": "TEST",
