@@ -47,6 +47,11 @@ def get_product():
         if api_response.status_code == 200:
             response_json = api_response.json()
             
+            # Save the API response to a JSON file
+            #json_filename = f"api_response_product_{sku}_{country_code}_{language_code}.json"
+            #with open(json_filename, 'w') as json_file:
+            #    json.dump(response_json, json_file, indent=4)
+            
             # Process and render the page
             rendered_page = process_api_response(response_json, sku)
             
@@ -97,6 +102,11 @@ def get_product_by_params(sku, country_code, language_code):
 
         if api_response.status_code == 200:
             response_json = api_response.json()
+
+            # Save the API response to a JSON file
+            json_filename = f"api_response_product_{sku}_{country_code}_{language_code}.json"
+            with open(json_filename, 'w') as json_file:
+                json.dump(response_json, json_file, indent=4)
             
             # Process and render the page
             rendered_page = process_api_response(response_json, sku)
