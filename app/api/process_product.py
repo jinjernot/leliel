@@ -17,7 +17,6 @@ def process_api_response(response_json, sku):
     # Build the product template DataFrames
     df, df_images, df_footnotes, df_disclaimers = build_product_template(response_json)
 
-    # --- Dynamically build MM blocks ---
     mm_blocks = []
     available_images = df_images.copy()
     for i in range(1, 11):
@@ -37,7 +36,11 @@ def process_api_response(response_json, sku):
                 available_images = available_images.drop(available_images.index[0])
 
     feature_blocks = []
+    # Limit to the first 3 feature blocks
+    feature_count = 0
     for i in range(1, 11):
+        if feature_count >= 3: # Added condition to break after 3 features
+            break
         for j in range(1, 11):
             headline_tag = f'feature_{i:02}_headline_{j:02}_statement'
             support_tag = f'feature_{i:02}_suppt_{j:02}_medium'
@@ -53,5 +56,8 @@ def process_api_response(response_json, sku):
                     'support': support_series.iloc[0] if not support_series.empty else '',
                     'image_url': image_url_series.iloc[0]
                 })
+                feature_count += 1 # Increment feature_count after adding a feature
+                if feature_count >= 3: # Added condition to break after 3 features
+                    break
 
     return render_template('product_template.html', df=df, df_images=df_images, companions=companions, df_footnotes=df_footnotes, df_disclaimers=df_disclaimers, mm_blocks=mm_blocks, feature_blocks=feature_blocks)
