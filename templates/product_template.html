@@ -73,7 +73,7 @@
     <br />
     <table id="tech-specs" style="display: none;">
       <tbody>
-        {% for index, row in df.iterrows() %}
+        {% for index, row in df_tech_specs.iterrows() %}
         {# Skip footnote tags and feature tags in the main loop #}
         {% if not row['tag'].endswith('ftntnbr') and not row['tag'].startswith('feature_') and not row['tag'].startswith('lgldisclaimer_') %}
         <tr>

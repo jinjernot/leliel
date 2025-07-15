@@ -28,18 +28,16 @@ def build_product_template(api_response):
                 group_name = chunk.get('group')
                 if group_name == 'PRISM_Footnotes':
                     footnotes_data.extend(chunk['details'])
-                # Exclude specified groups, but still process "PRISM_Legal Information" for disclaimers
-                elif group_name in ['PRISM_Product Names', 'PRISM_Product Description', 'PRISM_Legal Information', 'PRISM_Key Selling Points', 'PRISM_Playbook Icons', 'PRISM_Metadata', 'PRISM_System Internal','PRISM_Core Features', 'PRISM_Features', 'PRISM_Category', 'PRISM_PSG_Accessories_Headsets[TS]','PRISM_Product Lines']:
-                    if group_name == 'PRISM_Legal Information':
-                        df_disclaimers_data.extend(chunk['details'])
-                    continue  # Skip these chunks from the main tech specs
-                else:
-                    group_order = chunk.get('contentDisplayOrder', 0)
-                    for detail in chunk['details']:
-                        if 'tag' in detail and 'value' in detail:
-                            detail_with_order = detail.copy()
-                            detail_with_order['groupOrder'] = group_order
-                            all_details_with_order.append(detail_with_order)
+                if group_name == 'PRISM_Legal Information':
+                    df_disclaimers_data.extend(chunk['details'])
+
+                group_order = chunk.get('contentDisplayOrder', 0)
+                for detail in chunk['details']:
+                    if 'tag' in detail and 'value' in detail:
+                        detail_with_order = detail.copy()
+                        detail_with_order['group'] = group_name
+                        detail_with_order['groupOrder'] = group_order
+                        all_details_with_order.append(detail_with_order)
         
         # Define the priority for image orientations
         priority_orientations = ["Center facing", "Left facing", "Right facing"]

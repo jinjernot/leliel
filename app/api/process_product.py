@@ -17,6 +17,15 @@ def process_api_response(response_json, sku):
     # Build the product template DataFrames
     df, df_images, df_footnotes, df_disclaimers = build_product_template(response_json)
 
+    groups_to_exclude = [
+        'PRISM_Product Names', 'PRISM_Product Description', 'PRISM_Legal Information',
+        'PRISM_Key Selling Points', 'PRISM_Playbook Icons', 'PRISM_Metadata',
+        'PRISM_System Internal', 'PRISM_Core Features', 'PRISM_Features',
+        'PRISM_Category', 'PRISM_PSG_Accessories_Headsets[TS]', 'PRISM_Product Lines',
+        'PRISM_Footnotes'
+    ]
+    df_tech_specs = df[~df['group'].isin(groups_to_exclude)]
+
     mm_blocks = []
     available_images = df_images.copy()
     for i in range(1, 11):
@@ -60,4 +69,4 @@ def process_api_response(response_json, sku):
                 if feature_count >= 3: # Added condition to break after 3 features
                     break
 
-    return render_template('product_template.html', df=df, df_images=df_images, companions=companions, df_footnotes=df_footnotes, df_disclaimers=df_disclaimers, mm_blocks=mm_blocks, feature_blocks=feature_blocks)
+    return render_template('product_template.html', df=df, df_tech_specs=df_tech_specs, df_images=df_images, companions=companions, df_footnotes=df_footnotes, df_disclaimers=df_disclaimers, mm_blocks=mm_blocks, feature_blocks=feature_blocks)
