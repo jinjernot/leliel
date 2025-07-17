@@ -8,6 +8,10 @@ def process_api_response(response_json, sku):
     # Extract data from the response using the SKU
     product = response_json.get('products', {}).get(sku, {})
 
+    # If the product data is empty, the product was not found.
+    if not product:
+        return render_template('error.html', error_message=f"Product with SKU '{sku}' not found.")
+
     # Fetch companions
     country_code = response_json.get('request', {}).get('countryCode')
     language_code = response_json.get('request', {}).get('languageCode')
@@ -16,6 +20,10 @@ def process_api_response(response_json, sku):
 
     # Build the product template DataFrames
     df, df_images, df_footnotes, df_disclaimers = build_product_template(response_json)
+
+    # If the main dataframe is empty, also treat as product not found.
+    if df.empty:
+        return render_template('error.html', error_message=f"Product with SKU '{sku}' not found or has no technical specifications.")
 
     groups_to_exclude = [
         'PRISM_Product Names', 'PRISM_Product Description', 'PRISM_Legal Information',
