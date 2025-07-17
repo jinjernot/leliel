@@ -5,7 +5,7 @@ import os
 
 from app.api.process_product import process_api_response
 from app.api.api_error import process_api_error
-from config import client_cert_path, client_key_path, api_productcontent
+from config import api_productcontent # Make sure to update this in your config
 
 CACHE_DIR = 'cached_pages'
 
@@ -26,39 +26,25 @@ def get_product():
             return send_from_directory(CACHE_DIR, cached_filename)
 
         # If not cached, proceed with API call
-        client_cert = (client_cert_path, client_key_path)
-        json_data = {
-            "sku": [sku],
-            "countryCode": country_code,
-            "languageCode": language_code,
-            "layoutName": "ALL-Specs",
-            "requestor": "APIQA-PRO",
-            "reqContent": ["chunks", "images", "hierarchy", "plc"]
-        }
+        # Construct the new API URL
+        api_url = f"{api_productcontent}/{country_code}/{language_code}/{sku}/all"
 
-        api_response = requests.post(
-            api_productcontent,
-            cert=client_cert,
-            verify=False,
-            headers={'Content-Type': 'application/json'},
-            data=json.dumps(json_data)
+        api_response = requests.get(
+            api_url,
+            verify=False, # Assuming no SSL verification is needed
+            headers={'Content-Type': 'application/json'}
         )
 
         if api_response.status_code == 200:
             response_json = api_response.json()
-            
-            # Save the API response to a JSON file
-            #json_filename = f"api_response_product_{sku}_{country_code}_{language_code}.json"
-            #with open(json_filename, 'w') as json_file:
-            #    json.dump(response_json, json_file, indent=4)
-            
+
             # Process and render the page
             rendered_page = process_api_response(response_json, sku)
-            
+
             # Save the rendered page to cache
             with open(os.path.join(CACHE_DIR, cached_filename), 'w', encoding='utf-8') as f:
                 f.write(rendered_page)
-            
+
             return rendered_page
         else:
             return process_api_error(api_response)
@@ -78,43 +64,26 @@ def get_product_by_params(sku, country_code, language_code):
         if os.path.exists(os.path.join(CACHE_DIR, cached_filename)):
             return send_from_directory(CACHE_DIR, cached_filename)
 
-        api_language_code = language_code
-        if country_code == 'mx' and language_code == 'mx':
-            api_language_code = 'mx'
+        # Construct the new API URL
+        api_url = f"{api_productcontent}/{country_code}/{language_code}/{sku}/all"
 
-        client_cert = (client_cert_path, client_key_path)
-        json_data = {
-            "sku": [sku],
-            "countryCode": country_code,
-            "languageCode": api_language_code,
-            "layoutName": "ALL-Specs",
-            "requestor": "APIQA-PRO",
-            "reqContent": ["chunks", "images", "hierarchy", "plc"]
-        }
 
-        api_response = requests.post(
-            api_productcontent,
-            cert=client_cert,
+        api_response = requests.get(
+            api_url,
             verify=False,
-            headers={'Content-Type': 'application/json'},
-            data=json.dumps(json_data)
+            headers={'Content-Type': 'application/json'}
         )
 
         if api_response.status_code == 200:
             response_json = api_response.json()
 
-            # Save the API response to a JSON file
-            json_filename = f"api_response_product_{sku}_{country_code}_{language_code}.json"
-            with open(json_filename, 'w') as json_file:
-                json.dump(response_json, json_file, indent=4)
-            
             # Process and render the page
             rendered_page = process_api_response(response_json, sku)
 
             # Save the rendered page to cache
             with open(os.path.join(CACHE_DIR, cached_filename), 'w', encoding='utf-8') as f:
                 f.write(rendered_page)
-            
+
             return rendered_page
         else:
             return process_api_error(api_response)
