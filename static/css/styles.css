@@ -9,16 +9,6 @@
   src: url(fonts/forma-djr-micro.otf);
   src: url(fonts/forma-djr-micro.otf?#iefix) format("embedded-opentype"),
     url("fonts/forma-djr-micro.woff") format("woff"),
-    url("fonts/forma-djr-micro.ttf") format("truetype");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Forma DJR Display Greek";
-  src: url(fonts/forma-djr-display.otf);
-  src: url(fonts/forma-djr-display.otf?#iefix) format("embedded-opentype"),
-    url("fonts/forma-djr-display.woff") format("woff"),
     url("fonts/forma-djr-display.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
@@ -27,6 +17,7 @@
 body {
   background-color: #e6e6e6;
   font-family: "Forma DJR Micro", sans-serif;
+  line-height: 1.6;
 }
 
 a {
@@ -49,7 +40,7 @@ sup {
 }
 
 #ATF {
-  max-width: 1200px;
+  max-width: 80%;
   margin: 33px auto 0;
   padding: 0 20px;
 }
@@ -61,38 +52,30 @@ sup {
   text-align: justify;
 }
 
-.product-gallery {
-  max-width: 600px;
-  margin: 20px auto;
-}
-
+/* --- Product Gallery --- */
 .product-gallery-main {
-  margin-bottom: 15px;
+  min-height: 450px;
   text-align: center;
-  min-height: 430px;
-  background-color: transparent;
-  border: none;
-  padding: 0;
-  box-shadow: none;
 }
 
 .product-gallery-main img {
   max-width: 100%;
   height: auto;
-  border-radius: 2px;
+  border-radius: 4px;
 }
 
 .product-gallery-thumbs {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center; 
+  justify-content: center;
   gap: 10px;
+  margin-top: 1rem;
 }
 
 .product-gallery-thumbs .thumb-item {
   width: 100px;
   height: 75px;
-  object-fit: cover; 
+  object-fit: cover;
   cursor: pointer;
   opacity: 0.7;
   border: 2px solid transparent;
@@ -100,145 +83,72 @@ sup {
   transition: all 0.2s ease-in-out;
 }
 
+.product-gallery-thumbs .thumb-item.active,
 .product-gallery-thumbs .thumb-item:hover {
   opacity: 1;
+  border-color: #0096d6;
   transform: scale(1.05);
 }
 
-.product-gallery-thumbs .thumb-item.active {
-  opacity: 1;
-  border-color: #0096d6; 
-  box-shadow: 0 0 5px rgba(0, 150, 214, 0.5);
+/* --- MM (Marketing Message) Section --- */
+#MM .row,
+#features .row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -15px; /* Counteract column padding */
 }
 
-#ksp {
-  max-width: 800px;
-  margin: 20px auto;
-  padding: 0 20px;
+#MM .col-md-6,
+#features td {
+  display: flex; /* This is key for equal height */
+  padding: 15px;
 }
 
-.ksp-item {
-  padding: 15px 10px;
-  border-bottom: 1px solid #ddd;
-}
-
-.ksp-item:last-child {
-  border-bottom: none;
-}
-
-#MM .mm-block {
-  margin-bottom: 20px;
-  background-color: lightgray;
+.mm-block,
+.feature-block {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background-color: #f0f0f0;
   padding: 20px;
   text-align: center;
 }
 
-#MM .mm-image img {
-  width: 100%;
-  max-width: 400px;
-  height: auto;
-  display: block;
-  margin: 0 auto 10px;
-}
-
-#MM .mm-text {
-  text-align: center;
-}
-
-#features {
-  max-width: 800px;
-  margin: 20px auto;
-  padding: 0 20px;
-}
-
-.feature-block {
-    background-color: lightgray;
-    padding: 20px;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.feature-image img {
-    width: 100%;
-    max-width: 200px; 
-    height: auto;
-    display: block;
-    margin: 0 auto 10px;
-}
-
-.feature-text {
-    text-align: center;
-}
-
-#MM {
-  max-width: 800px;
-  margin: 20px auto;
-  padding: 0 20px;
-}
-
-#footnotes, #tech-specs {
-    margin: 20px auto;
-    width: 100%;
-    max-width: 800px;
-    border-collapse: collapse;
-}
-
-#footnotes td, #tech-specs td {
-    padding: 10px;
-    border: 1px solid #ddd;
-}
-
-#footnotes {
-    font-size: 9px;
-}
-
-
-.expand-button {
-  color: #0096d6;
-  text-align: center;
-  font-size: 20px;
-  cursor: pointer;
-}
-
-@media (min-width: 1200px) {
-  body {
-    font-size: 1rem;
-  }
-  h3 {
-    font-size: 1.5rem;
-  }
-  #tech-specs td {
-    font-size: 0.9rem;
-  }
-}
-
-#companions {
-  max-width: 800px;
-  margin: 20px auto;
-  padding: 0 20px;
-}
-
-.companion-list {
+/* Specific image styling for MM section */
+.mm-image {
+  flex-grow: 1;
   display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
 }
 
-.companion-item {
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 10px;
-  width: calc(33.333% - 20px);
-  box-sizing: border-box;
-  text-align: center;
-}
-
-.companion-item img {
+.mm-image img {
   max-width: 100%;
-  height: auto;
-  margin-bottom: 10px;
+  max-height: 250px; /* Larger max-height for MM images */
 }
 
+/* Specific image styling for Features section */
+.feature-image {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.feature-image img {
+  max-width: 100%;
+  max-height: 120px; /* Smaller max-height for feature icons */
+}
+
+.mm-text,
+.feature-text {
+  flex-grow: 1;
+}
+
+/* --- Expandable Sections --- */
 .expand-button {
   color: #0096d6;
   text-align: center;
@@ -246,45 +156,29 @@ sup {
   cursor: pointer;
 }
 
-#features table {
+#tech-specs,
+#footnotes-content table,
+#companions {
+  margin: 20px auto;
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 15px;
-  table-layout: fixed;
+  border-collapse: collapse;
 }
 
-#features td {
-  padding: 15px;
-  background-color: lightgray;
-  vertical-align: top;
-  text-align: center;
-  width: 50%;
+#tech-specs td,
+#footnotes-content td {
+  padding: 10px;
+  border: 1px solid #ddd;
 }
 
-.feature-block {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    margin-bottom: 0;
-}
-
-.feature-image {
-    min-height: 160px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 15px;
-}
-
-.feature-image img {
-    max-height: 150px;
+/* --- Mobile Responsiveness --- */
+@media (max-width: 767px) {
+  #MM .col-md-6,
+  #features td {
+    flex: 0 0 100%;
     max-width: 100%;
-    width: auto;
-    height: auto;
-    display: block;
-    margin: 0 auto;
-}
+  }
 
-.feature-text {
-    flex-grow: 1;
+  #ATF {
+    max-width: 100%;
+  }
 }

@@ -22,7 +22,8 @@
     </center>
     <br>
     <div class="product-gallery">
-      <div class="product-gallery-main"></div>
+      <div class="product-gallery-main">
+        </div>
       <div class="product-gallery-thumbs">
         {% for index, row in df_images.iterrows() %}
         <img class="thumb-item" src="{{ row['imageUrlHttps'] | default('') | safe }}"
@@ -37,48 +38,54 @@
     </div>
     <br>
 
-    <br />
     <div id="MM" class="superscript-content">
-      {% for block in mm_blocks %}
-      <div class="mm-block">
-        <div class="mm-image">
-          <img src="{{ block.image_url | escape }}" alt="Marketing Image">
+      <div class="row">
+        {% for block in mm_blocks %}
+        <div class="col-md-6">
+          <div class="mm-block">
+            <div class="mm-image">
+              <img src="{{ block.image_url | escape }}" alt="Marketing Image">
+            </div>
+            <div class="mm-text">
+              {% if block.headline %}<h3><strong>{{ block.headline }}</strong></h3>{% endif %}
+              {% if block.support %}<p>{{ block.support }}</p>{% endif %}
+            </div>
+          </div>
         </div>
-        <div class="mm-text">
-          {% if block.headline %}<h3><strong>{{ block.headline }}</strong></h3>{% endif %}
-          {% if block.support %}<p>{{ block.support }}</p>{% endif %}
-        </div>
+        {% endfor %}
       </div>
-      {% endfor %}
     </div>
 
-<br />
+    <br />
     <div id="features">
       <table>
-        {% for i in range(0, feature_blocks|length, 2) %}
-        <tr>
-          {% for j in range(i, i + 2) %}
-          <td>
-            {% if j < feature_blocks|length %}
-            <div class="feature-block">
-              <div class="feature-image">
-                <img src="{{ feature_blocks[j].image_url | escape }}" alt="Feature Image">
+        <tbody>
+          {% for i in range(0, feature_blocks|length, 2) %}
+          <tr>
+            {% for j in range(i, i + 2) %}
+            <td>
+              {% if j < feature_blocks|length %}
+              <div class="feature-block">
+                <div class="feature-image">
+                  <img src="{{ feature_blocks[j].image_url | escape }}" alt="Feature Image">
+                </div>
+                <div class="feature-text">
+                  <b>{{ feature_blocks[j].headline | safe }}</b><br>
+                  {% if feature_blocks[j].support %}
+                  {{ feature_blocks[j].support | safe }}
+                  {% endif %}
+                </div>
               </div>
-              <div class="feature-text">
-                <b>{{ feature_blocks[j].headline | safe }}</b><br>
-                {% if feature_blocks[j].support %}
-                {{ feature_blocks[j].support | safe }}
-                {% endif %}
-              </div>
-            </div>
-            {% endif %}
-          </td>
+              {% endif %}
+            </td>
+            {% endfor %}
+          </tr>
           {% endfor %}
-        </tr>
-        {% endfor %}
+        </tbody>
       </table>
-    </div> 
+    </div>
 
+    
     <br />
     <h2 id="see-more" class="expand-button">Show All Specifications</h2>
     <br />
@@ -147,12 +154,10 @@
     </div>
   </div>
   <script src="{{ url_for('static', filename='js/superscript.js') }}"></script>
-
+  
   {% else %}
   <p>Detecting your location and redirecting you to the correct HP page...</p>
-
-  <div id="redirect-info" data-pn="{{ pn }}" data-redirect-url="{{ url_for('call_get_product_from_qr') }}">
-  </div>
+  <div id="redirect-info" data-pn="{{ pn }}" data-redirect-url="{{ url_for('call_get_product_from_qr') }}"></div>
   {% endif %}
 
   <script src="{{ url_for('static', filename='js/redirect_or_gallery.js') }}"></script>

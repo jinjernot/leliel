@@ -1,78 +1,68 @@
-document.addEventListener("DOMContentLoaded", async function () {
-    // The script will first check if the page is in "redirect mode".
-    // It does this by looking for a special hidden div with the ID 'redirect-info'.
+document.addEventListener("DOMContentLoaded", function () {
     const redirectInfo = document.getElementById('redirect-info');
 
     if (redirectInfo) {
         // === REDIRECT MODE ===
-        // If the 'redirect-info' div exists, we run the geolocation logic.
-
-        // Get the product number and redirect URL from the div's data attributes.
         const pn = redirectInfo.dataset.pn;
         const redirectBaseUrl = redirectInfo.dataset.redirectUrl;
 
-        try {
-            // Function to fetch the user's locale from an external service.
-            const getGeoLocale = async () => {
-                const res = await fetch("https://ipapi.co/json/");
-                const data = await res.json();
-                const cc = data.country_code.toLowerCase();
-                const lc = (data.languages || 'en').split(',')[0].split('-')[0].toLowerCase();
-                return cc + '-' + lc;
-            };
-
-            const detectedLocale = await getGeoLocale();
-            let cc = detectedLocale.split('-')[0];
-            let lc = detectedLocale.split('-')[1];
-
-            // START: WORKAROUND FOR MX LOCALE
-            // If the country is Mexico (mx), force the language to also be 'mx'.
+        const getGeoLocale = async () => {
+            const res = await fetch("https://ipapi.co/json/");
+            if (!res.ok) throw new Error('Failed to fetch geolocation data.');
+            const data = await res.json();
+            const cc = data.country_code.toLowerCase();
+            let lc = (data.languages || 'en').split(',')[0].split('-')[0].toLowerCase();
             if (cc === 'mx') {
                 lc = 'mx';
             }
-            // END: WORKAROUND
+            return { cc, lc };
+        };
 
-            const finalLocale = cc + '-' + lc;
+        (async () => {
+            try {
+                const { cc, lc } = await getGeoLocale();
+                const finalLocale = `${cc}-${lc}`;
 
-            // Confirm with the user before redirecting.
-            if (confirm("Your locale: " + finalLocale + "\n\nClick OK to redirect")) {
-                window.location.href = `${redirectBaseUrl}?pn=${pn}&cc=${cc}&ll=${lc}`;
+                if (confirm("Your locale: " + finalLocale + "\n\nClick OK to redirect")) {
+                    window.location.href = `${redirectBaseUrl}?pn=${pn}&cc=${cc}&ll=${lc}`;
+                }
+            } catch (err) {
+                console.error("Geolocation redirect failed:", err);
+                alert("Could not determine location. Redirecting to the default page.");
+                window.location.href = `${redirectBaseUrl}?pn=${pn}&cc=us&ll=en`;
             }
-
-        } catch (err) {
-            console.error("Geolocation redirect failed:", err);
-            // If geolocation fails, redirect to a default locale as a fallback.
-            alert("Could not determine location. Redirecting to the default page.");
-            window.location.href = `${redirectBaseUrl}?pn=${pn}&cc=us&ll=en`;
-        }
+        })();
 
     } else {
         // === GALLERY MODE ===
-        // If the 'redirect-info' div does NOT exist, it means the page has loaded
-        // with full product data, and we should initialize the image gallery.
-
         const mainImageContainer = document.querySelector('.product-gallery-main');
         const thumbnails = document.querySelectorAll('.product-gallery-thumbs .thumb-item');
 
         if (mainImageContainer && thumbnails.length > 0) {
-            const setMainImage = (url) => {
-                mainImageContainer.innerHTML = `<img src="${url}" alt="Main product image">`;
+            // Create a single, permanent image element
+            const mainImage = document.createElement('img');
+            mainImageContainer.innerHTML = ''; // Clear the container first
+            mainImageContainer.appendChild(mainImage);
+
+            const setMainImage = (url, alt) => {
+                mainImage.src = url;
+                mainImage.alt = alt;
             };
 
-            // Initialize the gallery with the first image.
-            const firstImageUrl = thumbnails[0].getAttribute('data-full-image');
-            setMainImage(firstImageUrl);
-            thumbnails[0].classList.add('active');
+            thumbnails.forEach(thumb => {
+                thumb.addEventListener('click', function() {
+                    setMainImage(this.dataset.fullImage, this.alt);
 
-            // Add click listeners to all thumbnail images.
-            thumbnails.forEach(thumbnail => {
-                thumbnail.addEventListener('click', function() {
-                    const newImageUrl = this.getAttribute('data-full-image');
-                    setMainImage(newImageUrl);
+                    // Update active state
                     thumbnails.forEach(t => t.classList.remove('active'));
                     this.classList.add('active');
                 });
             });
+
+            // Initialize the gallery by programmatically clicking the first thumbnail
+            if (thumbnails[0]) {
+                thumbnails[0].click();
+            }
         }
     }
 });

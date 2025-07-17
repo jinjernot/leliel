@@ -1,32 +1,33 @@
-// Function to add superscript to content inside [ ] and link to footnotes
-function addSuperscript(element) {
-    var text = element.innerHTML;
-    var modifiedText = text.replace(/\[([\d,]+)\]/g, function(match, p1) {
-        var footnotes = p1.split(',').map(function(footnote) {
-            var footnoteId = 'footnote-' + footnote;
-            return '<a href="#footnotes" onclick="scrollToFootnotes()"><sup>' + footnote + '</sup></a>';
-        });
-        return footnotes.join('<sup>,</sup> ');
-    });
-    element.innerHTML = modifiedText;
-}
-
-// Scroll to footnotes function
-function scrollToFootnotes() {
-    var element = document.getElementById('footnotes');
-    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-// Apply superscript to specified elements
 document.addEventListener('DOMContentLoaded', function() {
+    // Function to add superscript to content inside [ ] and link to footnotes
+    function addSuperscript(element) {
+        var text = element.innerHTML;
+        var modifiedText = text.replace(/\[([\d,]+)\]/g, function(match, p1) {
+            var footnotes = p1.split(',').map(function(footnote) {
+                return '<a href="#footnotes" onclick="scrollToFootnotes()"><sup>' + footnote + '</sup></a>';
+            });
+            return footnotes.join('<sup>,</sup> ');
+        });
+        element.innerHTML = modifiedText;
+    }
+
+    // Scroll to footnotes function
+    function scrollToFootnotes() {
+        var element = document.getElementById('footnotes');
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
+
+    // Apply superscript to all specified elements
     var elementsToSuperscript = document.querySelectorAll('.superscript-content');
     elementsToSuperscript.forEach(function(element) {
         addSuperscript(element);
     });
-});
 
-// Script to show/hide the table
-document.addEventListener('DOMContentLoaded', function() {
+    // --- Event Listeners for "Show More" Buttons ---
+
+    // Show/hide the tech specs table
     var seeMoreButton = document.getElementById('see-more');
     var techSpecsTable = document.getElementById('tech-specs');
 
@@ -39,10 +40,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-});
 
-// Script to show/hide the companions list
-document.addEventListener('DOMContentLoaded', function() {
+    // Show/hide the companions list
     var seeMoreCompanionsButton = document.getElementById('see-more-companions');
     var companionsList = document.getElementById('companions');
 
@@ -55,10 +54,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-});
 
-// Script to show/hide the footnotes
-document.addEventListener('DOMContentLoaded', function() {
+    // Show/hide the footnotes
     var seeMoreFootnotesButton = document.getElementById('see-more-footnotes');
     var footnotesContent = document.getElementById('footnotes-content');
 
