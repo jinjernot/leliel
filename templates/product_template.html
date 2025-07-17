@@ -38,22 +38,18 @@
     </div>
     <br>
 
-    <div id="MM" class="superscript-content">
-      <div class="row">
-        {% for block in mm_blocks %}
-        <div class="col-md-6">
-          <div class="mm-block">
-            <div class="mm-image">
-              <img src="{{ block.image_url | escape }}" alt="Marketing Image">
-            </div>
-            <div class="mm-text">
-              {% if block.headline %}<h3><strong>{{ block.headline }}</strong></h3>{% endif %}
-              {% if block.support %}<p>{{ block.support }}</p>{% endif %}
-            </div>
-          </div>
+<div id="MM" class="superscript-content">
+      {% for block in mm_blocks %}
+      <div class="mm-block">
+        <div class="mm-image">
+          <img src="{{ block.image_url | escape }}" alt="Marketing Image">
         </div>
-        {% endfor %}
+        <div class="mm-text">
+          {% if block.headline %}<h3><strong>{{ block.headline }}</strong></h3>{% endif %}
+          {% if block.support %}<p>{{ block.support }}</p>{% endif %}
+        </div>
       </div>
+      {% endfor %}
     </div>
 
     <br />

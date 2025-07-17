@@ -41,6 +41,7 @@ sup {
 
 #ATF {
   max-width: 80%;
+  min-width: 900px;
   margin: 33px auto 0;
   padding: 0 20px;
 }
@@ -91,45 +92,55 @@ sup {
 }
 
 /* --- MM (Marketing Message) Section --- */
-#MM .row,
-#features .row {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 0 -15px; /* Counteract column padding */
+.mm-block {
+  background-color: #f8f9fa;
+  text-align: center;
+  padding: 40px 20px;
+  margin: 0 auto 30px auto;
+  max-width: 100%;
 }
 
-#MM .col-md-6,
+.mm-image img {
+  max-width: 600px;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.mm-text h3 {
+  font-size: 1.75rem;
+  margin-bottom: 10px;
+}
+
+.mm-text p {
+  max-width: 600px;
+  margin: 0 auto;
+  font-size: 1rem;
+  color: #333;
+}
+
+
+/* --- Features Section --- */
+#features table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 15px;
+}
+
 #features td {
-  display: flex; /* This is key for equal height */
-  padding: 15px;
+  width: 50%;
+  padding: 0;
+  vertical-align: top;
 }
 
-.mm-block,
 .feature-block {
   display: flex;
   flex-direction: column;
-  width: 100%;
   height: 100%;
   background-color: #f0f0f0;
   padding: 20px;
   text-align: center;
 }
 
-/* Specific image styling for MM section */
-.mm-image {
-  flex-grow: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 1rem;
-}
-
-.mm-image img {
-  max-width: 100%;
-  max-height: 250px; /* Larger max-height for MM images */
-}
-
-/* Specific image styling for Features section */
 .feature-image {
   flex-grow: 1;
   display: flex;
@@ -140,13 +151,13 @@ sup {
 
 .feature-image img {
   max-width: 100%;
-  max-height: 120px; /* Smaller max-height for feature icons */
+  max-height: 120px;
 }
 
-.mm-text,
 .feature-text {
   flex-grow: 1;
 }
+
 
 /* --- Expandable Sections --- */
 .expand-button {
@@ -156,29 +167,33 @@ sup {
   cursor: pointer;
 }
 
-#tech-specs,
-#footnotes-content table,
-#companions {
-  margin: 20px auto;
-  width: 100%;
-  border-collapse: collapse;
+#tech-specs, #footnotes, #companions {
+    margin: 20px auto;
+    width: 100%;
+    border-collapse: collapse;
 }
 
-#tech-specs td,
-#footnotes-content td {
-  padding: 10px;
-  border: 1px solid #ddd;
+#tech-specs td, #footnotes td {
+    padding: 10px;
+    border: 1px solid #ddd;
 }
 
-/* --- Mobile Responsiveness --- */
+
+/* --- Responsive styles for mobile --- */
 @media (max-width: 767px) {
-  #MM .col-md-6,
+  #features tr {
+    display: flex;
+    flex-direction: column;
+  }
+  
   #features td {
-    flex: 0 0 100%;
-    max-width: 100%;
+    width: 100%;
+    margin-bottom: 15px;
   }
 
   #ATF {
+    min-width: initial;
     max-width: 100%;
+    padding: 0 10px;
   }
 }
