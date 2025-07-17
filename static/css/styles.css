@@ -245,3 +245,46 @@ sup {
   font-size: 20px;
   cursor: pointer;
 }
+
+#features table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 15px;
+  table-layout: fixed;
+}
+
+#features td {
+  padding: 15px;
+  background-color: lightgray;
+  vertical-align: top;
+  text-align: center;
+  width: 50%;
+}
+
+.feature-block {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    margin-bottom: 0;
+}
+
+.feature-image {
+    min-height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.feature-image img {
+    max-height: 150px;
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+.feature-text {
+    flex-grow: 1;
+}

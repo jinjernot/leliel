@@ -52,22 +52,33 @@
       {% endfor %}
     </div>
 
-    <br />
+<br />
     <div id="features">
-      {% for block in feature_blocks %}
-      <div class="feature-block">
-        <div class="feature-image">
-          <img src="{{ block.image_url | escape }}" alt="Feature Image">
-        </div>
-        <div class="feature-text">
-          <b>{{ block.headline | safe }}</b><br>
-          {% if block.support %}
-          {{ block.support | safe }}
-          {% endif %}
-        </div>
-      </div>
-      {% endfor %}
-    </div>
+      <table>
+        {% for i in range(0, feature_blocks|length, 2) %}
+        <tr>
+          {% for j in range(i, i + 2) %}
+          <td>
+            {% if j < feature_blocks|length %}
+            <div class="feature-block">
+              <div class="feature-image">
+                <img src="{{ feature_blocks[j].image_url | escape }}" alt="Feature Image">
+              </div>
+              <div class="feature-text">
+                <b>{{ feature_blocks[j].headline | safe }}</b><br>
+                {% if feature_blocks[j].support %}
+                {{ feature_blocks[j].support | safe }}
+                {% endif %}
+              </div>
+            </div>
+            {% endif %}
+          </td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </table>
+    </div> 
+
     <br />
     <h2 id="see-more" class="expand-button">Show All Specifications</h2>
     <br />

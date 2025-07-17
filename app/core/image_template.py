@@ -11,7 +11,7 @@ def build_template_images(response_json, sku):
         for image in images:
             for detail in image['details']:
                 image_data = {
-                    "pixelWidth": detail.get('pºixelWidth'),
+                    "pixelWidth": detail.get('pixelWidth'),
                     "pixelHeight": detail.get('pixelHeight'),
                     "orientation": detail.get('orientation'),
                     "productColor": detail.get('productColor'),
