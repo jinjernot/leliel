@@ -5,7 +5,7 @@ import os
 
 from app.api.process_product import process_api_response
 from app.api.api_error import process_api_error
-from config import api_productcontent # Make sure to update this in your config
+from config import api_productcontent
 
 CACHE_DIR = 'cached_pages'
 
@@ -31,7 +31,7 @@ def get_product():
 
         api_response = requests.get(
             api_url,
-            verify=False, # Assuming no SSL verification is needed
+            verify=False,
             headers={'Content-Type': 'application/json'}
         )
 

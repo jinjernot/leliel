@@ -31,9 +31,9 @@ def build_product_template(api_response):
         # Define the priority for image orientations
         priority_orientations = ["Center facing", "Left facing", "Right facing"]
 
-        # Process images, filtering for 400px width and png type
+        # Process images, filtering for 573px width and png type
         for detail in images:
-            if detail.get('pixelWidth') == '400' and detail.get('type') == 'png' and 'imageUrlHttps' in detail:
+            if detail.get('pixelWidth') == '573' and detail.get('type') == 'png' and 'imageUrlHttps' in detail:
                 orientation = detail.get('orientation', '')
                 # Assign a priority number to each image based on its orientation
                 try:

@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Scroll to footnotes function
-    function scrollToFootnotes() {
+    window.scrollToFootnotes = function() {
         var element = document.getElementById('footnotes');
         if (element) {
             element.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -27,45 +27,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- Event Listeners for "Show More" Buttons ---
 
-    // Show/hide the tech specs table
-    var seeMoreButton = document.getElementById('see-more');
-    var techSpecsTable = document.getElementById('tech-specs');
+    // Function to toggle display of an element
+    function toggleDisplay(buttonId, elementId) {
+        var button = document.getElementById(buttonId);
+        var element = document.getElementById(elementId);
 
-    if (seeMoreButton && techSpecsTable) {
-        seeMoreButton.addEventListener('click', function() {
-            if (techSpecsTable.style.display === 'none' || techSpecsTable.style.display === '') {
-                techSpecsTable.style.display = 'table';
-            } else {
-                techSpecsTable.style.display = 'none';
-            }
-        });
+        if (button && element) {
+            button.addEventListener('click', function() {
+                if (element.style.display === 'none' || element.style.display === '') {
+                    element.style.display = 'block';
+                } else {
+                    element.style.display = 'none';
+                }
+            });
+        }
     }
-
-    // Show/hide the companions list
-    var seeMoreCompanionsButton = document.getElementById('see-more-companions');
-    var companionsList = document.getElementById('companions');
-
-    if (seeMoreCompanionsButton && companionsList) {
-        seeMoreCompanionsButton.addEventListener('click', function() {
-            if (companionsList.style.display === 'none' || companionsList.style.display === '') {
-                companionsList.style.display = 'block';
-            } else {
-                companionsList.style.display = 'none';
-            }
-        });
-    }
-
-    // Show/hide the footnotes
-    var seeMoreFootnotesButton = document.getElementById('see-more-footnotes');
-    var footnotesContent = document.getElementById('footnotes-content');
-
-    if (seeMoreFootnotesButton && footnotesContent) {
-        seeMoreFootnotesButton.addEventListener('click', function() {
-            if (footnotesContent.style.display === 'none' || footnotesContent.style.display === '') {
-                footnotesContent.style.display = 'block';
-            } else {
-                footnotesContent.style.display = 'none';
-            }
-        });
-    }
+    
+    // Toggle for tech specs, companions, and footnotes
+    toggleDisplay('see-more', 'tech-specs');
+    toggleDisplay('see-more-companions', 'companions');
+    toggleDisplay('see-more-footnotes', 'footnotes-content');
 });

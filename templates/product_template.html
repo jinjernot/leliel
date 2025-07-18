@@ -17,28 +17,29 @@
 
   {% if df is defined and not df.empty %}
   <div id="ATF" class="superscript-content">
-    <center>
+    <div class="content-card product-header">
       <h1><span id="prodname">{{ df[df['tag'] == 'prodname']['value'].iloc[0] | default('') | safe }}</span></h1>
-    </center>
-    <br>
-    <div class="product-gallery">
-      <div class="product-gallery-main">
+    </div>
+    
+    <div class="content-card">
+      <div class="product-gallery">
+        <div class="product-gallery-main">
         </div>
-      <div class="product-gallery-thumbs">
-        {% for index, row in df_images.iterrows() %}
-        <img class="thumb-item" src="{{ row['imageUrlHttps'] | default('') | safe }}"
-          data-full-image="{{ row['imageUrlHttps'] | default('') | safe }}"
-          alt="{{ row['orientation'] | default('') }}">
-        {% endfor %}
+        <div class="product-gallery-thumbs">
+          {% for index, row in df_images.iterrows() %}
+          <img class="thumb-item" src="{{ row['imageUrlHttps'] | default('') | safe }}"
+            data-full-image="{{ row['imageUrlHttps'] | default('') | safe }}"
+            alt="{{ row['orientation'] | default('') }}">
+          {% endfor %}
+        </div>
       </div>
     </div>
-    <br>
-    <div class="product-description">
+    
+    <div class="product-description content-card">
       <p>{{ df[df['tag'] == 'proddes_overview_extended']['value'].iloc[0] | default('') | safe }}</p>
     </div>
-    <br>
-
-<div id="MM" class="superscript-content">
+    
+    <div id="MM" class="superscript-content">
       {% for block in mm_blocks %}
       <div class="mm-block">
         <div class="mm-image">
@@ -52,101 +53,87 @@
       {% endfor %}
     </div>
 
-    <br />
-    <div id="features">
-      <table>
-        <tbody>
-          {% for i in range(0, feature_blocks|length, 2) %}
-          <tr>
-            {% for j in range(i, i + 2) %}
-            <td>
-              {% if j < feature_blocks|length %}
-              <div class="feature-block">
-                <div class="feature-image">
-                  <img src="{{ feature_blocks[j].image_url | escape }}" alt="Feature Image">
-                </div>
-                <div class="feature-text">
-                  <b>{{ feature_blocks[j].headline | safe }}</b><br>
-                  {% if feature_blocks[j].support %}
-                  {{ feature_blocks[j].support | safe }}
-                  {% endif %}
-                </div>
-              </div>
-              {% endif %}
-            </td>
-            {% endfor %}
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-
-    
-    <br />
-    <h2 id="see-more" class="expand-button">Show All Specifications</h2>
-    <br />
-    <table id="tech-specs" style="display: none;">
-      <tbody>
-        {% for index, row in df_tech_specs.iterrows() %}
-        {# Skip footnote tags and feature tags in the main loop #}
-        {% if not row['tag'].endswith('ftntnbr') and not row['tag'].startswith('feature_') and not row['tag'].startswith('lgldisclaimer_') %}
-        <tr>
-          <td><b>{{ row['name'] | safe }}</b></td>
-          <td>
-            {{ row['value'] | safe }}
-
-            {# Check for and display the corresponding footnote #}
-            {% set ftnt_tag = row['tag'] ~ 'ftntnbr' %}
-            {% if ftnt_tag in df['tag'].values %}
-            {{ df[df['tag'] == ftnt_tag]['value'].iloc[0] | default('') | safe }}
+    <div id="features" class="content-card">
+      <div class="features-grid">
+        {% for block in feature_blocks %}
+        <div class="feature-block">
+          <div class="feature-image">
+            <img src="{{ block.image_url | escape }}" alt="Feature Image">
+          </div>
+          <div class="feature-text">
+            <b>{{ block.headline | safe }}</b><br>
+            {% if block.support %}
+            {{ block.support | safe }}
             {% endif %}
-          </td>
-        </tr>
-        {% endif %}
-        {% endfor %}
-      </tbody>
-    </table>
-    <br>
-    <h2 id="see-more-companions" class="expand-button">View Recommended Companions</h2>
-    <br />
-    <div id="companions" style="display: none;">
-
-      <div class="companion-list">
-        {% for companion in companions %}
-        <div class="companion-item">
-          <img src="{{ companion.image_url }}" alt="{{ companion.name }}">
-          <div class="companion-details">
-            <p><b>{{ companion.name }}</b></p>
-            <p>SKU: {{ companion.sku }}</p>
           </div>
         </div>
         {% endfor %}
       </div>
     </div>
     
-    <h2 id="see-more-footnotes" class="expand-button">Show Footnotes</h2>
-    <br />
-    <div id="footnotes-content" style="display: none;">
-      <div id="footnotes">
-        <table>
-          <tbody>
-            {% if df_disclaimers is defined and not df_disclaimers.empty %}
-            {% for index, row in df_disclaimers.iterrows() %}
-            <tr>
-              <td>{{ row['value'] | default('') | safe }}</td>
-            </tr>
-            {% endfor %}
-            {% endif %}
-            {% if df_footnotes is defined and not df_footnotes.empty %}
-            {% for index, row in df_footnotes.iterrows() %}
-            <tr>
-              <td>{{ row['value'] | default('') | safe }}</td>
-            </tr>
-            {% endfor %}
-            {% endif %}
-          </tbody>
-        </table>
+    <h2 id="see-more" class="expand-button">Show All Specifications</h2>
+    
+    <div id="tech-specs" class="content-card" style="display: none;">
+      <table class="tech-specs-table">
+        <tbody>
+          {% for index, row in df_tech_specs.iterrows() %}
+          {# Skip footnote tags and feature tags in the main loop #}
+          {% if not row['tag'].endswith('ftntnbr') and not row['tag'].startswith('feature_') and not row['tag'].startswith('lgldisclaimer_') %}
+          <tr>
+            <td><b>{{ row['name'] | safe }}</b></td>
+            <td>
+              {{ row['value'] | safe }}
+
+              {# Check for and display the corresponding footnote #}
+              {% set ftnt_tag = row['tag'] ~ 'ftntnbr' %}
+              {% if ftnt_tag in df['tag'].values %}
+              {{ df[df['tag'] == ftnt_tag]['value'].iloc[0] | default('') | safe }}
+              {% endif %}
+            </td>
+          </tr>
+          {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    
+    <h2 id="see-more-companions" class="expand-button">View Recommended Companions</h2>
+    
+    <div id="companions" class="content-card" style="display: none;">
+      <div class="companions-grid">
+          {% for companion in companions %}
+          <div class="companion-item">
+              <img src="{{ companion.image_url }}" alt="{{ companion.name }}">
+              <div class="companion-details">
+                  <p><b>{{ companion.name }}</b></p>
+                  <p>SKU: {{ companion.sku }}</p>
+              </div>
+          </div>
+          {% endfor %}
       </div>
+    </div>
+    
+    <h2 id="see-more-footnotes" class="expand-button">Show Footnotes</h2>
+
+    <div id="footnotes-content" class="content-card" style="display: none;">
+      <table class="footnotes-table">
+        <tbody>
+          {% if df_disclaimers is defined and not df_disclaimers.empty %}
+          {% for index, row in df_disclaimers.iterrows() %}
+          <tr>
+            <td>{{ row['value'] | default('') | safe }}</td>
+          </tr>
+          {% endfor %}
+          {% endif %}
+          {% if df_footnotes is defined and not df_footnotes.empty %}
+          {% for index, row in df_footnotes.iterrows() %}
+          <tr>
+            <td>{{ row['value'] | default('') | safe }}</td>
+          </tr>
+          {% endfor %}
+          {% endif %}
+        </tbody>
+      </table>
     </div>
   </div>
   <script src="{{ url_for('static', filename='js/superscript.js') }}"></script>
