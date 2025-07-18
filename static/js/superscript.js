@@ -46,5 +46,5 @@ document.addEventListener('DOMContentLoaded', function() {
     // Toggle for tech specs, companions, and footnotes
     toggleDisplay('see-more', 'tech-specs');
     toggleDisplay('see-more-companions', 'companions');
-    toggleDisplay('see-more-footnotes', 'footnotes-content');
+    toggleDisplay('see-more-footnotes', 'footnotes');
 });
