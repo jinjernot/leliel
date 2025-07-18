@@ -1,4 +1,18 @@
-/* static/css/styles.css */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+@font-face {
+  font-family: "Forma DJR Micro";
+  src: url(fonts/forma-djr-micro.otf);
+  src: url(fonts/forma-djr-micro.otf?#iefix) format("embedded-opentype"),
+    url("fonts/forma-djr-micro.woff") format("woff"),
+    url("fonts/forma-djr-display.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
 
 body {
   background-color: #e6e6e6;
@@ -15,9 +29,8 @@ a {
   color: inherit;
 }
 
-/* Use a relative unit (rem) instead of pixels */
 p {
-  font-size: 1.125rem; /* Equivalent to 18px on a standard root font-size */
+  font-size: 1.125rem;
 }
 
 strong {
@@ -30,7 +43,92 @@ sup {
   color: #0096d6;
 }
 
-/* ... other styles ... */
+#ATF {
+  max-width: 80%;
+  min-width: 900px;
+  margin: 33px auto 0;
+  padding: 0 20px;
+}
+
+.content-card {
+  background: #ffffff;
+  padding: 25px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+}
+
+.product-header {
+  text-align: center;
+}
+
+.product-description {
+  text-align: justify;
+}
+
+/* --- Product Gallery --- */
+.product-gallery-main {
+  min-height: 550px;
+  text-align: center;
+}
+
+.product-gallery-main img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.product-gallery-thumbs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 1rem;
+}
+
+.product-gallery-thumbs .thumb-item {
+  width: 100px;
+  height: 75px;
+  object-fit: cover;
+  cursor: pointer;
+  opacity: 0.7;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  transition: all 0.2s ease-in-out;
+}
+
+.product-gallery-thumbs .thumb-item.active,
+.product-gallery-thumbs .thumb-item:hover {
+  opacity: 1;
+  border-color: #0096d6;
+  transform: scale(1.05);
+}
+
+/* --- MM (Marketing Message) Section --- */
+.mm-block {
+  background-color: #f8f9fa;
+  text-align: center;
+  padding: 40px 20px;
+  margin: 0 auto 20px auto;
+  max-width: 100%;
+}
+
+.mm-image img {
+  max-width: 600px;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.mm-text h3 {
+  font-size: 1.75rem;
+  margin-bottom: 10px;
+}
+
+.mm-text p {
+  max-width: 600px;
+  margin: 0 auto;
+  font-size: 1rem;
+  color: #333;
+}
 
 
 /* --- Features Section --- */
@@ -97,9 +195,8 @@ sup {
   flex-grow: 1;
 }
 
-/* Use a relative unit (rem) here as well */
 .companion-details p {
-    font-size: 1rem; /* Equivalent to 16px */
+    font-size: 1rem;
     margin: 2px 0;
 }
 
@@ -108,14 +205,14 @@ sup {
 .expand-button {
   color: #333;
   text-align: center;
-  /* Use a relative unit (rem) here too */
-  font-size: 1.25rem; /* Equivalent to 20px */
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 20px 0;
   cursor: pointer;
   background-color: #ffffff;
   padding: 15px;
   border: 1px solid #ddd;
   border-radius: 4px;
-  margin: 0 0 20px 0;
   transition: background-color 0.2s ease-in-out;
 }
 
@@ -137,7 +234,6 @@ sup {
 
 /* --- Responsive styles for mobile --- */
 @media (max-width: 767px) {
-  /* Add these rules to adjust font sizes on smaller screens */
   h1 {
     font-size: 1.75rem;
   }
@@ -150,11 +246,11 @@ sup {
     font-size: 1.5rem;
   }
 
-  .expand-button {
-    font-size: 1.1rem;
+  h2.expand-button {
+    font-size: 1rem;
+    padding: 12px;
   }
 
-  /* Your existing responsive styles */
   .features-grid, .companions-grid {
     flex-direction: column;
   }
@@ -163,5 +259,22 @@ sup {
     min-width: initial;
     max-width: 100%;
     padding: 0 10px;
+  }
+
+  .tech-specs-table td {
+      font-size: 0.875rem;
+      padding: 8px;
+      word-break: break-word;
+  }
+
+  .tech-specs-table td:first-child {
+      font-weight: bold;
+      white-space: nowrap;
+      width: 35%;
+  }
+
+  /* ADD THIS RULE */
+  .product-description {
+    text-align: left; /* Change text alignment to left for mobile */
   }
 }
