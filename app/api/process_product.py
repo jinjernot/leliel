@@ -13,14 +13,7 @@ def process_api_response(response_json, sku):
     # Build the product template DataFrames
     df, df_images, df_footnotes, df_disclaimers = build_product_template(response_json)
 
-    groups_to_exclude = [
-        'PRISM_Product Names', 'PRISM_Product Description', 'PRISM_Legal Information',
-        'PRISM_Key Selling Points', 'PRISM_Playbook Icons', 'PRISM_Metadata',
-        'PRISM_System Internal', 'PRISM_Core Features', 'PRISM_Features',
-        'PRISM_Category', 'PRISM_PSG_Accessories_Headsets[TS]', 'PRISM_Product Lines',
-        'PRISM_Footnotes'
-    ]
-    df_tech_specs = df[~df['group'].isin(groups_to_exclude)]
+    df_tech_specs = df
 
     mm_blocks = []
     available_images = df_images.copy()

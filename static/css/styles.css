@@ -277,4 +277,33 @@ sup {
   .product-description {
     text-align: left; /* Change text alignment to left for mobile */
   }
+
+ /* Make table rows and cells stack vertically */
+  .tech-specs-table tr {
+      display: block;
+      border-bottom: 1px solid #ddd;
+      padding: 10px 0;
+  }
+  
+  .tech-specs-table td {
+      display: block;
+      width: 100%;
+      border: none;
+      padding: 2px 0;
+  }
+  
+  /* Style the first cell as a label */
+  .tech-specs-table td:first-child {
+      font-weight: bold;
+      white-space: normal; /* Allow the label to wrap */
+      width: 100%;
+  }
+
+  /* Remove border from the last item for a cleaner look */
+   .tech-specs-table tr:last-child {
+      border-bottom: none;
+  }
+
+
+
 }

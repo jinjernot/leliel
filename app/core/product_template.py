@@ -25,8 +25,10 @@ def build_product_template(api_response):
 
         # Process content to get all tech specs and their display order
         for tag, details in content.items():
-            detail_with_order = details.copy()
-            all_details_with_order.append(detail_with_order)
+            # Only include content of type 'techspecs'
+            if details.get('type') == 'techspecs':
+                detail_with_order = details.copy()
+                all_details_with_order.append(detail_with_order)
 
         # Define the priority for image orientations
         priority_orientations = ["Center facing", "Left facing", "Right facing"]
@@ -60,8 +62,8 @@ def build_product_template(api_response):
     # Sort images by the assigned priority
     df_images_data.sort(key=lambda x: x.get('priority', len(priority_orientations)))
 
-    # Sort all details based on the group order first, then by their own order
-    all_details_with_order.sort(key=lambda x: (x.get('groupOrder', 0), x.get('displayOrder', 0)))
+    # Sort all details based on their displayOrder
+    all_details_with_order.sort(key=lambda x: x.get('displayOrder', 0))
 
     # Create DataFrames from the sorted lists
     df = pd.DataFrame(all_details_with_order)
