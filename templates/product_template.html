@@ -87,7 +87,7 @@
             </tr>
             {% for row in specs %}
               <tr>
-                <td><b>{{ row['name'] | safe }}</b></td>
+                <td class="spec-label"><b>{{ row['name'] | safe }}</b></td>
                 <td class="spec-value">
                   {{ row['value'] | safe }}
                   {% set ftnt_tag = row['tag'] ~ 'ftntnbr' %}

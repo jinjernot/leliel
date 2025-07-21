@@ -35,7 +35,7 @@ def process_api_response(response_json, sku):
     # Limit to the first 4 feature blocks
     feature_count = 0
     for i in range(1, 11):
-        if feature_count >= 4: # Changed condition to break after 4 features
+        if feature_count >= 4:
             break
         for j in range(1, 11):
             headline_tag = f'feature_{i:02}_headline_{j:02}_statement'
@@ -52,8 +52,8 @@ def process_api_response(response_json, sku):
                     'support': support_series.iloc[0] if not support_series.empty else '',
                     'image_url': image_url_series.iloc[0]
                 })
-                feature_count += 1 # Increment feature_count after adding a feature
-                if feature_count >= 4: # Changed condition to break after 4 features
+                feature_count += 1
+                if feature_count >= 4:
                     break
 
     return render_template('product_template.html', df=df, tech_specs_by_group=tech_specs_by_group, df_images=df_images, companions=companions, df_footnotes=df_footnotes, df_disclaimers=df_disclaimers, mm_blocks=mm_blocks, feature_blocks=feature_blocks)

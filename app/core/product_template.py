@@ -11,7 +11,7 @@ def build_product_template(api_response):
             return pd.DataFrame(), pd.DataFrame(), pd.DataFrame(), pd.DataFrame(), {}
 
     all_details_with_order = []
-    tech_specs_by_group = {}  # Changed to a dictionary
+    tech_specs_by_group = {}
     df_images_data = []
     footnotes_data = []
     df_disclaimers_data = []
@@ -30,7 +30,7 @@ def build_product_template(api_response):
             all_details_with_order.append(details)
             if (details.get('type') == 'techspecs' and 
                 details.get('tag') not in ['promolink', 'codename', 'tangibleflag', 'energyeffcompal', 'carepackregistrationflag', 'custfacingdes'] and
-                details.get('group') not in ['Product Names', 'Information Pointers']): # Updated line
+                details.get('group') not in ['Product Names', 'Information Pointers']):
                 
                 group = details.get('group', 'Other')
                 if group not in tech_specs_by_group:
