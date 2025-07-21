@@ -63,6 +63,9 @@ sup {
 
 .product-description {
   text-align: justify;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 25px;
 }
 
 /* --- Standardized Info Blocks --- */
@@ -86,6 +89,14 @@ sup {
 
 .feature-block .info-body {
   font-size: 0.9rem;
+}
+
+/* --- Generic Bordered Section --- */
+.bordered-section {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 25px;
+  text-align: center;
 }
 
 /* --- Product Gallery --- */
@@ -126,24 +137,21 @@ sup {
   transform: scale(1.05);
 }
 
-/* --- MM (Marketing Message) & Description Section --- */
+/* --- MM (Marketing Message) Section --- */
 .mm-grid {
   display: flex;
   flex-direction: column;
-  gap: 20px; /* This adds the space between the MM blocks */
-}
-
-.mm-block {
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 40px 20px;
-  text-align: center;
+  gap: 20px;
 }
 
 .mm-image img {
   max-width: 600px;
   height: auto;
   margin-bottom: 20px;
+}
+
+.mm-text {
+  text-align: center;
 }
 
 .product-description p,
@@ -288,7 +296,7 @@ sup {
   .info-body { font-size: 1rem; }
   .feature-block .info-headline { font-size: 1.2rem; }
   .feature-block .info-body { font-size: 0.9rem; }
-  .mm-block { padding: 20px 15px; }
+  .bordered-section { padding: 20px 15px; }
 
   h2.expand-button {
     font-size: 1rem;

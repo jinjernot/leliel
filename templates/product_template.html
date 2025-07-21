@@ -22,28 +22,29 @@
     </div>
     
     <div class="content-card">
-      <div class="product-gallery">
-        <div class="product-gallery-main">
+        <div class="bordered-section">
+            <div class="product-gallery-main"></div>
+            <div class="product-gallery-thumbs">
+                {% for index, row in df_images.iterrows() %}
+                <img class="thumb-item" src="{{ row['imageUrlHttps'] | default('') | safe }}"
+                    data-full-image="{{ row['imageUrlHttps'] | default('') | safe }}"
+                    alt="{{ row['orientation'] | default('') }}">
+                {% endfor %}
+            </div>
         </div>
-        <div class="product-gallery-thumbs">
-          {% for index, row in df_images.iterrows() %}
-          <img class="thumb-item" src="{{ row['imageUrlHttps'] | default('') | safe }}"
-            data-full-image="{{ row['imageUrlHttps'] | default('') | safe }}"
-            alt="{{ row['orientation'] | default('') }}">
-          {% endfor %}
-        </div>
-      </div>
     </div>
     
-    <div class="product-description content-card">
-      <p>{{ df[df['tag'] == 'proddes_overview_extended']['value'].iloc[0] | default('') | safe }}</p>
+    <div class="content-card">
+      <div class="product-description">
+        <p>{{ df[df['tag'] == 'proddes_overview_extended']['value'].iloc[0] | default('') | safe }}</p>
+      </div>
     </div>
     
     <div id="MM" class="superscript-content">
         <div class="content-card">
             <div class="mm-grid">
                 {% for block in mm_blocks %}
-                <div class="mm-block">
+                <div class="bordered-section">
                     <div class="mm-image">
                         <img src="{{ block.image_url | escape }}" alt="Marketing Image">
                     </div>
