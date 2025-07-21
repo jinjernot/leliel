@@ -40,17 +40,21 @@
     </div>
     
     <div id="MM" class="superscript-content">
-      {% for block in mm_blocks %}
-      <div class="mm-block">
-        <div class="mm-image">
-          <img src="{{ block.image_url | escape }}" alt="Marketing Image">
+        <div class="content-card">
+            <div class="mm-grid">
+                {% for block in mm_blocks %}
+                <div class="mm-block">
+                    <div class="mm-image">
+                        <img src="{{ block.image_url | escape }}" alt="Marketing Image">
+                    </div>
+                    <div class="mm-text">
+                        {% if block.headline %}<h3 class="info-headline">{{ block.headline }}</h3>{% endif %}
+                        {% if block.support %}<p class="info-body">{{ block.support }}</p>{% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
         </div>
-        <div class="mm-text">
-          {% if block.headline %}<h3><strong>{{ block.headline }}</strong></h3>{% endif %}
-          {% if block.support %}<p>{{ block.support }}</p>{% endif %}
-        </div>
-      </div>
-      {% endfor %}
     </div>
 
     <div id="features" class="content-card">
@@ -61,9 +65,9 @@
             <img src="{{ block.image_url | escape }}" alt="Feature Image">
           </div>
           <div class="feature-text">
-            <b>{{ block.headline | safe }}</b><br>
+            <h4 class="info-headline">{{ block.headline | safe }}</h4>
             {% if block.support %}
-            {{ block.support | safe }}
+            <p class="info-body">{{ block.support | safe }}</p>
             {% endif %}
           </div>
         </div>
@@ -78,12 +82,12 @@
         <tbody>
           {% for group_name, specs in tech_specs_by_group.items() %}
             <tr>
-              <td colspan="2" style="background-color: #f2f2f2;"><strong>{{ group_name }}</strong></td>
+              <td colspan="2" class="group-header"><strong>{{ group_name }}</strong></td>
             </tr>
             {% for row in specs %}
               <tr>
                 <td><b>{{ row['name'] | safe }}</b></td>
-                <td>
+                <td class="spec-value">
                   {{ row['value'] | safe }}
                   {% set ftnt_tag = row['tag'] ~ 'ftntnbr' %}
                   {% if ftnt_tag in df['tag'].values %}

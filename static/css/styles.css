@@ -53,7 +53,7 @@ sup {
 .content-card {
   background: #ffffff;
   padding: 25px;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   border-radius: 4px;
 }
 
@@ -63,6 +63,29 @@ sup {
 
 .product-description {
   text-align: justify;
+}
+
+/* --- Standardized Info Blocks --- */
+.info-headline {
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 8px;
+  font-size: 1.75rem;
+}
+
+.info-body {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #333;
+}
+
+/* --- Features Section Specific Styles --- */
+.feature-block .info-headline {
+  font-size: 1.25rem;
+}
+
+.feature-block .info-body {
+  font-size: 0.9rem;
 }
 
 /* --- Product Gallery --- */
@@ -103,13 +126,18 @@ sup {
   transform: scale(1.05);
 }
 
-/* --- MM (Marketing Message) Section --- */
+/* --- MM (Marketing Message) & Description Section --- */
+.mm-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* This adds the space between the MM blocks */
+}
+
 .mm-block {
-  background-color: #f8f9fa;
-  text-align: center;
+  border: 1px solid #ddd;
+  border-radius: 4px;
   padding: 40px 20px;
-  margin: 0 auto 20px auto;
-  max-width: 100%;
+  text-align: center;
 }
 
 .mm-image img {
@@ -118,16 +146,9 @@ sup {
   margin-bottom: 20px;
 }
 
-.mm-text h3 {
-  font-size: 1.75rem;
-  margin-bottom: 10px;
-}
-
+.product-description p,
 .mm-text p {
-  max-width: 600px;
-  margin: 0 auto;
   font-size: 1rem;
-  color: #333;
 }
 
 
@@ -159,7 +180,7 @@ sup {
 
 .feature-image img {
     max-width: 100%;
-    max-height: 120px;
+    max-height: 100px;
 }
 
 /* --- Companions Section --- */
@@ -200,7 +221,6 @@ sup {
     margin: 2px 0;
 }
 
-
 /* --- Expandable Sections --- */
 .expand-button {
   color: #333;
@@ -220,7 +240,6 @@ sup {
   background-color: #f8f9fa;
 }
 
-
 .tech-specs-table, .footnotes-table {
     width: 100%;
     border-collapse: collapse;
@@ -229,22 +248,47 @@ sup {
 .tech-specs-table td, .footnotes-table td {
     padding: 10px;
     border: 1px solid #ddd;
+    vertical-align: middle;
 }
 
+.tech-specs-table .group-header {
+  background-color: #f2f2f2;
+}
+
+.tech-specs-table td {
+    font-size: 0.95rem;
+}
 
 /* --- Responsive styles for mobile --- */
 @media (max-width: 767px) {
-  h1 {
-    font-size: 1.75rem;
+  #ATF {
+    min-width: initial;
+    max-width: 100%;
+    padding: 0;
+    margin-top: 15px;
+  }
+  
+  .content-card {
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+
+  h1 { font-size: 1.75rem; }
+  
+  .product-description p,
+  .mm-text p {
+    font-size: 0.9rem;
   }
 
   p {
     font-size: 1rem;
   }
   
-  .mm-text h3 {
-    font-size: 1.5rem;
-  }
+  .info-headline { font-size: 1.5rem; }
+  .info-body { font-size: 1rem; }
+  .feature-block .info-headline { font-size: 1.2rem; }
+  .feature-block .info-body { font-size: 0.9rem; }
+  .mm-block { padding: 20px 15px; }
 
   h2.expand-button {
     font-size: 1rem;
@@ -255,30 +299,14 @@ sup {
     flex-direction: column;
   }
 
-  #ATF {
-    min-width: initial;
-    max-width: 100%;
-    padding: 0 10px;
+  .feature-image img {
+    max-height: 80px;
   }
 
-  .tech-specs-table td {
-      font-size: 0.875rem;
-      padding: 8px;
-      word-break: break-word;
-  }
-
-  .tech-specs-table td:first-child {
-      font-weight: bold;
-      white-space: nowrap;
-      width: 35%;
-  }
-
-  /* ADD THIS RULE */
   .product-description {
-    text-align: left; /* Change text alignment to left for mobile */
+    text-align: left;
   }
 
- /* Make table rows and cells stack vertically */
   .tech-specs-table tr {
       display: block;
       border-bottom: 1px solid #ddd;
@@ -289,21 +317,26 @@ sup {
       display: block;
       width: 100%;
       border: none;
-      padding: 2px 0;
+      padding: 3px 15px;
+      word-break: break-word;
+      font-size: 0.9rem !important;
   }
   
-  /* Style the first cell as a label */
   .tech-specs-table td:first-child {
       font-weight: bold;
-      white-space: normal; /* Allow the label to wrap */
-      width: 100%;
+      color: #555;
   }
 
-  /* Remove border from the last item for a cleaner look */
    .tech-specs-table tr:last-child {
       border-bottom: none;
   }
 
+  .product-gallery-main {
+    min-height: auto;
+  }
 
-
+  .product-gallery-thumbs .thumb-item {
+    width: 80px;
+    height: 60px;
+  }
 }
