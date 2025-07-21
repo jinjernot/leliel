@@ -28,7 +28,10 @@ def build_product_template(api_response):
         # Process content
         for tag, details in content.items():
             all_details_with_order.append(details)
-            if details.get('type') == 'techspecs' and details.get('tag') not in ['promolink', 'codename', 'tangibleflag', 'energyeffcompal', 'carepackregistrationflag', 'custfacingdes']:
+            if (details.get('type') == 'techspecs' and 
+                details.get('tag') not in ['promolink', 'codename', 'tangibleflag', 'energyeffcompal', 'carepackregistrationflag', 'custfacingdes'] and
+                details.get('group') not in ['Product Names', 'Information Pointers']): # Updated line
+                
                 group = details.get('group', 'Other')
                 if group not in tech_specs_by_group:
                     tech_specs_by_group[group] = []
