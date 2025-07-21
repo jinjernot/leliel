@@ -11,9 +11,7 @@ def process_api_response(response_json, sku):
     companions = build_template_companions(response_json, sku)
 
     # Build the product template DataFrames
-    df, df_images, df_footnotes, df_disclaimers = build_product_template(response_json)
-
-    df_tech_specs = df
+    df, df_images, df_footnotes, df_disclaimers, tech_specs_by_group = build_product_template(response_json)
 
     mm_blocks = []
     available_images = df_images.copy()
@@ -58,4 +56,4 @@ def process_api_response(response_json, sku):
                 if feature_count >= 4: # Changed condition to break after 4 features
                     break
 
-    return render_template('product_template.html', df=df, df_tech_specs=df_tech_specs, df_images=df_images, companions=companions, df_footnotes=df_footnotes, df_disclaimers=df_disclaimers, mm_blocks=mm_blocks, feature_blocks=feature_blocks)
+    return render_template('product_template.html', df=df, tech_specs_by_group=tech_specs_by_group, df_images=df_images, companions=companions, df_footnotes=df_footnotes, df_disclaimers=df_disclaimers, mm_blocks=mm_blocks, feature_blocks=feature_blocks)

@@ -76,22 +76,22 @@
     <div id="tech-specs" class="content-card" style="display: none;">
       <table class="tech-specs-table">
         <tbody>
-          {% for index, row in df_tech_specs.iterrows() %}
-          {# Skip footnote tags and feature tags in the main loop #}
-          {% if not row['tag'].endswith('ftntnbr') and not row['tag'].startswith('feature_') and not row['tag'].startswith('lgldisclaimer_') %}
-          <tr>
-            <td><b>{{ row['name'] | safe }}</b></td>
-            <td>
-              {{ row['value'] | safe }}
-
-              {# Check for and display the corresponding footnote #}
-              {% set ftnt_tag = row['tag'] ~ 'ftntnbr' %}
-              {% if ftnt_tag in df['tag'].values %}
-              {{ df[df['tag'] == ftnt_tag]['value'].iloc[0] | default('') | safe }}
-              {% endif %}
-            </td>
-          </tr>
-          {% endif %}
+          {% for group_name, specs in tech_specs_by_group.items() %}
+            <tr>
+              <td colspan="2" style="background-color: #f2f2f2;"><strong>{{ group_name }}</strong></td>
+            </tr>
+            {% for row in specs %}
+              <tr>
+                <td><b>{{ row['name'] | safe }}</b></td>
+                <td>
+                  {{ row['value'] | safe }}
+                  {% set ftnt_tag = row['tag'] ~ 'ftntnbr' %}
+                  {% if ftnt_tag in df['tag'].values %}
+                    {{ df[df['tag'] == ftnt_tag]['value'].iloc[0] | default('') | safe }}
+                  {% endif %}
+                </td>
+              </tr>
+            {% endfor %}
           {% endfor %}
         </tbody>
       </table>
