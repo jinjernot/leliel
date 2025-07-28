@@ -1,304 +1,182 @@
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-	<title>FRAME</title>
-	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no"
-		name="viewport" />
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" />
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/ready.css') }}" />
-	<link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}" />
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FRAME - Content Craft</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
 </head>
 
 <body>
-	<div class="wrapper">
-		<div class="main-header">
-			<div class="logo-header">
-				<img src="{{ url_for('static', filename='images/favicon.png') }}" class="img-header" />
-				FRAME
-			</div>
-		</div>
+    <div class="wrapper">
+        <aside class="sidebar">
+            <div class="logo-header">
+                <img src="{{ url_for('static', filename='images/favicon.png') }}" class="logo-img" alt="Logo">
+                FRAME
+            </div>
+            <nav class="nav">
+                <a href="https://synd.inc.hp.com/frame/main" class="nav-item"><i class="bi bi-house"></i> Home</a>
+                <a href="https://synd.inc.hp.com/frame/scs_tool" class="nav-item"><i class="bi bi-file-text"></i> SCS QA Tool</a>
+                <a href="https://synd.inc.hp.com/frame/qs_tool" class="nav-item"><i class="bi bi-file-richtext"></i> Quickspecs Builder</a>
+                <a href="https://synd.inc.hp.com/frame/image_tool" class="nav-item"><i class="bi bi-file-image"></i> Image Toolbox</a>
+                <a href="https://synd.inc.hp.com/frame/ds_tool" class="nav-item"><i class="bi bi-file-text"></i> CROME</a>
+                <a href="https://g8t11912g.inc.hpicorp.net/app/pccs/app5" class="nav-item"><i class="bi bi-file-text"></i> PCCS Tool</a>
+                <a href="http://g8t11912g.inc.hpicorp.net/app/contentcraft/main" class="nav-item active"><i class="bi bi-file-code"></i> Content Craft</a>
+                <a href="https://synd.inc.hp.com/frame/faq" class="nav-item"><i class="bi bi-question-circle"></i> FAQ</a>
+            </nav>
+            <div class="theme-switch-wrapper">
+                <label class="theme-switch" for="theme-checkbox">
+                    <input type="checkbox" id="theme-checkbox" />
+                    <div class="slider round">
+                        <i class="bi bi-sun-fill light-icon"></i>
+                        <i class="bi bi-moon-fill dark-icon"></i>
+                    </div>
+                </label>
+                <span>Dark Mode</span>
+            </div>
+        </aside>
 
-		<div class="sidebar">
-			<div class="scrollbar-inner sidebar-wrapper">
-				<ul class="nav">
-					<li class="nav-item">
-						<a href="https://synd.inc.hp.com/frame/main">
-							<i class="bi bi-house"></i>
-							<p>Home</p>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="https://synd.inc.hp.com/frame/scs_tool">
-							<i class="bi bi-file-text"></i>
-							<p>SCS QA Tool</p>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="https://synd.inc.hp.com/frame/qs_tool">
-							<i class="bi bi-file-richtext"></i>
-							<p>Quickspecs Builder</p>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="https://synd.inc.hp.com/frame/image_tool">
-							<i class="bi bi-file-image"></i>
-							<p>Image Toolbox</p>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="https://synd.inc.hp.com/frame/ds_tool">
-							<i class="bi bi-file-text"></i>
-							<p>CROME</p>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="https://g8t11912g.inc.hpicorp.net/app/pccs/app5">
-							<i class="bi bi-file-text"></i>
-							<p>PCCS Tool</p>
-						</a>
-					</li>
-					<li class="nav-item active">
-						<a href="http://g8t11912g.inc.hpicorp.net/app/contentcraft/main">
-							<i class="bi bi-file-code"></i>
-							<p>Content Craft</p>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="https://synd.inc.hp.com/frame/faq">
-							<i class="bi bi-question-circle"></i>
-							<p>FAQ</p>
-						</a>
-					</li>
-				</ul>
-			</div>
-		</div>
+        <main class="main-panel">
+            <div class="content">
+                <h1 class="page-title">Content Craft</h1>
 
-		<div class="main-panel">
-			<div class="content">
-				<div class="container-fluid">
-					<h4 class="page-title">Content Craft</h4>
-					<div class="row">
-						<div class="col-md-4">
-							<div class="card">
-								<div class="card-header">
-									<div class="card-title">Page Template - ATF - BTF</div>
-								</div>
-								<div class="card-body">
-									<form method="POST" action="{{ url_for('call_get_product') }}">
-										<div class="form-group row align-items-center">
-											<label for="sku" class="col-form-label col-auto">SKU:</label>
-											<div class="col">
-												<input type="text" id="sku" name="sku"
-													class="form-control form-control-sm" placeholder="SKU"
-													maxlength="10" required />
-											</div>
-										</div>
-										<div class="form-group row align-items-center">
-											<label for="country" class="col-form-label col-auto">Locale:</label>
+                <div class="card-container">
+                    <div class="card form-card">
+                        <div class="card-header">
+                            <h2 class="card-title"><i class="bi bi-file-earmark-plus"></i> Page Template - ATF - BTF</h2>
+                        </div>
+                        <div class="card-body">
+                            <form method="POST" action="{{ url_for('call_get_product') }}" class="input-form">
+                                <div class="form-group">
+                                    <label for="sku_page">SKU:</label>
+                                    <input type="text" id="sku_page" name="sku" class="text-input" placeholder="SKU" maxlength="10" required />
+                                </div>
+                                <div class="form-group-inline">
+                                    <div class="form-group">
+                                        <label for="country_page">Locale:</label>
+                                        <input type="text" id="country_page" name="country" class="text-input" placeholder="CC" maxlength="2" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="language_page">Language:</label>
+                                        <input type="text" id="language_page" name="language" class="text-input" placeholder="LC" maxlength="2" required />
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn-submit">Submit</button>
+                            </form>
+                        </div>
+                    </div>
 
-											<input type="text" id="country" name="country"
-												class="form-control form-control-sm" placeholder="CC" maxlength="2"
-												required />
+                    <div class="card form-card">
+                        <div class="card-header">
+                            <h2 class="card-title"><i class="bi bi-camera"></i> Product Only</h2>
+                        </div>
+                        <div class="card-body">
+                            <form method="POST" action="{{ url_for('call_get_images') }}" class="input-form">
+                               <div class="form-group">
+                                    <label for="sku_product">SKU:</label>
+                                    <input type="text" id="sku_product" name="sku" class="text-input" placeholder="SKU" maxlength="10" required />
+                                </div>
+                                <div class="form-group-inline">
+                                    <div class="form-group">
+                                        <label for="country_product">Locale:</label>
+                                        <input type="text" id="country_product" name="country" class="text-input" placeholder="CC" maxlength="2" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="language_product">Language:</label>
+                                        <input type="text" id="language_product" name="language" class="text-input" placeholder="LC" maxlength="2" required />
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn-submit">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <div class="card form-card">
+                        <div class="card-header">
+                            <h2 class="card-title"><i class="bi bi-card-image"></i> Annotated Images</h2>
+                        </div>
+                        <div class="card-body">
+                            <form method="POST" action="{{ url_for('call_get_rich_media') }}" class="input-form">
+                                <div class="form-group">
+                                    <label for="sku_annotated">SKU:</label>
+                                    <input type="text" id="sku_annotated" name="sku" class="text-input" placeholder="SKU" maxlength="10" required />
+                                </div>
+                                <div class="form-group-inline">
+                                    <div class="form-group">
+                                        <label for="country_annotated">Locale:</label>
+                                        <input type="text" id="country_annotated" name="country" class="text-input" placeholder="CC" maxlength="2" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="language_annotated">Language:</label>
+                                        <input type="text" id="language_annotated" name="language" class="text-input" placeholder="LC" maxlength="2" required />
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn-submit">Submit</button>
+                            </form>
+                        </div>
+                    </div>
 
-											<label for="language" class="col-form-label col-auto">Language:</label>
+                    <div class="card form-card">
+                        <div class="card-header">
+                            <h2 class="card-title"><i class="bi bi-search"></i> Image QA - Product Images</h2>
+                        </div>
+                        <div class="card-body">
+                            <form method="POST" action="{{ url_for('call_get_qa') }}" class="input-form">
+                                <div class="form-group">
+                                    <label for="sku_qa_product">SKUs (comma separated):</label>
+                                    <textarea id="sku_qa_product" name="sku" class="textarea-input" placeholder="Enter SKUs, comma separated" rows="2" required></textarea>
+                                </div>
+                                <div class="form-group-inline">
+                                    <div class="form-group">
+                                        <label for="country_qa_product">Locale:</label>
+                                        <input type="text" id="country_qa_product" name="country" class="text-input" placeholder="CC" maxlength="2" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="language_qa_product">Language:</label>
+                                        <input type="text" id="language_qa_product" name="language" class="text-input" placeholder="LC" maxlength="2" required />
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn-submit">Submit</button>
+                            </form>
+                        </div>
+                    </div>
 
-											<input type="text" id="language" name="language"
-												class="form-control form-control-sm" placeholder="LC" maxlength="2"
-												required />
-										</div>
+                    <div class="card form-card">
+                        <div class="card-header">
+                            <h2 class="card-title"><i class="bi bi-search"></i> Image QA - Rich Media</h2>
+                        </div>
+                        <div class="card-body">
+                            <form method="POST" action="{{ url_for('call_get_qa_rich_media') }}" class="input-form">
+                                <div class="form-group">
+                                    <label for="sku_qa_rich">SKUs (comma separated):</label>
+                                    <textarea id="sku_qa_rich" name="sku" class="textarea-input" placeholder="Enter SKUs, comma separated" rows="2" required></textarea>
+                                </div>
+                                <div class="form-group-inline">
+                                    <div class="form-group">
+                                        <label for="country_qa_rich">Locale:</label>
+                                        <input type="text" id="country_qa_rich" name="country" class="text-input" placeholder="CC" maxlength="2" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="language_qa_rich">Language:</label>
+                                        <input type="text" id="language_qa_rich" name="language" class="text-input" placeholder="LC" maxlength="2" required />
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn-submit">Submit</button>
+                            </form>
+                        </div>
+                    </div>
 
-										<div class="card-action">
-											<button type="submit" class="btn btn-success">
-												Submit
-											</button>
-										</div>
-									</form>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="col-md-4">
-							<div class="card">
-								<div class="card-header">
-									<div class="card-title">Product Only</div>
-								</div>
-								<div class="card-body">
-									<form method="POST" action="{{ url_for('call_get_images') }}">
-										<div class="form-group row align-items-center">
-											<label for="sku" class="col-form-label col-auto">SKU:</label>
-											<div class="col">
-												<input type="text" id="sku" name="sku"
-													class="form-control form-control-sm" placeholder="SKU"
-													maxlength="10" required />
-											</div>
-										</div>
-										<div class="form-group row align-items-center">
-											<label for="country" class="col-form-label col-auto">Locale:</label>
-
-											<input type="text" id="country" name="country"
-												class="form-control form-control-sm" placeholder="CC" maxlength="2"
-												required />
-
-											<label for="language" class="col-form-label col-auto">Language:</label>
-
-											<input type="text" id="language" name="language"
-												class="form-control form-control-sm" placeholder="LC" maxlength="2"
-												required />
-										</div>
-
-										<div class="card-action">
-											<button type="submit" class="btn btn-success">
-												Submit
-											</button>
-
-										</div>
-									</form>
-								</div>
-							</div>
-						</div>
-
-						<div class="col-md-4">
-							<div class="card">
-								<div class="card-header">
-									<div class="card-title">Annotated Images</div>
-								</div>
-								<div class="card-body">
-									<form method="POST" action="{{ url_for('call_get_rich_media') }}">
-										<div class="form-group row align-items-center">
-											<label for="sku" class="col-form-label col-auto">SKU:</label>
-											<div class="col">
-												<input type="text" id="sku" name="sku"
-													class="form-control form-control-sm" placeholder="SKU"
-													maxlength="10" required />
-											</div>
-										</div>
-										<div class="form-group row align-items-center">
-											<label for="country" class="col-form-label col-auto">Locale:</label>
-
-											<input type="text" id="country" name="country"
-												class="form-control form-control-sm" placeholder="CC" maxlength="2"
-												required />
-
-											<label for="language" class="col-form-label col-auto">Language:</label>
-
-											<input type="text" id="language" name="language"
-												class="form-control form-control-sm" placeholder="LC" maxlength="2"
-												required />
-										</div>
-
-										<div class="card-action">
-											<button type="submit" class="btn btn-success">
-												Submit
-											</button>
-										</div>
-									</form>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="col-md-4">
-							<div class="card">
-								<div class="card-header">
-									<div class="card-title">Image QA - Product Images</div>
-								</div>
-								<div class="card-body">
-									<form method="POST" action="{{ url_for('call_get_qa') }}">
-										<div class="form-group row align-items-center">
-											<div class="col">
-												<textarea id="sku" name="sku"
-														  class="form-control form-control-sm"
-														  placeholder="Enter SKUs, comma separated"
-														  rows="3"
-														  required></textarea>
-											</div>
-										</div>
-										<div class="form-group row align-items-center">
-											<label for="country" class="col-form-label col-auto">Locale:</label>
-
-											<input type="text" id="country" name="country"
-												class="form-control form-control-sm" placeholder="CC" maxlength="2"
-												required />
-
-											<label for="language" class="col-form-label col-auto">Language:</label>
-
-											<input type="text" id="language" name="language"
-												class="form-control form-control-sm" placeholder="LC" maxlength="2"
-												required />
-										</div>
-										<div class="card-action">
-											<button type="submit" class="btn btn-success">
-												Submit
-											</button>
-										</div>
-									</form>
-								</div>
-							</div>
-						</div>
-
-						<div class="col-md-4">
-							<div class="card">
-								<div class="card-header">
-									<div class="card-title">Image QA - Rich Media</div>
-								</div>
-								<div class="card-body">
-									<form method="POST" action="{{ url_for('call_get_qa_rich_media') }}">
-										<div class="form-group row align-items-center">
-											<div class="col">
-												<textarea id="sku" name="sku"
-														  class="form-control form-control-sm"
-														  placeholder="Enter SKUs, comma separated"
-														  rows="3"
-														  required></textarea>
-											</div>
-										</div>
-										<div class="form-group row align-items-center">
-											<label for="country" class="col-form-label col-auto">Locale:</label>
-
-											<input type="text" id="country" name="country"
-												class="form-control form-control-sm" placeholder="CC" maxlength="2"
-												required />
-
-											<label for="language" class="col-form-label col-auto">Language:</label>
-
-											<input type="text" id="language" name="language"
-												class="form-control form-control-sm" placeholder="LC" maxlength="2"
-												required />
-										</div>
-
-										<div class="card-action">
-											<button type="submit" class="btn btn-success">
-												Submit
-											</button>
-										</div>
-									</form>
-								</div>
-							</div>
-						</div>
-
-					</div>
-
-
-
-
-			</div>
-			<footer class="footer">
-				<div class="container-fluid">
-					<nav class="pull-left">
-						<ul class="nav"></ul>
-					</nav>
-					<div class="copyright ml-auto">
-						HP Inc. Restricted, Copyright 2024 HP Inc. Company.
-					</div>
-				</div>
-			</footer>
-		</div>
-	</div>
+                </div>
+            </div>
+            <footer class="footer">
+                HP Inc. Restricted, Copyright 2024 HP Inc. Company.
+            </footer>
+        </main>
+    </div>
+    <script src="{{ url_for('static', filename='js/theme-toggle.js') }}"></script>
 </body>
 
 </html>
