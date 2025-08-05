@@ -45,7 +45,7 @@ strong {
 sup {
     vertical-align: super;
     font-size: smaller;
-    color: #0096d6;
+    color: #024AD8;
 }
 
 /* =================================================================
@@ -185,8 +185,19 @@ sup {
 }
 
 /* =================================================================
-   LEGACY PAGE STYLES (FOR ATF/BTF PAGES)
+   PAGE STYLES
    ================================================================= */
+
+   .logo-container {
+  text-align: center; 
+  padding: 20px 0;   
+}
+
+.logo {
+  max-width: 150px; 
+  height: auto;    
+}
+
 #ATF {
     max-width: 80%;
     min-width: 900px;
@@ -272,7 +283,7 @@ sup {
 .product-gallery-thumbs .thumb-item.active,
 .product-gallery-thumbs .thumb-item:hover {
     opacity: 1;
-    border-color: #0096d6;
+    border-color: #024AD8;
     transform: scale(1.05);
 }
 
@@ -428,7 +439,7 @@ sup {
 }
 
 .btn-submit {
-    background-color: #0096D6;
+    background-color: #024AD8;
     color: white;
     font-family: inherit;
     font-size: 1rem;
@@ -443,7 +454,7 @@ sup {
 }
 
 .btn-submit:hover {
-    background-color: #0096D6;
+    background-color: #024AD8;
 }
 
 .full-width-card {
@@ -713,11 +724,11 @@ input:checked~.slider .dark-icon {
 }
 
 .dark-theme .btn-submit {
-    background-color: #0096D6;
+    background-color: #024AD8;
 }
 
 .dark-theme .btn-submit:hover {
-    background-color: #0096D6;
+    background-color: #024AD8;
 }
 
 .dark-theme a {
