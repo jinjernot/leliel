@@ -10,13 +10,13 @@
   </title>
   <meta charset="UTF-8" />
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
-  <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}" />
+  <link href="https://syndication.inc.hp.com/hpi-favicon.ico" type="image/ico" rel="shortcut icon"/>
+  
+  <script src="https://www8.hp.com/caas/header-footer/us/en/default/latest.r?contentType=js"></script>
 </head>
 
 <body>
-  <div class="logo-container">
-    <img src="{{ url_for('static', filename='images/hp-logo.png') }}" alt="" class="logo">
-  </div>
+  <div id="header" class="header"></div>
 
   {% if df is defined and not df.empty %}
   <div id="ATF" class="superscript-content">
@@ -152,6 +152,8 @@
   {% endif %}
 
   <script src="{{ url_for('static', filename='js/redirect_or_gallery.js') }}"></script>
+  
+  <div id="footer" class="footer"></div>
 </body>
 
 </html>
