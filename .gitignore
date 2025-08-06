@@ -1,14 +1,11 @@
 certificates
 config.py
 __pycache__
-leliel_env
 *.xlsx
 docs
-downloaded_images
 .venv
-*.h5
-*.keras
-.json
+*.json
 api_response_*.json
 cached_pages/
 old_proyect
+new.json
