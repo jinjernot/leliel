@@ -31,7 +31,7 @@
                 {% for index, row in df_images.iterrows() %}
                 <img class="thumb-item" src="{{ row['imageUrlHttps'] | default('') | safe }}"
                     data-full-image="{{ row['imageUrlHttps'] | default('') | safe }}"
-                    alt="{{ row['orientation'] | default('') }}">
+                    alt="{{ row['orientation'] | default('') | safe }}">
                 {% endfor %}
             </div>
         </div>
@@ -52,8 +52,8 @@
                         <img src="{{ block.image_url | escape }}" alt="Marketing Image">
                     </div>
                     <div class="mm-text">
-                        {% if block.headline %}<h3 class="info-headline">{{ block.headline }}</h3>{% endif %}
-                        {% if block.support %}<p class="info-body">{{ block.support }}</p>{% endif %}
+                        {% if block.headline %}<h3 class="info-headline">{{ block.headline | safe }}</h3>{% endif %}
+                        {% if block.support %}<p class="info-body">{{ block.support | safe }}</p>{% endif %}
                     </div>
                 </div>
                 {% endfor %}
@@ -86,7 +86,7 @@
         <tbody>
           {% for group_name, specs in tech_specs_by_group.items() %}
             <tr>
-              <td colspan="2" class="group-header"><strong>{{ group_name }}</strong></td>
+              <td colspan="2" class="group-header"><strong>{{ group_name | safe }}</strong></td>
             </tr>
             {% for row in specs %}
               <tr>
@@ -111,10 +111,10 @@
       <div class="companions-grid">
           {% for companion in companions %}
           <div class="companion-item">
-              <img src="{{ companion.image_url }}" alt="{{ companion.name }}">
+              <img src="{{ companion.image_url | escape }}" alt="{{ companion.name | escape }}">
               <div class="companion-details">
-                  <p><b>{{ companion.name }}</b></p>
-                  <p>SKU: {{ companion.sku }}</p>
+                  <p><b>{{ companion.name | safe }}</b></p>
+                  <p>SKU: {{ companion.sku | safe }}</p>
               </div>
           </div>
           {% endfor %}

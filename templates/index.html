@@ -24,7 +24,7 @@
                 <a href="https://synd.inc.hp.com/frame/image_tool" class="nav-item"><i class="bi bi-file-image"></i> Image Toolbox</a>
                 <a href="https://synd.inc.hp.com/frame/ds_tool" class="nav-item"><i class="bi bi-file-text"></i> CROME</a>
                 <a href="https://g8t11912g.inc.hpicorp.net/app/pccs/app5" class="nav-item"><i class="bi bi-file-text"></i> PCCS Tool</a>
-                <a href="http://g8t11912g.inc.hpicorp.net/app/contentcraft/main" class="nav-item active"><i class="bi bi-file-code"></i> Content Craft</a>
+                <a href="{{ url_for('index') }}" class="nav-item active"><i class="bi bi-file-code"></i> Content Craft</a>
                 <a href="https://synd.inc.hp.com/frame/faq" class="nav-item"><i class="bi bi-question-circle"></i> FAQ</a>
             </nav>
             <div class="theme-switch-wrapper">
@@ -49,6 +49,7 @@
                         </div>
                         <div class="card-body">
                             <form method="POST" action="{{ url_for('call_get_product') }}" class="input-form">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                                 <div class="form-group">
                                     <label for="sku_page">SKU:</label>
                                     <input type="text" id="sku_page" name="sku" class="text-input" placeholder="SKU" maxlength="10" required />
