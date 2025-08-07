@@ -3,7 +3,7 @@ import logging
 import secrets
 
 # Import the configuration from config.py
-from config import SECRET_KEY
+from config import SECRET_KEY, PRODUCT_HIERARCHY, TOP_COMPONENTS
 
 from app.api.get_product import get_product, get_product_by_params
 
@@ -13,6 +13,10 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = SECRET_KEY
 app.use_static_for = 'static'
 CACHE_DIR = 'cached_pages'
+
+# Add the imported dictionaries to the app config
+app.config['PRODUCT_HIERARCHY'] = PRODUCT_HIERARCHY
+app.config['TOP_COMPONENTS'] = TOP_COMPONENTS
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
