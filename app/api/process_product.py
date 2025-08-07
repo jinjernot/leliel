@@ -17,6 +17,21 @@ def process_api_response(response_json, sku):
     # Build the product template DataFrames
     df, df_images, df_footnotes, df_disclaimers, tech_specs_by_group = build_product_template(response_json)
 
+    # Sort the tech spec groups based on the defined order in config
+    group_order = current_app.config.get('TECH_SPEC_GROUP_ORDER', [])
+    
+    # Create a sorting key function
+    def sort_key(group_name):
+        try:
+            return group_order.index(group_name)
+        except ValueError:
+            # For groups not in the priority list, place them at the end, sorted alphabetically
+            return len(group_order)
+            
+    # Sort the items and keep them as a list of tuples to preserve order
+    sorted_tech_specs_by_group = sorted(tech_specs_by_group.items(), key=lambda item: (sort_key(item[0]), item[0]))
+
+
     # Extract top components in the specified order
     product_type = get_product_type(product)
     top_components_list = []
@@ -72,4 +87,4 @@ def process_api_response(response_json, sku):
                 if feature_count >= 4:
                     break
 
-    return render_template('product_template.html', df=df, tech_specs_by_group=tech_specs_by_group, df_images=df_images, companions=companions, df_footnotes=df_footnotes, df_disclaimers=df_disclaimers, mm_blocks=mm_blocks, feature_blocks=feature_blocks, top_components=top_components_list)
+    return render_template('product_template.html', df=df, tech_specs_by_group=sorted_tech_specs_by_group, df_images=df_images, companions=companions, df_footnotes=df_footnotes, df_disclaimers=df_disclaimers, mm_blocks=mm_blocks, feature_blocks=feature_blocks, top_components=top_components_list)

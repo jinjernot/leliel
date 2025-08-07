@@ -84,7 +84,7 @@
     <div id="tech-specs" class="content-card" style="display: none;">
       <table class="tech-specs-table">
         <tbody>
-          {% for group_name, specs in tech_specs_by_group.items() %}
+          {% for group_name, specs in tech_specs_by_group %}
             <tr>
               <td colspan="2" class="group-header"><strong>{{ group_name | safe }}</strong></td>
             </tr>
