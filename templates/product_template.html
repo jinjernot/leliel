@@ -9,7 +9,7 @@
     {% endif %}
   </title>
   <meta charset="UTF-8" />
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/product_styles.css') }}" />
   <link href="https://syndication.inc.hp.com/hpi-favicon.ico" type="image/ico" rel="shortcut icon"/>
   
   <script src="https://www8.hp.com/caas/header-footer/us/en/default/latest.r?contentType=js"></script>
@@ -78,31 +78,6 @@
         {% endfor %}
       </div>
     </div>
-
-    {% if top_components %}
-    <div id="top-components" class="content-card">
-        <table class="tech-specs-table">
-            <tbody>
-                {% for component in top_components %}
-                <tr>
-                    <td class="spec-label"><b>{{ component['name'] | safe }}</b></td>
-                    <td class="spec-value">
-                        {{ component['value'] | safe }}
-                        {% set ftnt_tag = component['tag'] ~ 'ftntnbr' %}
-                        {% if ftnt_tag in df['tag'].values %}
-                        {{ df[df['tag'] == ftnt_tag]['value'].iloc[0] | default('') | safe }}
-                        {% endif %}
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    {% endif %}
-
-
-
-
     
     <h2 id="see-more" class="expand-button">Show All Specifications</h2>
     
@@ -129,6 +104,28 @@
         </tbody>
       </table>
     </div>
+
+    {% if top_components %}
+    <div id="top-components" class="content-card">
+        <h2 class="expand-button">Top Components</h2>
+        <table class="tech-specs-table">
+            <tbody>
+                {% for component in top_components %}
+                <tr>
+                    <td class="spec-label"><b>{{ component['name'] | safe }}</b></td>
+                    <td class="spec-value">
+                        {{ component['value'] | safe }}
+                        {% set ftnt_tag = component['tag'] ~ 'ftntnbr' %}
+                        {% if ftnt_tag in df['tag'].values %}
+                        {{ df[df['tag'] == ftnt_tag]['value'].iloc[0] | default('') | safe }}
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
     
     <h2 id="see-more-companions" class="expand-button">View Recommended Companions</h2>
     
