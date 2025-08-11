@@ -15,11 +15,11 @@ def process_api_response(response_json, sku):
     companions = build_template_companions(response_json, sku)
 
     # Build the product template DataFrames
-    df, df_images, df_footnotes, df_disclaimers, tech_specs_by_group = build_product_template(response_json)
+    df, df_images, df_footnotes, df_disclaimers, tech_specs_by_group, video_data = build_product_template(response_json)
 
     # Sort the tech spec groups based on the defined order in config
     group_order = current_app.config.get('TECH_SPEC_GROUP_ORDER', [])
-    
+
     # Create a sorting key function
     def sort_key(group_name):
         try:
@@ -27,7 +27,7 @@ def process_api_response(response_json, sku):
         except ValueError:
             # For groups not in the priority list, place them at the end, sorted alphabetically
             return len(group_order)
-            
+
     # Sort the items and keep them as a list of tuples to preserve order
     sorted_tech_specs_by_group = sorted(tech_specs_by_group.items(), key=lambda item: (sort_key(item[0]), item[0]))
 
@@ -38,7 +38,7 @@ def process_api_response(response_json, sku):
     if product_type and product_type in current_app.config['TOP_COMPONENTS']:
         # Create a dictionary of all specs for quick lookup
         all_specs = {spec['tag']: spec for group in tech_specs_by_group.values() for spec in group}
-        
+
         # Iterate through the ordered list of tags from the config
         for tag in current_app.config['TOP_COMPONENTS'][product_type]:
             if tag in all_specs:
@@ -87,4 +87,4 @@ def process_api_response(response_json, sku):
                 if feature_count >= 4:
                     break
 
-    return render_template('product_template.html', df=df, tech_specs_by_group=sorted_tech_specs_by_group, df_images=df_images, companions=companions, df_footnotes=df_footnotes, df_disclaimers=df_disclaimers, mm_blocks=mm_blocks, feature_blocks=feature_blocks, top_components=top_components_list)
+    return render_template('product_template.html', df=df, tech_specs_by_group=sorted_tech_specs_by_group, df_images=df_images, companions=companions, df_footnotes=df_footnotes, df_disclaimers=df_disclaimers, mm_blocks=mm_blocks, feature_blocks=feature_blocks, top_components=top_components_list, video_data=video_data)

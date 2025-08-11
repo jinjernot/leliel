@@ -11,7 +11,7 @@
   <meta charset="UTF-8" />
   <link rel="stylesheet" href="{{ url_for('static', filename='css/product_styles.css') }}" />
   <link href="https://syndication.inc.hp.com/hpi-favicon.ico" type="image/ico" rel="shortcut icon"/>
-  
+
   <script src="https://www8.hp.com/caas/header-footer/us/en/default/latest.r?contentType=js"></script>
 </head>
 
@@ -23,7 +23,7 @@
     <div class="content-card product-header">
       <h1><span id="prodname">{{ df[df['tag'] == 'prodname']['value'].iloc[0] | default('') | safe }}</span></h1>
     </div>
-    
+
     <div class="content-card">
         <div class="bordered-section">
             <div class="product-gallery-main"></div>
@@ -33,16 +33,19 @@
                     data-full-image="{{ row['imageUrlHttps'] | default('') | safe }}"
                     alt="{{ row['orientation'] | default('') | safe }}">
                 {% endfor %}
+                {% if video_data %}
+                <img class="thumb-item" src="{{ video_data.previewURL }}" data-video-source="{{ video_data.assetUrl }}" alt="360 Spin Video">
+                {% endif %}
             </div>
         </div>
     </div>
-    
+
     <div class="content-card">
       <div class="product-description">
         <p>{{ df[df['tag'] == 'proddes_overview_extended']['value'].iloc[0] | default('') | safe }}</p>
       </div>
     </div>
-    
+
     <div id="MM" class="superscript-content">
         <div class="content-card">
             <div class="mm-grid">
@@ -78,9 +81,9 @@
         {% endfor %}
       </div>
     </div>
-    
+
     <h2 id="see-more" class="expand-button">Show All Specifications</h2>
-    
+
     <div id="tech-specs" class="content-card" style="display: none;">
       <table class="tech-specs-table">
         <tbody>
@@ -126,9 +129,9 @@
         </table>
     </div>
     {% endif %}
-    
+
     <h2 id="see-more-companions" class="expand-button">View Recommended Companions</h2>
-    
+
     <div id="companions" class="content-card" style="display: none;">
       <div class="companions-grid">
           {% for companion in companions %}
@@ -142,7 +145,7 @@
           {% endfor %}
       </div>
     </div>
-    
+
     <h2 id="see-more-footnotes" class="expand-button">Show Footnotes</h2>
 
     <div id="footnotes" class="content-card" style="display: none;">
@@ -167,14 +170,14 @@
     </div>
   </div>
   <script src="{{ url_for('static', filename='js/superscript.js') }}"></script>
-  
+  <script src="{{ url_for('static', filename='js/productGallery.js') }}"></script>
+
   {% else %}
   <p>Detecting your location and redirecting you to the correct HP page...</p>
   <div id="redirect-info" data-pn="{{ pn }}" data-redirect-url="{{ url_for('call_get_product_from_qr') }}"></div>
+  <script src="{{ url_for('static', filename='js/geoRedirect.js') }}"></script>
   {% endif %}
 
-  <script src="{{ url_for('static', filename='js/redirect_or_gallery.js') }}"></script>
-  
   <div id="footer" class="footer"></div>
 </body>
 

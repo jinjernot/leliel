@@ -8,7 +8,7 @@ def build_product_template(api_response):
             api_response = api_response.json()
         except AttributeError:
             print("Error: Unable to convert the response to a dictionary.")
-            return pd.DataFrame(), pd.DataFrame(), pd.DataFrame(), pd.DataFrame(), {}
+            return pd.DataFrame(), pd.DataFrame(), pd.DataFrame(), pd.DataFrame(), {}, None
 
     all_details_with_order = []
     tech_specs_by_group = {}
@@ -17,6 +17,7 @@ def build_product_template(api_response):
     df_disclaimers_data = []
     processed_orientations = set()
     primary_product_color = None
+    video_data = None
 
     # Extract product data
     products = api_response.get('products', {})
@@ -24,14 +25,15 @@ def build_product_template(api_response):
         content = product_data.get('content', {})
         images = product_data.get('images', [])
         footnotes = product_data.get('footnotes', [])
+        videos = product_data.get('videos', [])
 
         # Process content
         for tag, details in content.items():
             all_details_with_order.append(details)
-            if (details.get('type') == 'techspecs' and 
+            if (details.get('type') == 'techspecs' and
                 details.get('tag') not in ['promolink', 'codename', 'tangibleflag', 'energyeffcompal', 'carepackregistrationflag', 'custfacingdes'] and
                 details.get('group') not in ['Product Names', 'Information Pointers']):
-                
+
                 group = details.get('group', 'Other')
                 if group not in tech_specs_by_group:
                     tech_specs_by_group[group] = []
@@ -48,7 +50,7 @@ def build_product_template(api_response):
                 except ValueError:
                     priority = len(priority_orientations)
                 temp_images.append({**detail, 'priority': priority})
-        
+
         if temp_images:
             temp_images.sort(key=lambda x: x.get('priority'))
             primary_product_color = temp_images[0].get('productColor')
@@ -57,7 +59,7 @@ def build_product_template(api_response):
         for detail in images:
             orientation = detail.get('orientation', '')
             product_color = detail.get('productColor')
-            
+
             if (detail.get('pixelWidth') == '573' and
                 detail.get('type') == 'png' and
                 'imageUrlHttps' in detail and
@@ -69,7 +71,7 @@ def build_product_template(api_response):
                     priority = priority_orientations.index(orientation)
                 except ValueError:
                     priority = len(priority_orientations)
-                
+
                 df_images_data.append({
                     'orientation': orientation,
                     'pixelWidth': detail.get('pixelWidth'),
@@ -85,6 +87,15 @@ def build_product_template(api_response):
             elif footnote.get('type') == 'legal_disclaimer':
                  df_disclaimers_data.append(footnote)
 
+        # Process videos
+        for video in videos:
+            if video.get("assetCategory") == "Video - 360 Spin":
+                video_data = {
+                    "assetUrl": video.get("assetUrl"),
+                    "previewURL": video.get("previewURL")
+                }
+                break # only need one
+
     # Sort images and tech specs within each group
     df_images_data.sort(key=lambda x: x.get('priority'))
     for group in tech_specs_by_group:
@@ -96,4 +107,4 @@ def build_product_template(api_response):
     df_footnotes = pd.DataFrame(footnotes_data)
     df_disclaimers = pd.DataFrame(df_disclaimers_data)
 
-    return df, df_images, df_footnotes, df_disclaimers, tech_specs_by_group
+    return df, df_images, df_footnotes, df_disclaimers, tech_specs_by_group, video_data

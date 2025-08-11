@@ -103,8 +103,11 @@ sup {
 }
 
 .product-gallery-main {
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin-bottom: 1rem;
+    min-height: 450px; 
 }
 
 .product-gallery-main img {
