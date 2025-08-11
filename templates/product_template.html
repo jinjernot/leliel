@@ -40,12 +40,16 @@
         </div>
     </div>
 
+    {% set description_series = df[df['tag'] == 'proddes_overview_extended']['value'] %}
+    {% if description_series is defined and not description_series.empty and description_series.iloc[0] %}
     <div class="content-card">
       <div class="product-description">
-        <p>{{ df[df['tag'] == 'proddes_overview_extended']['value'].iloc[0] | default('') | safe }}</p>
+        <p>{{ description_series.iloc[0] | default('') | safe }}</p>
       </div>
     </div>
+    {% endif %}
 
+    {% if mm_blocks %}
     <div id="MM" class="superscript-content">
         <div class="content-card">
             <div class="mm-grid">
@@ -63,7 +67,9 @@
             </div>
         </div>
     </div>
+    {% endif %}
 
+    {% if feature_blocks %}
     <div id="features" class="content-card">
       <div class="features-grid">
         {% for block in feature_blocks %}
@@ -81,6 +87,7 @@
         {% endfor %}
       </div>
     </div>
+    {% endif %}
 
     <h2 id="see-more" class="expand-button">Show All Specifications</h2>
 
@@ -130,6 +137,7 @@
     </div>
     {% endif %}
 
+    {% if companions %}
     <h2 id="see-more-companions" class="expand-button">View Recommended Companions</h2>
 
     <div id="companions" class="content-card" style="display: none;">
@@ -145,7 +153,9 @@
           {% endfor %}
       </div>
     </div>
+    {% endif %}
 
+    {% if (df_disclaimers is defined and not df_disclaimers.empty) or (df_footnotes is defined and not df_footnotes.empty) %}
     <h2 id="see-more-footnotes" class="expand-button">Show Footnotes</h2>
 
     <div id="footnotes" class="content-card" style="display: none;">
@@ -168,6 +178,7 @@
         </tbody>
       </table>
     </div>
+    {% endif %}
   </div>
   <script src="{{ url_for('static', filename='js/superscript.js') }}"></script>
   <script src="{{ url_for('static', filename='js/productGallery.js') }}"></script>
