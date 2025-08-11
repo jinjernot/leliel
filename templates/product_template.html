@@ -89,6 +89,27 @@
     </div>
     {% endif %}
 
+    {% if top_components %}
+    <div id="top-components" class="content-card">
+        <table class="tech-specs-table">
+            <tbody>
+                {% for component in top_components %}
+                <tr>
+                    <td class="spec-label"><b>{{ component['name'] | safe }}</b></td>
+                    <td class="spec-value">
+                        {{ component['value'] | safe }}
+                        {% set ftnt_tag = component['tag'] ~ 'ftntnbr' %}
+                        {% if ftnt_tag in df['tag'].values %}
+                        {{ df[df['tag'] == ftnt_tag]['value'].iloc[0] | default('') | safe }}
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+
     <h2 id="see-more" class="expand-button">Show All Specifications</h2>
 
     <div id="tech-specs" class="content-card" style="display: none;">
@@ -114,28 +135,6 @@
         </tbody>
       </table>
     </div>
-
-    {% if top_components %}
-    <div id="top-components" class="content-card">
-        <h2 class="expand-button">Top Components</h2>
-        <table class="tech-specs-table">
-            <tbody>
-                {% for component in top_components %}
-                <tr>
-                    <td class="spec-label"><b>{{ component['name'] | safe }}</b></td>
-                    <td class="spec-value">
-                        {{ component['value'] | safe }}
-                        {% set ftnt_tag = component['tag'] ~ 'ftntnbr' %}
-                        {% if ftnt_tag in df['tag'].values %}
-                        {{ df[df['tag'] == ftnt_tag]['value'].iloc[0] | default('') | safe }}
-                        {% endif %}
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    {% endif %}
 
     {% if companions %}
     <h2 id="see-more-companions" class="expand-button">View Recommended Companions</h2>

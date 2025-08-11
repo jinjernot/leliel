@@ -10,6 +10,7 @@ def get_product_type(product_data):
 def process_api_response(response_json, sku):
     # Extract data from the response using the SKU
     product = response_json.get('products', {}).get(sku, {})
+    product_type = get_product_type(product)
 
     # Build the companions template
     companions = build_template_companions(response_json, sku)
@@ -33,7 +34,6 @@ def process_api_response(response_json, sku):
 
 
     # Extract top components in the specified order
-    product_type = get_product_type(product)
     top_components_list = []
     if product_type and product_type in current_app.config['TOP_COMPONENTS']:
         # Create a dictionary of all specs for quick lookup
@@ -46,9 +46,15 @@ def process_api_response(response_json, sku):
 
     mm_blocks = []
     available_images = df_images.copy()
+
     for i in range(1, 11):
-        headline_tag = f'ksp_{i:02}_headline_medium'
-        support_tag = f'ksp_{i:02}_suppt_01_long'
+        if product_type == 'printer':
+            headline_tag = f'ksp_{i:02}_headline_short'
+            support_tag = f'ksp_{i:02}_headline_medium'
+        else: # For laptops, desktops, monitors, etc.
+            headline_tag = f'ksp_{i:02}_headline_medium'
+            support_tag = f'ksp_{i:02}_suppt_01_long'
+
         headline_series = df[df['tag'] == headline_tag]['value']
         support_series = df[df['tag'] == support_tag]['value']
 
