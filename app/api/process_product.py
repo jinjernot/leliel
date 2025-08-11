@@ -1,6 +1,7 @@
 from app.core.product_template import build_product_template
 from app.core.companion_template import build_template_companions
 from flask import render_template, current_app
+import pandas as pd
 
 def get_product_type(product_data):
     pmoid = product_data.get('productHierarchy', {}).get('productType', {}).get('pmoid')
@@ -18,7 +19,7 @@ def process_api_response(response_json, sku):
 
     # Sort the tech spec groups based on the defined order in config
     group_order = current_app.config.get('TECH_SPEC_GROUP_ORDER', [])
-
+    
     # Create a sorting key function
     def sort_key(group_name):
         try:
@@ -26,7 +27,7 @@ def process_api_response(response_json, sku):
         except ValueError:
             # For groups not in the priority list, place them at the end, sorted alphabetically
             return len(group_order)
-
+            
     # Sort the items and keep them as a list of tuples to preserve order
     sorted_tech_specs_by_group = sorted(tech_specs_by_group.items(), key=lambda item: (sort_key(item[0]), item[0]))
 
@@ -37,7 +38,7 @@ def process_api_response(response_json, sku):
     if product_type and product_type in current_app.config['TOP_COMPONENTS']:
         # Create a dictionary of all specs for quick lookup
         all_specs = {spec['tag']: spec for group in tech_specs_by_group.values() for spec in group}
-
+        
         # Iterate through the ordered list of tags from the config
         for tag in current_app.config['TOP_COMPONENTS'][product_type]:
             if tag in all_specs:

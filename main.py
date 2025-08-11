@@ -3,7 +3,7 @@ import logging
 import secrets
 
 # Import the configuration from config.py
-from config import SECRET_KEY, PRODUCT_HIERARCHY, TOP_COMPONENTS
+from config import SECRET_KEY, PRODUCT_HIERARCHY, TOP_COMPONENTS, TECH_SPEC_GROUP_ORDER
 
 from app.api.get_product import get_product, get_product_by_params
 
@@ -16,6 +16,7 @@ app.use_static_for = 'static'
 # Add the imported dictionaries to the app config
 app.config['PRODUCT_HIERARCHY'] = PRODUCT_HIERARCHY
 app.config['TOP_COMPONENTS'] = TOP_COMPONENTS
+app.config['TECH_SPEC_GROUP_ORDER'] = TECH_SPEC_GROUP_ORDER
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
