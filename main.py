@@ -12,7 +12,6 @@ app = Flask(__name__)
 # Set the secret key from the config file
 app.config['SECRET_KEY'] = SECRET_KEY
 app.use_static_for = 'static'
-CACHE_DIR = 'cached_pages'
 
 # Add the imported dictionaries to the app config
 app.config['PRODUCT_HIERARCHY'] = PRODUCT_HIERARCHY

@@ -1,7 +1,6 @@
 from app.core.product_template import build_product_template
 from app.core.companion_template import build_template_companions
 from flask import render_template, current_app
-import pandas as pd
 
 def get_product_type(product_data):
     pmoid = product_data.get('productHierarchy', {}).get('productType', {}).get('pmoid')

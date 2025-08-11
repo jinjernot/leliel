@@ -1,14 +1,12 @@
 from flask import render_template, request, send_from_directory
 import requests
-import json
 import os
 import re
 
+from config import CACHE_DIR
 from app.api.process_product import process_api_response
 from app.api.api_error import process_api_error
 from config import api_productcontent
-
-CACHE_DIR = 'cached_pages'
 
 def sanitize_filename(filename):
     """Sanitizes a filename by removing directory traversal characters."""
