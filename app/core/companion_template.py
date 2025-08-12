@@ -8,7 +8,7 @@ def build_template_companions(api_response, sku):
     companions_list = []
 
     # Process accessories, services and supplies, so they appear in that order.
-    for companion_type in ['accessories', 'services', 'supplies']:
+    for companion_type in ['supplies', 'accessories', 'services']:
         if companion_type in product_data:
             # Sort the companions by the 'sortOrder' field as an integer.
             sorted_companions = sorted(product_data[companion_type], key=lambda x: int(x.get('sortOrder', 0)))

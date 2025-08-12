@@ -6,7 +6,7 @@ import re
 from config import CACHE_DIR
 from app.api.process_product import process_api_response
 from app.api.api_error import process_api_error
-from config import api_productcontent
+from config import API_URL
 
 def sanitize_filename(filename):
     """Sanitizes a filename by removing directory traversal characters."""
@@ -30,7 +30,7 @@ def get_product():
 
         # If not cached, proceed with API call
         # Construct the new API URL
-        api_url = f"{api_productcontent}/{country_code}/{language_code}/{sku}/all"
+        api_url = f"{API_URL}/{country_code}/{language_code}/{sku}/all"
 
         api_response = requests.get(
             api_url,
@@ -73,7 +73,7 @@ def get_product_by_params(sku, country_code, language_code):
             return send_from_directory(CACHE_DIR, cached_filename)
 
         # Construct the new API URL
-        api_url = f"{api_productcontent}/{country_code}/{language_code}/{sku}/all"
+        api_url = f"{API_URL}/{country_code}/{language_code}/{sku}/all"
 
 
         api_response = requests.get(
