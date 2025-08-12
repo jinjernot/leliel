@@ -24,6 +24,7 @@
       <h1><span id="prodname">{{ df[df['tag'] == 'prodname']['value'].iloc[0] | default('') | safe }}</span></h1>
     </div>
 
+    {% if df_images is defined and not df_images.empty %}
     <div class="content-card">
         <div class="bordered-section">
             <div class="product-gallery-main"></div>
@@ -39,6 +40,7 @@
             </div>
         </div>
     </div>
+    {% endif %}
 
     {% set description_series = df[df['tag'] == 'proddes_overview_extended']['value'] %}
     {% if description_series is defined and not description_series.empty and description_series.iloc[0] %}
