@@ -138,6 +138,24 @@
       </table>
     </div>
 
+    {% if top_companions %}
+    <div id="top-companions" class="content-card">
+        <div class="companions-grid">
+            {% for companion_type, companions in top_companions.items() %}
+                {% for companion in companions %}
+                <div class="companion-item">
+                    <img src="{{ companion.image_url | escape }}" alt="{{ companion.name | escape }}">
+                    <div class="companion-details">
+                        <p><b>{{ companion.name | safe }}</b></p>
+                        <p>SKU: {{ companion.sku | safe }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
     {% if companions %}
     <h2 id="see-more-companions" class="expand-button">View Recommended Companions</h2>
 

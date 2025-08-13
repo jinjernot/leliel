@@ -1,5 +1,5 @@
 from app.core.product_template import build_product_template
-from app.core.companion_template import build_template_companions
+from app.core.companion_template import build_template_companions, build_top_companions_by_type
 from flask import render_template, current_app
 import pandas as pd
 
@@ -14,6 +14,7 @@ def process_api_response(response_json, sku):
 
     # Build the companions template
     companions = build_template_companions(response_json, sku)
+    top_companions = build_top_companions_by_type(response_json, sku)
 
     # Build the product template DataFrames
     df, df_images, df_footnotes, df_disclaimers, tech_specs_by_group, video_data = build_product_template(response_json)
@@ -98,4 +99,4 @@ def process_api_response(response_json, sku):
                 if feature_count >= 4:
                     break
 
-    return render_template('product_template.html', df=df, tech_specs_by_group=sorted_tech_specs_by_group, df_images=df_images, companions=companions, df_footnotes=df_footnotes, df_disclaimers=df_disclaimers, mm_blocks=mm_blocks, feature_blocks=feature_blocks, top_components=top_components_list, video_data=video_data)
+    return render_template('product_template.html', df=df, tech_specs_by_group=sorted_tech_specs_by_group, df_images=df_images, companions=companions, top_companions=top_companions, df_footnotes=df_footnotes, df_disclaimers=df_disclaimers, mm_blocks=mm_blocks, feature_blocks=feature_blocks, top_components=top_components_list, video_data=video_data)
