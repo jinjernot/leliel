@@ -94,7 +94,7 @@ def build_product_template(api_response):
                     "assetUrl": video.get("assetUrl"),
                     "previewURL": video.get("previewURL")
                 }
-                break # only need one
+                break
 
     # Sort images and tech specs within each group
     df_images_data.sort(key=lambda x: x.get('priority'))

@@ -27,7 +27,6 @@ def process_api_response(response_json, sku):
         try:
             return group_order.index(group_name)
         except ValueError:
-            # For groups not in the priority list, place them at the end, sorted alphabetically
             return len(group_order)
             
     # Sort the items and keep them as a list of tuples to preserve order
@@ -52,7 +51,7 @@ def process_api_response(response_json, sku):
         if product_type in ['Printers and Multifunction', 'Ink/Toner/Paper/Printer Supplies']:
             headline_tag = f'ksp_{i:02}_headline_short'
             support_tag = f'ksp_{i:02}_headline_medium'
-        else: # For laptops, desktops, monitors, etc.
+        else:
             headline_tag = f'ksp_{i:02}_headline_medium'
             support_tag = f'ksp_{i:02}_suppt_01_long'
 
@@ -70,7 +69,6 @@ def process_api_response(response_json, sku):
                 available_images = available_images.drop(available_images.index[0])
 
     feature_blocks = []
-    # Limit to the first 4 feature blocks
     feature_count = 0
     for i in range(1, 11):
         if feature_count >= 4:
