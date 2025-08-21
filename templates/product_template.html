@@ -158,7 +158,7 @@
     {% endif %}
 
     {% if companions %}
-    <h2 id="see-more-companions" class="expand-button">View Recommended Companions</h2>
+    <h2 id="see-more-companions" class="expand-button">Show Companions</h2>
 
     <div id="companions" class="content-card" style="display: none;">
       <div class="companions-grid">
@@ -209,6 +209,9 @@
   <script src="{{ url_for('static', filename='js/geoRedirect.js') }}"></script>
   {% endif %}
 
+  <div class="footer-image-container">
+    <img src="{{ url_for('static', filename='images/footer.png') }}" alt="Footer Image">
+  </div>
   <div id="footer" class="footer"></div>
 </body>
 
