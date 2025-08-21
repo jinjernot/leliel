@@ -10,14 +10,10 @@ def build_template_companions(api_response, sku):
     # Process accessories, services and supplies, so they appear in that order.
     for companion_type in ['supplies', 'accessories', 'services']:
         if companion_type in product_data:
-            # Sort supplies by date, and other companions by sortOrder.
-            if companion_type == 'supplies':
-                sorted_companions = sorted(product_data[companion_type], key=lambda x: x.get('fullDate', '0'), reverse=True)
-            else:
-                sorted_companions = sorted(product_data[companion_type], key=lambda x: int(x.get('sortOrder', 0)))
+            # Sort all companions by date.
+            sorted_companions = sorted(product_data[companion_type], key=lambda x: x.get('fullDate', '0'), reverse=True)
             
-            # Take the top 5 companions from the sorted list.
-            for companion in sorted_companions[:5]:
+            for companion in sorted_companions[2:4]:
                 image_url = ''
                 if companion.get('image'):
                     image_url = companion.get('image', {}).get('url', '')
@@ -45,11 +41,8 @@ def build_top_companions_by_type(api_response, sku):
     # Process accessories, services and supplies to get the top two of each.
     for companion_type in ['supplies', 'accessories', 'services']:
         if companion_type in product_data:
-            # Sort supplies by date, and other companions by sortOrder.
-            if companion_type == 'supplies':
-                sorted_companions = sorted(product_data[companion_type], key=lambda x: x.get('fullDate', '0'), reverse=True)
-            else:
-                sorted_companions = sorted(product_data[companion_type], key=lambda x: int(x.get('sortOrder', 0)))
+            # Sort all companions by date.
+            sorted_companions = sorted(product_data[companion_type], key=lambda x: x.get('fullDate', '0'), reverse=True)
             
             # Take the top 2 companions with an image.
             found_companions = []

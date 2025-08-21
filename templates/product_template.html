@@ -62,7 +62,7 @@
                         <img src="{{ block.image_url | escape }}" alt="Marketing Image">
                     </div>
                     <div class="mm-text">
-                        {% if block.headline %}<h3 class="info-headline">{{ block.headline | safe }}</h3>{% endif %}
+                        {% if block.headline %}<h3 class="info-headline">{{ block.headline | safe }}</h3><hr class="section-divider">{% endif %}
                         {% if block.support %}<p class="info-body">{{ block.support | safe }}</p>{% endif %}
                     </div>
                 </div>
@@ -81,7 +81,7 @@
             <img src="{{ block.image_url | escape }}" alt="Feature Image">
           </div>
           <div class="feature-text">
-            <h4 class="info-headline">{{ block.headline | safe }}</h4>
+            <h4 class="info-headline">{{ block.headline | safe }}</h4><hr class="section-divider">
             {% if block.support %}
             <p class="info-body">{{ block.support | safe }}</p>
             {% endif %}

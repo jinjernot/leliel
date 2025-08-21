@@ -157,6 +157,14 @@ sup {
     text-align: center;
 }
 
+.section-divider {
+    border: none;
+    height: 2px;
+    background-color: #024AD8;
+    width: 50%;
+    margin: 1rem auto;
+}
+
 .features-grid {
     display: flex;
     flex-wrap: wrap;
