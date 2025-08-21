@@ -22,6 +22,7 @@
   <div id="ATF" class="superscript-content">
     <div class="content-card product-header">
       <h1><span id="prodname">{{ df[df['tag'] == 'prodname']['value'].iloc[0] | default('') | safe }}</span></h1>
+
     </div>
 
     {% if df_images is defined and not df_images.empty %}

@@ -32,7 +32,7 @@ def index():
 def call_get_product():
     # Validate the CSRF token
     submitted_token = request.form.get('csrf_token')
-    expected_token = session.pop('_csrf_token', None) # Pop the token to ensure it's used only once
+    expected_token = session.pop('_csrf_token', None)
 
     if not expected_token or submitted_token != expected_token:
         abort(400, 'Invalid CSRF token. Please try submitting the form again.')
