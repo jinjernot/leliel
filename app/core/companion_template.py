@@ -13,7 +13,7 @@ def build_template_companions(api_response, sku):
             # Sort all companions by date.
             sorted_companions = sorted(product_data[companion_type], key=lambda x: x.get('fullDate', '0'), reverse=True)
             
-            for companion in sorted_companions[2:4]:
+            for companion in sorted_companions[2:10]:
                 image_url = ''
                 if companion.get('image'):
                     image_url = companion.get('image', {}).get('url', '')

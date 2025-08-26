@@ -35,9 +35,12 @@
                     data-full-image="{{ row['imageUrlHttps'] | default('') | safe }}"
                     alt="{{ row['orientation'] | default('') | safe }}">
                 {% endfor %}
-                {% if video_data %}
+            {% if video_data %}
+            <div class="thumb-item-container">
                 <img class="thumb-item" src="{{ video_data.previewURL }}" data-video-source="{{ video_data.assetUrl }}" alt="360 Spin Video">
-                {% endif %}
+                <div class="video-overlay">Video</div>
+            </div>
+            {% endif %}
             </div>
         </div>
     </div>

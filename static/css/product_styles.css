@@ -140,6 +140,24 @@ sup {
     transform: scale(1.05);
 }
 
+.thumb-item-container {
+    position: relative;
+    display: inline-block;
+}
+
+.video-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #024AD8;
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    pointer-events: none;
+}
+
 .mm-grid {
     display: flex;
     flex-direction: column;
@@ -158,9 +176,9 @@ sup {
 
 .section-divider {
     border: none;
-    height: 2px;
+    height: 1px;
     background-color: #024AD8;
-    width: 50%;
+    width: 100%;
     margin: 1rem auto;
 }
 
