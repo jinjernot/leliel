@@ -309,6 +309,10 @@ sup {
 /* =================================================================
    RESPONSIVE STYLES
    ================================================================= */
+@media (max-width: 768px) {
+    /* Styles for tablets and smaller devices can go here */
+}
+
 @media (max-width: 576px) {
     #ATF {
         min-width: initial;
@@ -322,6 +326,11 @@ sup {
         margin-bottom: 20px;
     }
 
+    .features-grid,
+    .companions-grid {
+        flex-direction: column;
+    }
+
     .feature-image img {
         max-height: 80px;
     }
@@ -331,13 +340,15 @@ sup {
         padding: 15px;
     }
 
-    .tech-specs-table tr {
+    .tech-specs-table tr,
+    .footnotes-table tr {
         display: block;
         border-bottom: 1px solid #ddd;
         padding: 10px 0;
     }
 
-    .tech-specs-table td {
+    .tech-specs-table td,
+    .footnotes-table td {
         display: block;
         width: 100%;
         border: none;
@@ -356,7 +367,8 @@ sup {
         font-size: 0.9rem !important;
     }
 
-    .tech-specs-table tr:last-child {
+    .tech-specs-table tr:last-child,
+    .footnotes-table tr:last-child {
         border-bottom: none;
     }
 
@@ -376,11 +388,6 @@ sup {
 
 /* New, smaller media query */
 @media (max-width: 480px) {
-    .features-grid,
-    .companions-grid {
-        flex-direction: column;
-    }
-
     h1 {
         font-size: 2rem; /* Further reduce heading size */
     }
