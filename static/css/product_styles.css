@@ -62,8 +62,26 @@ sup {
     border-radius: 4px;
 }
 
+.country-selector {
+    text-align: right;
+    padding: 10px 25px;
+    background-color: #024AD8;
+}
+
+.country-selector select {
+    padding: 5px;
+    border-radius: 4px;
+    background-color: white;
+    color: black;
+    border: 1px solid #ccc;
+}
+
 .product-header {
     text-align: center;
+    background-image: url(../images/stripes.svg);
+    background-repeat: no-repeat;
+    background-position: right;
+    background-size: contain;
 }
 
 .product-description {

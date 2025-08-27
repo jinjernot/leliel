@@ -20,6 +20,13 @@
 
   {% if df is defined and not df.empty %}
   <div id="ATF" class="superscript-content">
+    <div class="content-card country-selector">
+        <select>
+            <option>US-EN</option>
+            <option>CA-EN</option>
+            <option>CA-FR</option>
+        </select>
+    </div>
     <div class="content-card product-header">
       <h1><span id="prodname">{{ df[df['tag'] == 'prodname']['value'].iloc[0] | default('') | safe }}</span></h1>
 

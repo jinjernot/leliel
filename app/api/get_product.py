@@ -1,7 +1,8 @@
-from flask import render_template, request, send_from_directory
+from flask import render_template, request, send_from_directory, current_app
 import requests
 import os
 import re
+import json
 
 from config import CACHE_DIR
 from app.api.process_product import process_api_response
@@ -11,6 +12,32 @@ from config import API_URL
 def sanitize_filename(filename):
     """Sanitizes a filename by removing directory traversal characters."""
     return re.sub(r'[^a-zA-Z0-9_.-]', '', filename)
+
+def clean_json_response(response_text):
+    """
+    Removes leading and trailing non-JSON text from the response.
+    Returns a clean JSON string or raises a ValueError if no JSON object is found.
+    """
+    # Find the start of the JSON object
+    json_start_index = response_text.find('{')
+    if json_start_index == -1:
+        raise ValueError("No JSON object found in the response.")
+
+    # Find the end of the JSON object
+    json_end_index = response_text.rfind('}')
+    if json_end_index == -1:
+        raise ValueError("JSON object is not properly terminated.")
+
+    # Extract the potential JSON string
+    json_string = response_text[json_start_index:json_end_index + 1]
+
+    # Validate that this is a valid JSON
+    try:
+        json.loads(json_string)
+        return json_string
+    except json.JSONDecodeError as e:
+        raise ValueError(f"Extracted string is not valid JSON: {e}")
+
 
 def get_product():
     try:
@@ -39,7 +66,15 @@ def get_product():
         )
 
         if api_response.status_code == 200:
-            response_json = api_response.json()
+            try:
+                cleaned_response_text = clean_json_response(api_response.text)
+                response_json = json.loads(cleaned_response_text)
+            except ValueError as e:
+                # Log the error and the problematic response
+                current_app.logger.error(f"Failed to clean or parse JSON response: {e}")
+                current_app.logger.debug(f"Problematic API response text: {api_response.text}")
+                return render_template('error.html', error_message="Could not parse the data from the API."), 500
+
 
             # Process and render the page
             rendered_page = process_api_response(response_json, sku)
@@ -83,7 +118,14 @@ def get_product_by_params(sku, country_code, language_code):
         )
 
         if api_response.status_code == 200:
-            response_json = api_response.json()
+            try:
+                cleaned_response_text = clean_json_response(api_response.text)
+                response_json = json.loads(cleaned_response_text)
+            except ValueError as e:
+                # Log the error and the problematic response
+                current_app.logger.error(f"Failed to clean or parse JSON response: {e}")
+                current_app.logger.debug(f"Problematic API response text: {api_response.text}")
+                return render_template('error.html', error_message="Could not parse the data from the API."), 500
 
             # Process and render the page
             rendered_page = process_api_response(response_json, sku)
