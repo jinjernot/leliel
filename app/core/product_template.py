@@ -1,5 +1,6 @@
 import pandas as pd
 import json
+from flask import current_app
 
 def build_product_template(api_response):
 
@@ -9,6 +10,15 @@ def build_product_template(api_response):
         except AttributeError:
             print("Error: Unable to convert the response to a dictionary.")
             return pd.DataFrame(), pd.DataFrame(), pd.DataFrame(), pd.DataFrame(), {}, None
+
+    # Load config from the application context
+    config = current_app.config.get('PRODUCT_TEMPLATES_CONFIG', {})
+    excluded_tags = config.get('EXCLUDED_TECHSPEC_TAGS', [])
+    excluded_groups = config.get('EXCLUDED_TECHSPEC_GROUPS', [])
+    priority_orientations = config.get('IMAGE_PRIORITY_ORIENTATIONS', [])
+    image_pixel_width = config.get('IMAGE_PIXEL_WIDTH', '573')
+    image_type = config.get('IMAGE_TYPE', 'png')
+    video_asset_category = config.get('VIDEO_ASSET_CATEGORY', "Video - 360 Spin")
 
     all_details_with_order = []
     tech_specs_by_group = {}
@@ -33,8 +43,8 @@ def build_product_template(api_response):
             all_details_with_order.append(details)
             
             if (details.get('type') == 'techspecs' and
-                details.get('tag') not in ['promolink', 'codename', 'tangibleflag', 'energyeffcompal', 'carepackregistrationflag', 'custfacingdes'] and
-                details.get('group') not in ['Product Names', 'Information Pointers']):
+                details.get('tag') not in excluded_tags and
+                details.get('group') not in excluded_groups):
 
                 group = details.get('group', 'Other')
                 if group not in tech_specs_by_group:
@@ -42,9 +52,8 @@ def build_product_template(api_response):
                 tech_specs_by_group[group].append(details)
 
         temp_images = []
-        priority_orientations = ["Center facing", "Left facing", "Right facing"]
         for detail in images:
-            if detail.get('pixelWidth') == '573' and detail.get('type') == 'png' and 'imageUrlHttps' in detail:
+            if detail.get('pixelWidth') == image_pixel_width and detail.get('type') == image_type and 'imageUrlHttps' in detail:
                 orientation = detail.get('orientation', '')
                 try:
                     priority = priority_orientations.index(orientation)
@@ -60,8 +69,8 @@ def build_product_template(api_response):
             orientation = detail.get('orientation', '')
             product_color = detail.get('productColor')
 
-            if (detail.get('pixelWidth') == '573' and
-                detail.get('type') == 'png' and
+            if (detail.get('pixelWidth') == image_pixel_width and
+                detail.get('type') == image_type and
                 'imageUrlHttps' in detail and
                 orientation not in processed_orientations and
                 product_color == primary_product_color):
@@ -87,7 +96,7 @@ def build_product_template(api_response):
                  df_disclaimers_data.append(footnote)
 
         for video in videos:
-            if video.get("assetCategory") == "Video - 360 Spin":
+            if video.get("assetCategory") == video_asset_category:
                 video_data = {
                     "assetUrl": video.get("assetUrl"),
                     "previewURL": video.get("previewURL")
