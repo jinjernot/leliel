@@ -80,6 +80,13 @@ def get_product():
 
                 mock_response = MockResponse(api_response.text, response_json)
                 return process_api_error(mock_response)
+            
+            # Check for product-level error before processing
+            product_data = response_json.get('products', {}).get(sku.upper())
+            if not product_data or product_data.get('status') is False:
+                error_message = product_data.get('statusMessage', 'Invalid SKU or Culture is not available.')
+                logging.error(f"Product-level error for SKU {sku}: {error_message}")
+                return render_template('error.html', error_message=error_message), 400
 
         except ValueError as e:
             current_app.logger.error(f"Failed to clean or parse JSON response: {e}")
@@ -148,6 +155,13 @@ def get_product_by_params(sku, country_code, language_code):
 
                 mock_response = MockResponse(api_response.text, response_json)
                 return process_api_error(mock_response)
+            
+            # Check for product-level error before processing
+            product_data = response_json.get('products', {}).get(sku.upper())
+            if not product_data or product_data.get('status') is False:
+                error_message = product_data.get('statusMessage', 'Invalid SKU or Culture is not available.')
+                logging.error(f"Product-level error for SKU {sku}: {error_message}")
+                return render_template('error.html', error_message=error_message), 400
 
         except ValueError as e:
             current_app.logger.error(f"Failed to clean or parse JSON response: {e}")
