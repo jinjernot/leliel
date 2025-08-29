@@ -2,7 +2,7 @@ import pandas as pd
 import json
 
 def build_product_template(api_response):
-    # Check if api_response is a dictionary
+
     if not isinstance(api_response, dict):
         try:
             api_response = api_response.json()
@@ -19,7 +19,6 @@ def build_product_template(api_response):
     primary_product_color = None
     video_data = None
 
-    # Extract product data
     products = api_response.get('products', {})
     for sku, product_data in products.items():
         content = product_data.get('content', {})
@@ -27,9 +26,12 @@ def build_product_template(api_response):
         footnotes = product_data.get('footnotes', [])
         videos = product_data.get('videos', [])
 
-        # Process content
         for tag, details in content.items():
+            if 'tag' not in details:
+                details['tag'] = tag
+            
             all_details_with_order.append(details)
+            
             if (details.get('type') == 'techspecs' and
                 details.get('tag') not in ['promolink', 'codename', 'tangibleflag', 'energyeffcompal', 'carepackregistrationflag', 'custfacingdes'] and
                 details.get('group') not in ['Product Names', 'Information Pointers']):
@@ -39,7 +41,6 @@ def build_product_template(api_response):
                     tech_specs_by_group[group] = []
                 tech_specs_by_group[group].append(details)
 
-        # First pass to determine the primary product color
         temp_images = []
         priority_orientations = ["Center facing", "Left facing", "Right facing"]
         for detail in images:
@@ -55,7 +56,6 @@ def build_product_template(api_response):
             temp_images.sort(key=lambda x: x.get('priority'))
             primary_product_color = temp_images[0].get('productColor')
 
-        # Second pass to build the final image list
         for detail in images:
             orientation = detail.get('orientation', '')
             product_color = detail.get('productColor')
@@ -80,14 +80,12 @@ def build_product_template(api_response):
                     'priority': priority
                 })
 
-        # Process footnotes
         for footnote in footnotes:
             if footnote.get('type') == 'footnote':
                 footnotes_data.append(footnote)
             elif footnote.get('type') == 'legal_disclaimer':
                  df_disclaimers_data.append(footnote)
 
-        # Process videos
         for video in videos:
             if video.get("assetCategory") == "Video - 360 Spin":
                 video_data = {
@@ -96,12 +94,9 @@ def build_product_template(api_response):
                 }
                 break
 
-    # Sort images and tech specs within each group
     df_images_data.sort(key=lambda x: x.get('priority'))
     for group in tech_specs_by_group:
         tech_specs_by_group[group].sort(key=lambda x: x.get('displayOrder', 0))
-
-    # Create DataFrames
     df = pd.DataFrame(all_details_with_order)
     df_images = pd.DataFrame(df_images_data)
     df_footnotes = pd.DataFrame(footnotes_data)
