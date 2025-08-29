@@ -12,7 +12,7 @@ app.use_static_for = 'static'
 app.config['PRODUCT_HIERARCHY'] = PRODUCT_HIERARCHY
 app.config['TOP_COMPONENTS'] = TOP_COMPONENTS
 app.config['TECH_SPEC_GROUP_ORDER'] = TECH_SPEC_GROUP_ORDER
-app.config['PRODUCT_TEMPLATES_CONFIG'] = PRODUCT_TEMPLATES_CONFIG # Added this line
+app.config['PRODUCT_TEMPLATES_CONFIG'] = PRODUCT_TEMPLATES_CONFIG
 
 logging.basicConfig(level=logging.INFO)
 
