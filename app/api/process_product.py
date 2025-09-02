@@ -9,7 +9,6 @@ def get_product_type(product_data):
     return current_app.config['PRODUCT_HIERARCHY'].get(pmoid)
 
 def process_api_response(response_json, sku):
-    
     try:
         product = response_json.get('products', {}).get(sku, {})
         product_type = get_product_type(product)
@@ -34,44 +33,43 @@ def process_api_response(response_json, sku):
                 if tag in all_specs:
                     top_components_list.append(all_specs[tag])
 
+        # Build Marketing Material (MM) blocks from config
+        mm_config = current_app.config['MM_BLOCKS_CONFIG']
+        printer_types = current_app.config['PRINTER_PRODUCT_TYPES']
         mm_blocks = []
         available_images = df_images.copy()
 
-        for i in range(1, 11):
-            if product_type in ['Printers and Multifunction', 'Ink/Toner/Paper/Printer Supplies','Scanners/Copiers/Faxes']:
-                headline_tag = f'ksp_{i:02}_headline_short'
-                support_tag = f'ksp_{i:02}_headline_medium'
-            else:
-                headline_tag = f'ksp_{i:02}_headline_medium'
-                support_tag = f'ksp_{i:02}_suppt_01_long'
+        mm_patterns = mm_config['TAG_PATTERNS']['PRINTER_TYPES'] if product_type in printer_types else mm_config['TAG_PATTERNS']['DEFAULT']
 
+        for i in range(1, mm_config['ITERATIONS'] + 1):
+            headline_tag = mm_patterns['headline'].format(i=i)
+            support_tag = mm_patterns['support'].format(i=i)
+            
             headline_series = df[df['tag'] == headline_tag]['value']
             support_series = df[df['tag'] == support_tag]['value']
 
-            if not headline_series.empty or not support_series.empty:
-                if not available_images.empty:
-                    image_row = available_images.iloc[0]
-                    mm_blocks.append({
-                        'headline': headline_series.iloc[0] if not headline_series.empty else '',
-                        'support': support_series.iloc[0] if not support_series.empty else '',
-                        'image_url': image_row['imageUrlHttps']
-                    })
-                    available_images = available_images.drop(available_images.index[0])
+            if not (headline_series.empty and support_series.empty) and not available_images.empty:
+                image_row = available_images.iloc[0]
+                mm_blocks.append({
+                    'headline': headline_series.iloc[0] if not headline_series.empty else '',
+                    'support': support_series.iloc[0] if not support_series.empty else '',
+                    'image_url': image_row['imageUrlHttps']
+                })
+                available_images = available_images.drop(available_images.index[0])
 
+        # Build Feature blocks from config
+        feature_config = current_app.config['FEATURE_BLOCKS_CONFIG']
         feature_blocks = []
-        feature_count = 0
-        for i in range(1, 11):
-            if feature_count >= 4:
+        
+        feature_patterns = feature_config['TAG_PATTERNS']['PRINTER_TYPES'] if product_type in printer_types else feature_config['TAG_PATTERNS']['DEFAULT']
+
+        for i in range(1, feature_config['OUTER_ITERATIONS'] + 1):
+            if len(feature_blocks) >= feature_config['MAX_BLOCKS']:
                 break
-            for j in range(1, 11):
-                if product_type in ['Printers and Multifunction', 'Ink/Toner/Paper/Printer Supplies','Scanners/Copiers/Faxes']:
-                    headline_tag = f'feature_{i:02}_image_{j:02}_name'
-                    support_tag = f'feature_{i:02}_headline_{j:02}_statement'
-                else:
-                    headline_tag = f'feature_{i:02}_headline_{j:02}_statement'
-                    support_tag = f'feature_{i:02}_suppt_{j:02}_medium'
-                
-                image_url_tag = f'feature_{i:02}_image_{j:02}_url'
+            for j in range(1, feature_config['INNER_ITERATIONS'] + 1):
+                headline_tag = feature_patterns['headline'].format(i=i, j=j)
+                support_tag = feature_patterns['support'].format(i=i, j=j)
+                image_url_tag = feature_patterns['image'].format(i=i, j=j)
 
                 headline_series = df[df['tag'] == headline_tag]['value']
                 support_series = df[df['tag'] == support_tag]['value']
@@ -83,8 +81,7 @@ def process_api_response(response_json, sku):
                         'support': support_series.iloc[0] if not support_series.empty else '',
                         'image_url': image_url_series.iloc[0]
                     })
-                    feature_count += 1
-                    if feature_count >= 4:
+                    if len(feature_blocks) >= feature_config['MAX_BLOCKS']:
                         break
 
         return render_template('product_template.html', df=df, tech_specs_by_group=sorted_tech_specs_by_group, df_images=df_images, companions=companions, top_companions=top_companions, df_footnotes=df_footnotes, df_disclaimers=df_disclaimers, mm_blocks=mm_blocks, feature_blocks=feature_blocks, top_components=top_components_list, video_data=video_data)

@@ -126,6 +126,17 @@ sup {
     border-radius: 4px;
     padding: 25px;
     text-align: center;
+    position: relative; 
+}
+
+
+.gallery-disclaimer {
+    position: absolute;
+    bottom: 10px;
+    right: 15px;
+    font-size: 0.7rem;
+    color: #888;
+    text-align: right;
 }
 
 .product-gallery-main {
@@ -365,6 +376,15 @@ sup {
     .product-description {
         text-align: left;
         padding: 15px;
+    }
+    
+    /* Make disclaimer responsive */
+    .gallery-disclaimer {
+        position: relative;
+        bottom: auto;
+        right: auto;
+        margin-top: 10px;
+        text-align: center;
     }
 
     .tech-specs-table tr,

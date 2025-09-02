@@ -2,7 +2,9 @@ from flask import Flask, render_template, request, session, abort, current_app
 import logging
 import secrets
 
-from config import SECRET_KEY, PRODUCT_HIERARCHY, TOP_COMPONENTS, TECH_SPEC_GROUP_ORDER, PRODUCT_TEMPLATES_CONFIG
+from config import (SECRET_KEY, PRODUCT_HIERARCHY, TOP_COMPONENTS, 
+                    TECH_SPEC_GROUP_ORDER, PRODUCT_TEMPLATES_CONFIG, 
+                    PRINTER_PRODUCT_TYPES, MM_BLOCKS_CONFIG, FEATURE_BLOCKS_CONFIG)
 from app.api.get_product import get_product, get_product_by_params
 
 app = Flask(__name__)
@@ -13,6 +15,9 @@ app.config['PRODUCT_HIERARCHY'] = PRODUCT_HIERARCHY
 app.config['TOP_COMPONENTS'] = TOP_COMPONENTS
 app.config['TECH_SPEC_GROUP_ORDER'] = TECH_SPEC_GROUP_ORDER
 app.config['PRODUCT_TEMPLATES_CONFIG'] = PRODUCT_TEMPLATES_CONFIG
+app.config['PRINTER_PRODUCT_TYPES'] = PRINTER_PRODUCT_TYPES
+app.config['MM_BLOCKS_CONFIG'] = MM_BLOCKS_CONFIG
+app.config['FEATURE_BLOCKS_CONFIG'] = FEATURE_BLOCKS_CONFIG
 
 logging.basicConfig(level=logging.INFO)
 
@@ -45,7 +50,6 @@ def call_get_product_from_qr():
         return render_template('error.html', error_message='Missing required URL parameter: pn'), 400
 
     if not country or not language:
-        # Pass the config to the template
         return render_template('product_template.html', pn=sku, config=current_app.config.get('PRODUCT_TEMPLATES_CONFIG'))
     
     return get_product_by_params(sku, country, language)

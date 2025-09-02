@@ -9,12 +9,14 @@ def process_api_error(api_response):
 
         response_json = api_response.json()
         
+        # Check for "Non publishable Product" first
+        if response_json.get('Status') == 'Success' and response_json.get('StatusMessage') == 'Non publishable Product':
+            return render_template('error.html', error_message='Non publishable Product'), 400
+        
+        # Then, check for other API errors
         if response_json.get('Status') == 'ERROR':
             error_message = response_json.get('StatusMessage', 'An unknown API error occurred.')
             return render_template('error.html', error_message=error_message), 400
-        
-        if response_json.get('Status') == 'Success' and response_json.get('StatusMessage') == 'Non publishable Product':
-            return render_template('error.html', error_message='Non publishable Product'), 400
             
     except json.JSONDecodeError:
         return render_template('error.html', error_message=f"An unknown error occurred. API Response: {api_response.text}"), 400
