@@ -38,7 +38,7 @@ def process_api_response(response_json, sku):
         available_images = df_images.copy()
 
         for i in range(1, 11):
-            if product_type in ['Printers and Multifunction', 'Ink/Toner/Paper/Printer Supplies']:
+            if product_type in ['Printers and Multifunction', 'Ink/Toner/Paper/Printer Supplies','Scanners/Copiers/Faxes']:
                 headline_tag = f'ksp_{i:02}_headline_short'
                 support_tag = f'ksp_{i:02}_headline_medium'
             else:
@@ -64,7 +64,7 @@ def process_api_response(response_json, sku):
             if feature_count >= 4:
                 break
             for j in range(1, 11):
-                if product_type in ['Printers and Multifunction', 'Ink/Toner/Paper/Printer Supplies']:
+                if product_type in ['Printers and Multifunction', 'Ink/Toner/Paper/Printer Supplies','Scanners/Copiers/Faxes']:
                     headline_tag = f'feature_{i:02}_image_{j:02}_name'
                     support_tag = f'feature_{i:02}_headline_{j:02}_statement'
                 else:
