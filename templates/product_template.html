@@ -3,7 +3,7 @@
 <head>
   <title>
     {% if df is defined and not df.empty %}
-    {{ df[df['tag'] == 'prodname']['value'].iloc[0] | default('') | safe }}
+    {{ df[df['tag'] == 'prodname']['value'].iloc[0] | default('') }}
     {% else %}
     HP Product Information
     {% endif %}
@@ -28,7 +28,7 @@
         </select>
     </div>
     <div class="content-card product-header">
-      <h1><span id="prodname">{{ df[df['tag'] == 'prodname']['value'].iloc[0] | default('') | safe }}</span></h1>
+      <h1><span id="prodname">{{ df[df['tag'] == 'prodname']['value'].iloc[0] | default('') }}</span></h1>
 
     </div>
 
@@ -38,9 +38,9 @@
             <div class="product-gallery-main"></div>
             <div class="product-gallery-thumbs">
                 {% for index, row in df_images.iterrows() %}
-                <img class="thumb-item" src="{{ row['imageUrlHttps'] | default('') | safe }}"
-                    data-full-image="{{ row['imageUrlHttps'] | default('') | safe }}"
-                    alt="{{ row['orientation'] | default('') | safe }}">
+                <img class="thumb-item" src="{{ row['imageUrlHttps'] | default('') }}"
+                    data-full-image="{{ row['imageUrlHttps'] | default('') }}"
+                    alt="{{ row['orientation'] | default('') }}">
                 {% endfor %}
             {% if video_data %}
             <div class="thumb-item-container">
@@ -57,7 +57,7 @@
     {% if description_series is defined and not description_series.empty and description_series.iloc[0] %}
     <div class="content-card">
       <div class="product-description">
-        <p>{{ description_series.iloc[0] | default('') | safe }}</p>
+        <p>{{ description_series.iloc[0] | default('') }}</p>
       </div>
     </div>
     {% endif %}
@@ -72,8 +72,8 @@
                         <img src="{{ block.image_url | escape }}" alt="Marketing Image">
                     </div>
                     <div class="mm-text">
-                        {% if block.headline %}<h3 class="info-headline">{{ block.headline | safe }}</h3><hr class="section-divider">{% endif %}
-                        {% if block.support %}<p class="info-body">{{ block.support | safe }}</p>{% endif %}
+                        {% if block.headline %}<h3 class="info-headline">{{ block.headline }}</h3><hr class="section-divider">{% endif %}
+                        {% if block.support %}<p class="info-body">{{ block.support }}</p>{% endif %}
                     </div>
                 </div>
                 {% endfor %}
@@ -91,9 +91,9 @@
             <img src="{{ block.image_url | escape }}" alt="Feature Image">
           </div>
           <div class="feature-text">
-            <h4 class="info-headline">{{ block.headline | safe }}</h4><hr class="section-divider">
+            <h4 class="info-headline">{{ block.headline }}</h4><hr class="section-divider">
             {% if block.support %}
-            <p class="info-body">{{ block.support | safe }}</p>
+            <p class="info-body">{{ block.support }}</p>
             {% endif %}
           </div>
         </div>
@@ -108,12 +108,12 @@
             <tbody>
                 {% for component in top_components %}
                 <tr>
-                    <td class="spec-label"><b>{{ component['name'] | safe }}</b></td>
+                    <td class="spec-label"><b>{{ component['name'] }}</b></td>
                     <td class="spec-value">
-                        {{ component['value'] | safe }}
+                        {{ component['value'] }}
                         {% set ftnt_tag = component['tag'] ~ 'ftntnbr' %}
                         {% if ftnt_tag in df['tag'].values %}
-                        {{ df[df['tag'] == ftnt_tag]['value'].iloc[0] | default('') | safe }}
+                        {{ df[df['tag'] == ftnt_tag]['value'].iloc[0] | default('') }}
                         {% endif %}
                     </td>
                 </tr>
@@ -130,16 +130,16 @@
         <tbody>
           {% for group_name, specs in tech_specs_by_group %}
             <tr>
-              <td colspan="2" class="group-header"><strong>{{ group_name | safe }}</strong></td>
+              <td colspan="2" class="group-header"><strong>{{ group_name }}</strong></td>
             </tr>
             {% for row in specs %}
               <tr>
-                <td class="spec-label"><b>{{ row['name'] | safe }}</b></td>
+                <td class="spec-label"><b>{{ row['name'] }}</b></td>
                 <td class="spec-value">
-                  {{ row['value'] | safe }}
+                  {{ row['value'] }}
                   {% set ftnt_tag = row['tag'] ~ 'ftntnbr' %}
                   {% if ftnt_tag in df['tag'].values %}
-                    {{ df[df['tag'] == ftnt_tag]['value'].iloc[0] | default('') | safe }}
+                    {{ df[df['tag'] == ftnt_tag]['value'].iloc[0] | default('') }}
                   {% endif %}
                 </td>
               </tr>
@@ -157,8 +157,8 @@
                 <div class="companion-item">
                     <img src="{{ companion.image_url | escape }}" alt="{{ companion.name | escape }}">
                     <div class="companion-details">
-                        <p><b>{{ companion.name | safe }}</b></p>
-                        <p>SKU: {{ companion.sku | safe }}</p>
+                        <p><b>{{ companion.name }}</b></p>
+                        <p>SKU: {{ companion.sku }}</p>
                     </div>
                 </div>
                 {% endfor %}
@@ -176,8 +176,8 @@
           <div class="companion-item">
               <img src="{{ companion.image_url | escape }}" alt="{{ companion.name | escape }}">
               <div class="companion-details">
-                  <p><b>{{ companion.name | safe }}</b></p>
-                  <p>SKU: {{ companion.sku | safe }}</p>
+                  <p><b>{{ companion.name }}</b></p>
+                  <p>SKU: {{ companion.sku }}</p>
               </div>
           </div>
           {% endfor %}
@@ -194,14 +194,14 @@
           {% if df_disclaimers is defined and not df_disclaimers.empty %}
           {% for index, row in df_disclaimers.iterrows() %}
           <tr>
-            <td>{{ row['value'] | default('') | safe }}</td>
+            <td>{{ row['value'] | default('') }}</td>
           </tr>
           {% endfor %}
           {% endif %}
           {% if df_footnotes is defined and not df_footnotes.empty %}
           {% for index, row in df_footnotes.iterrows() %}
           <tr>
-            <td>{{ row['value'] | default('') | safe }}</td>
+            <td>{{ row['value'] | default('') }}</td>
           </tr>
           {% endfor %}
           {% endif %}

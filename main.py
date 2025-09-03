@@ -1,16 +1,24 @@
-from flask import Flask, render_template, request, session, abort, current_app
 import logging
 import secrets
+import os
+from flask import Flask, render_template, request, session, abort, current_app
+from dotenv import load_dotenv
 
-from config import (SECRET_KEY, PRODUCT_HIERARCHY, TOP_COMPONENTS, 
-                    TECH_SPEC_GROUP_ORDER, PRODUCT_TEMPLATES_CONFIG, 
+load_dotenv()
+
+from config import (CACHE_DIR, ALLOWED_COUNTRIES, ALLOWED_LANGUAGES,
+                    PRODUCT_HIERARCHY, TOP_COMPONENTS,
+                    TECH_SPEC_GROUP_ORDER, PRODUCT_TEMPLATES_CONFIG,
                     PRINTER_PRODUCT_TYPES, MM_BLOCKS_CONFIG, FEATURE_BLOCKS_CONFIG)
 from app.api.get_product import get_product, get_product_by_params
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = SECRET_KEY
-app.use_static_for = 'static'
 
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+app.config['API_URL'] = os.environ.get('API_URL')
+app.config['CACHE_DIR'] = CACHE_DIR
+app.config['ALLOWED_COUNTRIES'] = ALLOWED_COUNTRIES
+app.config['ALLOWED_LANGUAGES'] = ALLOWED_LANGUAGES
 app.config['PRODUCT_HIERARCHY'] = PRODUCT_HIERARCHY
 app.config['TOP_COMPONENTS'] = TOP_COMPONENTS
 app.config['TECH_SPEC_GROUP_ORDER'] = TECH_SPEC_GROUP_ORDER
@@ -19,18 +27,18 @@ app.config['PRINTER_PRODUCT_TYPES'] = PRINTER_PRODUCT_TYPES
 app.config['MM_BLOCKS_CONFIG'] = MM_BLOCKS_CONFIG
 app.config['FEATURE_BLOCKS_CONFIG'] = FEATURE_BLOCKS_CONFIG
 
+app.use_static_for = 'static'
+
 logging.basicConfig(level=logging.INFO)
 
 @app.route('/main')
 def index():
-    
     if '_csrf_token' not in session:
         session['_csrf_token'] = secrets.token_hex(16)
     return render_template('index.html', csrf_token=session['_csrf_token'])
 
 @app.route('/get_product', methods=['POST'])
 def call_get_product():
-    
     submitted_token = request.form.get('csrf_token')
     expected_token = session.pop('_csrf_token', None)
 
@@ -41,7 +49,6 @@ def call_get_product():
 
 @app.route('/qr')
 def call_get_product_from_qr():
-    
     sku = request.args.get('pn')
     country = request.args.get('cc')
     language = request.args.get('ll')
@@ -55,4 +62,4 @@ def call_get_product_from_qr():
     return get_product_by_params(sku, country, language)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)

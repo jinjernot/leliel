@@ -1,11 +1,7 @@
-certificates
 config.py
 __pycache__
-*.xlsx
 docs
 .venv
 *.json
-api_response_*.json
 cached_pages/
-old_proyect
-new.json
+.env
