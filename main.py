@@ -26,10 +26,19 @@ app.config['PRODUCT_TEMPLATES_CONFIG'] = PRODUCT_TEMPLATES_CONFIG
 app.config['PRINTER_PRODUCT_TYPES'] = PRINTER_PRODUCT_TYPES
 app.config['MM_BLOCKS_CONFIG'] = MM_BLOCKS_CONFIG
 app.config['FEATURE_BLOCKS_CONFIG'] = FEATURE_BLOCKS_CONFIG
-
+app.config.update(
+    SESSION_COOKIE_SECURE=True,
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SAMESITE='Lax',
+)
 app.use_static_for = 'static'
 
 logging.basicConfig(level=logging.INFO)
+
+@app.after_request
+def apply_security_headers(response):
+    response.headers["X-Frame-Options"] = "SAMEORIGIN"
+    return response
 
 @app.route('/main')
 def index():
