@@ -103,8 +103,6 @@ def get_product():
         sku = request.form.get('sku', '').strip()
         country_code = request.form.get('country', '').strip()
         language_code = request.form.get('language', '').strip()
-        
-        # Get allowed values from the app config
         allowed_countries = current_app.config['ALLOWED_COUNTRIES']
         allowed_languages = current_app.config['ALLOWED_LANGUAGES']
 
@@ -123,7 +121,6 @@ def get_product_by_params(sku, country_code, language_code):
     Fetches product data from the API based on URL parameters.
     """
     try:
-        # Get allowed values from the app config
         allowed_countries = current_app.config['ALLOWED_COUNTRIES']
         allowed_languages = current_app.config['ALLOWED_LANGUAGES']
 
