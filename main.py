@@ -4,7 +4,9 @@ import os
 from flask import Flask, render_template, request, session, abort, current_app
 from dotenv import load_dotenv
 
-load_dotenv()
+
+dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+load_dotenv(dotenv_path=dotenv_path)
 
 from config import (CACHE_DIR, ALLOWED_COUNTRIES, ALLOWED_LANGUAGES,
                     PRODUCT_HIERARCHY, TOP_COMPONENTS,
