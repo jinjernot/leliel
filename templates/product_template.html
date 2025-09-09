@@ -10,7 +10,7 @@
   </title>
   <meta charset="UTF-8" />
   <link rel="stylesheet" href="{{ url_for('static', filename='css/product_styles.css') }}" />
-  <link href="https://syndication.inc.hp.com/hpi-favicon.ico" type="image/ico" rel="shortcut icon"/>
+  <link href="https://syndication.inc.hp.com/hpi-favicon.ico" type="image/ico" rel="shortcut icon" />
 
   <script src="https://www8.hp.com/caas/header-footer/us/en/default/latest.r?contentType=js"></script>
 </head>
@@ -21,11 +21,11 @@
   {% if df is defined and not df.empty %}
   <div id="ATF" class="superscript-content">
     <div class="content-card country-selector">
-        <select>
-            <option>US-EN</option>
-            <option>CA-EN</option>
-            <option>CA-FR</option>
-        </select>
+      <select>
+        <option>US-EN</option>
+        <option>CA-EN</option>
+        <option>CA-FR</option>
+      </select>
     </div>
     <div class="content-card product-header">
       <h1><span id="prodname">{{ df[df['tag'] == 'prodname']['value'].iloc[0] | default('') }}</span></h1>
@@ -34,22 +34,22 @@
 
     {% if df_images is defined and not df_images.empty %}
     <div class="content-card">
-        <div class="bordered-section">
-            <div class="product-gallery-main"></div>
-            <div class="product-gallery-thumbs">
-                {% for index, row in df_images.iterrows() %}
-                <img class="thumb-item" src="{{ row['imageUrlHttps'] | default('') }}"
-                    data-full-image="{{ row['imageUrlHttps'] | default('') }}"
-                    alt="{{ row['orientation'] | default('') }}">
-                {% endfor %}
-            {% if video_data %}
-            <div class="thumb-item-container">
-                <img class="thumb-item" src="{{ video_data.previewURL }}" data-video-source="{{ video_data.assetUrl }}" alt="360 Spin Video">
-                <div class="video-overlay">Video</div>
-            </div>
-            {% endif %}
-            </div>
+      <div class="bordered-section">
+        <div class="product-gallery-main"></div>
+        <div class="product-gallery-thumbs">
+          {% for index, row in df_images.iterrows() %}
+          <img class="thumb-item" src="{{ row['imageUrlHttps'] | default('') }}"
+            data-full-image="{{ row['imageUrlHttps'] | default('') }}" alt="{{ row['orientation'] | default('') }}">
+          {% endfor %}
+          {% if video_data %}
+          <div class="thumb-item-container">
+            <img class="thumb-item" src="{{ video_data.previewURL }}" data-video-source="{{ video_data.assetUrl }}"
+              alt="360 Spin Video">
+            <div class="video-overlay">Video</div>
+          </div>
+          {% endif %}
         </div>
+      </div>
     </div>
     {% endif %}
 
@@ -64,21 +64,22 @@
 
     {% if mm_blocks %}
     <div id="MM" class="superscript-content">
-        <div class="content-card">
-            <div class="mm-grid">
-                {% for block in mm_blocks %}
-                <div class="bordered-section">
-                    <div class="mm-image">
-                        <img src="{{ block.image_url | escape }}" alt="Marketing Image">
-                    </div>
-                    <div class="mm-text">
-                        {% if block.headline %}<h3 class="info-headline">{{ block.headline }}</h3><hr class="section-divider">{% endif %}
-                        {% if block.support %}<p class="info-body">{{ block.support }}</p>{% endif %}
-                    </div>
-                </div>
-                {% endfor %}
+      <div class="content-card">
+        <div class="mm-grid">
+          {% for block in mm_blocks %}
+          <div class="bordered-section">
+            <div class="mm-image">
+              <img src="{{ block.image_url | escape }}" alt="Marketing Image">
             </div>
+            <div class="mm-text">
+              {% if block.headline %}<h3 class="info-headline">{{ block.headline }}</h3>
+              <hr class="section-divider">{% endif %}
+              {% if block.support %}<p class="info-body">{{ block.support }}</p>{% endif %}
+            </div>
+          </div>
+          {% endfor %}
         </div>
+      </div>
     </div>
     {% endif %}
 
@@ -91,7 +92,8 @@
             <img src="{{ block.image_url | escape }}" alt="Feature Image">
           </div>
           <div class="feature-text">
-            <h4 class="info-headline">{{ block.headline }}</h4><hr class="section-divider">
+            <h4 class="info-headline">{{ block.headline }}</h4>
+            <hr class="section-divider">
             {% if block.support %}
             <p class="info-body">{{ block.support }}</p>
             {% endif %}
@@ -104,22 +106,22 @@
 
     {% if top_components %}
     <div id="top-components" class="content-card">
-        <table class="tech-specs-table">
-            <tbody>
-                {% for component in top_components %}
-                <tr>
-                    <td class="spec-label"><b>{{ component['name'] }}</b></td>
-                    <td class="spec-value">
-                        {{ component['value'] }}
-                        {% set ftnt_tag = component['tag'] ~ 'ftntnbr' %}
-                        {% if ftnt_tag in df['tag'].values %}
-                        {{ df[df['tag'] == ftnt_tag]['value'].iloc[0] | default('') }}
-                        {% endif %}
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+      <table class="tech-specs-table">
+        <tbody>
+          {% for component in top_components %}
+          <tr>
+            <td class="spec-label"><b>{{ component['name'] }}</b></td>
+            <td class="spec-value">
+              {{ component['value'] }}
+              {% set ftnt_tag = component['tag'] ~ 'ftntnbr' %}
+              {% if ftnt_tag in df['tag'].values %}
+              {{ df[df['tag'] == ftnt_tag]['value'].iloc[0] | default('') }}
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
     {% endif %}
 
@@ -129,21 +131,21 @@
       <table class="tech-specs-table">
         <tbody>
           {% for group_name, specs in tech_specs_by_group %}
-            <tr>
-              <td colspan="2" class="group-header"><strong>{{ group_name }}</strong></td>
-            </tr>
-            {% for row in specs %}
-              <tr>
-                <td class="spec-label"><b>{{ row['name'] }}</b></td>
-                <td class="spec-value">
-                  {{ row['value'] }}
-                  {% set ftnt_tag = row['tag'] ~ 'ftntnbr' %}
-                  {% if ftnt_tag in df['tag'].values %}
-                    {{ df[df['tag'] == ftnt_tag]['value'].iloc[0] | default('') }}
-                  {% endif %}
-                </td>
-              </tr>
-            {% endfor %}
+          <tr>
+            <td colspan="2" class="group-header"><strong>{{ group_name }}</strong></td>
+          </tr>
+          {% for row in specs %}
+          <tr>
+            <td class="spec-label"><b>{{ row['name'] }}</b></td>
+            <td class="spec-value">
+              {{ row['value'] }}
+              {% set ftnt_tag = row['tag'] ~ 'ftntnbr' %}
+              {% if ftnt_tag in df['tag'].values %}
+              {{ df[df['tag'] == ftnt_tag]['value'].iloc[0] | default('') }}
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
           {% endfor %}
         </tbody>
       </table>
@@ -151,19 +153,19 @@
 
     {% if top_companions %}
     <div id="top-companions" class="content-card">
-        <div class="companions-grid">
-            {% for companion_type, companions in top_companions.items() %}
-                {% for companion in companions %}
-                <div class="companion-item">
-                    <img src="{{ companion.image_url | escape }}" alt="{{ companion.name | escape }}">
-                    <div class="companion-details">
-                        <p><b>{{ companion.name }}</b></p>
-                        <p>SKU: {{ companion.sku }}</p>
-                    </div>
-                </div>
-                {% endfor %}
-            {% endfor %}
+      <div class="companions-grid">
+        {% for companion_type, companions in top_companions.items() %}
+        {% for companion in companions %}
+        <div class="companion-item">
+          <img src="{{ companion.image_url | escape }}" alt="{{ companion.name | escape }}">
+          <div class="companion-details">
+            <p><b>{{ companion.name }}</b></p>
+            <p>SKU: {{ companion.sku }}</p>
+          </div>
         </div>
+        {% endfor %}
+        {% endfor %}
+      </div>
     </div>
     {% endif %}
 
@@ -172,20 +174,21 @@
 
     <div id="companions" class="content-card" style="display: none;">
       <div class="companions-grid">
-          {% for companion in companions %}
-          <div class="companion-item">
-              <img src="{{ companion.image_url | escape }}" alt="{{ companion.name | escape }}">
-              <div class="companion-details">
-                  <p><b>{{ companion.name }}</b></p>
-                  <p>SKU: {{ companion.sku }}</p>
-              </div>
+        {% for companion in companions %}
+        <div class="companion-item">
+          <img src="{{ companion.image_url | escape }}" alt="{{ companion.name | escape }}">
+          <div class="companion-details">
+            <p><b>{{ companion.name }}</b></p>
+            <p>SKU: {{ companion.sku }}</p>
           </div>
-          {% endfor %}
+        </div>
+        {% endfor %}
       </div>
     </div>
     {% endif %}
 
-    {% if (df_disclaimers is defined and not df_disclaimers.empty) or (df_footnotes is defined and not df_footnotes.empty) %}
+    {% if (df_disclaimers is defined and not df_disclaimers.empty) or (df_footnotes is defined and not
+    df_footnotes.empty) %}
     <h2 id="see-more-footnotes" class="expand-button">Show Footnotes</h2>
 
     <div id="footnotes" class="content-card" style="display: none;">

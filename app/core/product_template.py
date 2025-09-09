@@ -3,6 +3,9 @@ import json
 from flask import current_app
 
 def build_product_template(api_response):
+    """
+    Builds the product template data structures from the API response.
+    """
 
     if not isinstance(api_response, dict):
         try:
