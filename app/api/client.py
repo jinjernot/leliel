@@ -2,22 +2,21 @@ import requests
 from flask import current_app, render_template
 import json
 import logging
+import re  # Import the regular expression module
 from app.api.api_error import process_api_error
 
 
 def clean_json_response(response_text):
     """
-    Cleans the API response text to extract a valid JSON object.
+    Cleans the API response text to extract a valid JSON object using regex.
     """
-    json_start_index = response_text.find('{')
-    if json_start_index == -1:
+    # Use a regular expression to find the JSON object.
+    match = re.search(r'\{.*\}', response_text, re.DOTALL)
+
+    if not match:
         raise ValueError("No JSON object found in the response.")
 
-    json_end_index = response_text.rfind('}')
-    if json_end_index == -1:
-        raise ValueError("JSON object is not properly terminated.")
-
-    json_string = response_text[json_start_index:json_end_index + 1]
+    json_string = match.group(0)
 
     try:
         json.loads(json_string)
@@ -39,7 +38,7 @@ def get_product_data(sku, country_code, language_code):
             api_url,
             headers={'Content-Type': 'application/json'}
         )
-        api_response.raise_for_status()
+        api_response.raise_for_status()  # Raise an exception for bad status codes
 
         logging.info("API call successful (Status 200)")
         cleaned_response_text = clean_json_response(api_response.text)

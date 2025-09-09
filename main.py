@@ -1,16 +1,19 @@
-from app.api.get_product import get_product, get_product_by_params
+import logging
+import secrets
+import os
+import re  # Import the regular expression module
+from flask import Flask, render_template, request, session, abort, current_app
+from dotenv import load_dotenv
+
+
+dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+load_dotenv(dotenv_path=dotenv_path)
+
 from config import (CACHE_DIR, ALLOWED_COUNTRIES, ALLOWED_LANGUAGES,
                     PRODUCT_HIERARCHY, TOP_COMPONENTS,
                     TECH_SPEC_GROUP_ORDER, PRODUCT_TEMPLATES_CONFIG,
                     PRINTER_PRODUCT_TYPES, MM_BLOCKS_CONFIG, FEATURE_BLOCKS_CONFIG)
-import logging
-import secrets
-import os
-from flask import Flask, render_template, request, session, abort, current_app
-from dotenv import load_dotenv
-
-dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
-load_dotenv(dotenv_path=dotenv_path)
+from app.api.get_product import get_product, get_product_by_params
 
 app = Flask(__name__)
 
@@ -35,19 +38,17 @@ app.use_static_for = 'static'
 
 logging.basicConfig(level=logging.INFO)
 
-
 @app.after_request
 def apply_security_headers(response):
     response.headers["X-Frame-Options"] = "SAMEORIGIN"
     return response
 
-# Page for testing purposes
-# @app.route('/main')
-# def index():
-#     if '_csrf_token' not in session:
-#         session['_csrf_token'] = secrets.token_hex(16)
-#     return render_template('index.html', csrf_token=session['_csrf_token'])
-
+# Route for testing products without qr code
+@app.route('/main')
+def index():
+    if '_csrf_token' not in session:
+        session['_csrf_token'] = secrets.token_hex(16)
+    return render_template('index.html', csrf_token=session['_csrf_token'])
 
 @app.route('/get_product', methods=['POST'])
 def call_get_product():
@@ -59,7 +60,7 @@ def call_get_product():
 
     return get_product()
 
-
+# QR code route
 @app.route('/qr')
 def call_get_product_from_qr():
     sku = request.args.get('pn')
@@ -69,11 +70,13 @@ def call_get_product_from_qr():
     if not sku:
         return render_template('error.html', error_message='Missing required URL parameter: pn'), 400
 
+    if not re.match(r'^[a-zA-Z0-9\-\/]+$', sku):
+        return render_template('error.html', error_message='Invalid SKU format provided.'), 400
+
     if not country or not language:
         return render_template('product_template.html', pn=sku, config=current_app.config.get('PRODUCT_TEMPLATES_CONFIG'))
-
+    
     return get_product_by_params(sku, country, language)
-
 
 if __name__ == '__main__':
     app.run(debug=False)
