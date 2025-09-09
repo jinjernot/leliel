@@ -1,7 +1,7 @@
 import logging
 import secrets
 import os
-import re  # Import the regular expression module
+import re
 from flask import Flask, render_template, request, session, abort, current_app
 from dotenv import load_dotenv
 
@@ -75,6 +75,10 @@ def call_get_product_from_qr():
 
     if not country or not language:
         return render_template('product_template.html', pn=sku, config=current_app.config.get('PRODUCT_TEMPLATES_CONFIG'))
+    
+    if country.lower() not in current_app.config['ALLOWED_COUNTRIES'] or \
+       language.lower() not in current_app.config['ALLOWED_LANGUAGES']:
+        return render_template('error.html', error_message='Invalid country or language code provided.'), 400
     
     return get_product_by_params(sku, country, language)
 

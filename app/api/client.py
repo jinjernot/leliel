@@ -2,26 +2,25 @@ import requests
 from flask import current_app, render_template
 import json
 import logging
-import re  # Import the regular expression module
+import re
 from app.api.api_error import process_api_error
 
 
 def clean_json_response(response_text):
     """
-    Cleans the API response text to extract a valid JSON object using regex.
+    Cleans the API response text to extract a valid JSON object.
     """
-    # Use a regular expression to find the JSON object.
-    match = re.search(r'\{.*\}', response_text, re.DOTALL)
-
-    if not match:
-        raise ValueError("No JSON object found in the response.")
-
-    json_string = match.group(0)
-
     try:
+        # Find the first opening curly brace and the last closing curly brace
+        start = response_text.find('{')
+        end = response_text.rfind('}')
+        if start == -1 or end == -1:
+            raise ValueError("No JSON object found in the response.")
+        
+        json_string = response_text[start:end+1]
         json.loads(json_string)
         return json_string
-    except json.JSONDecodeError as e:
+    except (ValueError, json.JSONDecodeError) as e:
         raise ValueError(f"Extracted string is not valid JSON: {e}")
 
 
