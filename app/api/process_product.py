@@ -14,11 +14,12 @@ def get_product_type(product_data):
     return current_app.config['PRODUCT_HIERARCHY'].get(pmoid)
 
 
-def process_api_response(response_json, sku, locales=None):
+def process_api_response(response_json, sku, locales=None, country_code=None, language_code=None):
     """
     Process the API response and render the product template
     """
     try:
+        current_locale = f"{country_code}-{language_code}" if country_code and language_code else None
         product = response_json.get('products', {}).get(sku, {})
         product_type = get_product_type(product)
         companions = build_template_companions(response_json, sku)
@@ -96,7 +97,7 @@ def process_api_response(response_json, sku, locales=None):
                     if len(feature_blocks) >= feature_config['MAX_BLOCKS']:
                         break
 
-        return render_template('product_template.html', df=df, tech_specs_by_group=sorted_tech_specs_by_group, df_images=df_images, companions=companions, top_companions=top_companions, df_footnotes=df_footnotes, df_disclaimers=df_disclaimers, mm_blocks=mm_blocks, feature_blocks=feature_blocks, top_components=top_components_list, video_data=video_data, locales=locales)
+        return render_template('product_template.html', df=df, tech_specs_by_group=sorted_tech_specs_by_group, df_images=df_images, companions=companions, top_companions=top_companions, df_footnotes=df_footnotes, df_disclaimers=df_disclaimers, mm_blocks=mm_blocks, feature_blocks=feature_blocks, top_components=top_components_list, video_data=video_data, locales=locales, sku=sku, current_locale=current_locale)
     except KeyError as e:
         logging.error(
             f"A KeyError occurred in process_api_response: {e}", exc_info=True)

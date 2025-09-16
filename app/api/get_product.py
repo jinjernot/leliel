@@ -20,7 +20,7 @@ def _fetch_and_process_product(sku, country_code, language_code):
         return error_response
 
     locales = get_product_locales(sku)
-    rendered_page = process_api_response(response_json, sku, locales)
+    rendered_page = process_api_response(response_json, sku, locales, country_code, language_code)
 
     if isinstance(rendered_page, tuple):
         return rendered_page

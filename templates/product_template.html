@@ -21,10 +21,10 @@
   {% if df is defined and not df.empty %}
   <div id="ATF" class="superscript-content">
     <div class="content-card country-selector">
-      <select>
+      <select id="locale-selector" data-sku="{{ sku }}">
         {% if locales %}
           {% for locale in locales %}
-            <option>{{ locale }}</option>
+            <option value="{{ locale }}" {% if locale == current_locale %}selected{% endif %}>{{ locale }}</option>
           {% endfor %}
         {% else %}
           <option disabled selected>No locales available</option>
@@ -219,6 +219,7 @@
   </div>
   <script src="{{ url_for('static', filename='js/superscript.js') }}"></script>
   <script src="{{ url_for('static', filename='js/productGallery.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/localeRedirect.js') }}"></script>
 
   {% else %}
   <p>Detecting your location and redirecting you to the correct HP page...</p>
