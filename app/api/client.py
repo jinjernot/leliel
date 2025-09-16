@@ -11,7 +11,6 @@ def clean_json_response(response_text):
     Cleans the API response text to extract a valid JSON object.
     """
     try:
-        # Find the first opening curly brace and the last closing curly brace
         start = response_text.find('{')
         end = response_text.rfind('}')
         if start == -1 or end == -1:
@@ -22,6 +21,36 @@ def clean_json_response(response_text):
         return json_string
     except (ValueError, json.JSONDecodeError) as e:
         raise ValueError(f"Extracted string is not valid JSON: {e}")
+
+
+def get_product_locales(sku):
+    """
+    Fetches available locales for a product from the PCB API.
+    """
+    api_url = f"{current_app.config['API_PCB_URL']}{sku}"
+    logging.info(f"Calling PCB API: {api_url}")
+    try:
+        api_response = requests.get(api_url, headers={'Content-Type': 'application/json'}, verify=False)
+        api_response.raise_for_status()
+
+        cleaned_response_text = clean_json_response(api_response.text)
+        response_json = json.loads(cleaned_response_text)
+        
+        locales = response_json.get('plc', {}).get('liveLocales')
+
+        if locales is None:
+            logging.warning(f"'liveLocales' not found for SKU {sku} in PCB API response.")
+            return []
+        
+        logging.info(f"Successfully fetched locales for SKU {sku}: {locales}")
+        return locales
+
+    except requests.exceptions.RequestException as e:
+        logging.error(f"PCB API call failed: {e}")
+        return []
+    except (ValueError, json.JSONDecodeError) as e:
+        current_app.logger.error(f"Failed to parse JSON response from PCB API: {e}")
+        return []
 
 
 def get_product_data(sku, country_code, language_code):

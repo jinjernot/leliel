@@ -22,9 +22,13 @@
   <div id="ATF" class="superscript-content">
     <div class="content-card country-selector">
       <select>
-        <option>US-EN</option>
-        <option>CA-EN</option>
-        <option>CA-FR</option>
+        {% if locales %}
+          {% for locale in locales %}
+            <option>{{ locale }}</option>
+          {% endfor %}
+        {% else %}
+          <option disabled selected>No locales available</option>
+        {% endif %}
       </select>
     </div>
     <div class="content-card product-header">

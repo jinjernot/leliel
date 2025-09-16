@@ -19,6 +19,7 @@ app = Flask(__name__)
 
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 app.config['API_URL'] = os.environ.get('API_URL')
+app.config['API_PCB_URL'] = os.environ.get('API_PCB_URL')
 app.config['CACHE_DIR'] = CACHE_DIR
 app.config['ALLOWED_COUNTRIES'] = ALLOWED_COUNTRIES
 app.config['ALLOWED_LANGUAGES'] = ALLOWED_LANGUAGES

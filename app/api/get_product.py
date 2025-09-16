@@ -1,7 +1,7 @@
 from flask import render_template, request, current_app
 import logging
 from app.api.process_product import process_api_response
-from app.api.client import get_product_data
+from app.api.client import get_product_data, get_product_locales
 from app.cache import get_cached_product, save_to_cache
 
 
@@ -19,7 +19,8 @@ def _fetch_and_process_product(sku, country_code, language_code):
     if error_response:
         return error_response
 
-    rendered_page = process_api_response(response_json, sku)
+    locales = get_product_locales(sku)
+    rendered_page = process_api_response(response_json, sku, locales)
 
     if isinstance(rendered_page, tuple):
         return rendered_page
