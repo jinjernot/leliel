@@ -20,17 +20,24 @@
 
   {% if df is defined and not df.empty %}
   <div id="ATF" class="superscript-content">
-    <div class="content-card country-selector">
-      <select id="locale-selector" data-sku="{{ sku }}">
-        {% if locales %}
-          {% for locale in locales %}
-            <option value="{{ locale }}" {% if locale == current_locale %}selected{% endif %}>{{ locale }}</option>
-          {% endfor %}
-        {% else %}
-          <option disabled selected>No locales available</option>
-        {% endif %}
-      </select>
+<div class="content-card country-selector">
+    <div class="locale-dropdown">
+        <button class="locale-btn">
+            <i class="bi bi-globe"></i>
+            <span>{{ current_locale or 'Select Locale' }}</span>
+            <i class="bi bi-chevron-down"></i>
+        </button>
+        <div class="locale-dropdown-content">
+            {% if locales %}
+                {% for locale in locales %}
+                    <a href="#" data-locale="{{ locale }}" data-sku="{{ sku }}" class="locale-option {% if locale == current_locale %}selected{% endif %}">{{ locale }}</a>
+                {% endfor %}
+            {% else %}
+                <a href="#" class="locale-option disabled">No locales available</a>
+            {% endif %}
+        </div>
     </div>
+</div>
     <div class="content-card product-header">
       <h1><span id="prodname">{{ df[df['tag'] == 'prodname']['value'].iloc[0] | default('') }}</span></h1>
 
