@@ -2,6 +2,7 @@ import pandas as pd
 import json
 from flask import current_app
 
+
 def build_product_template(api_response):
     """
     Builds the product template data structures from the API response.
@@ -21,7 +22,8 @@ def build_product_template(api_response):
     priority_orientations = config.get('IMAGE_PRIORITY_ORIENTATIONS', [])
     image_pixel_width = config.get('IMAGE_PIXEL_WIDTH', '573')
     image_type = config.get('IMAGE_TYPE', 'png')
-    video_asset_category = config.get('VIDEO_ASSET_CATEGORY', "Video - 360 Spin")
+    video_asset_category = config.get(
+        'VIDEO_ASSET_CATEGORY', "Video - 360 Spin")
 
     all_details_with_order = []
     tech_specs_by_group = {}
@@ -42,12 +44,12 @@ def build_product_template(api_response):
         for tag, details in content.items():
             if 'tag' not in details:
                 details['tag'] = tag
-            
+
             all_details_with_order.append(details)
-            
+
             if (details.get('type') == 'techspecs' and
                 details.get('tag') not in excluded_tags and
-                details.get('group') not in excluded_groups):
+                    details.get('group') not in excluded_groups):
 
                 group = details.get('group', 'Other')
                 if group not in tech_specs_by_group:
@@ -76,7 +78,7 @@ def build_product_template(api_response):
                 detail.get('type') == image_type and
                 'imageUrlHttps' in detail and
                 orientation not in processed_orientations and
-                product_color == primary_product_color):
+                    product_color == primary_product_color):
 
                 processed_orientations.add(orientation)
                 try:
@@ -96,7 +98,7 @@ def build_product_template(api_response):
             if footnote.get('type') == 'footnote':
                 footnotes_data.append(footnote)
             elif footnote.get('type') == 'legal_disclaimer':
-                 df_disclaimers_data.append(footnote)
+                df_disclaimers_data.append(footnote)
 
         for video in videos:
             if video.get("assetCategory") == video_asset_category:
