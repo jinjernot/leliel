@@ -24,14 +24,16 @@
       <div class="locale-dropdown">
         <button class="locale-btn">
           <i class="bi bi-globe"></i>
-          <span>{{ current_locale or 'Select Locale' }}</span>
+          <span>{{ locale_names[current_locale] | default(current_locale) }}</span>
           <i class="bi bi-chevron-down"></i>
         </button>
         <div class="locale-dropdown-content">
           {% if locales %}
           {% for locale in locales %}
           <a href="#" data-locale="{{ locale }}" data-sku="{{ sku }}"
-            class="locale-option {% if locale == current_locale %}selected{% endif %}">{{ locale }}</a>
+            class="locale-option {% if locale == current_locale %}selected{% endif %}">
+            {{ locale_names[locale] | default(locale) }}
+          </a>
           {% endfor %}
           {% else %}
           <a href="#" class="locale-option disabled">No locales available</a>

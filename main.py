@@ -12,7 +12,7 @@ load_dotenv(dotenv_path=dotenv_path)
 from config import (CACHE_DIR, ALLOWED_COUNTRIES, ALLOWED_LANGUAGES,
                     PRODUCT_HIERARCHY, TOP_COMPONENTS,
                     TECH_SPEC_GROUP_ORDER, PRODUCT_TEMPLATES_CONFIG,
-                    PRINTER_PRODUCT_TYPES, MM_BLOCKS_CONFIG, FEATURE_BLOCKS_CONFIG)
+                    PRINTER_PRODUCT_TYPES, MM_BLOCKS_CONFIG, FEATURE_BLOCKS_CONFIG, COUNTRY_NAMES, LOCALE_NAMES)
 from app.api.get_product import get_product, get_product_by_params
 
 app = Flask(__name__)
@@ -30,6 +30,9 @@ app.config['PRODUCT_TEMPLATES_CONFIG'] = PRODUCT_TEMPLATES_CONFIG
 app.config['PRINTER_PRODUCT_TYPES'] = PRINTER_PRODUCT_TYPES
 app.config['MM_BLOCKS_CONFIG'] = MM_BLOCKS_CONFIG
 app.config['FEATURE_BLOCKS_CONFIG'] = FEATURE_BLOCKS_CONFIG
+app.config['COUNTRY_NAMES'] = COUNTRY_NAMES
+app.config['LOCALE_NAMES'] = LOCALE_NAMES # Add this line
+
 app.config.update(
     SESSION_COOKIE_SECURE=True,
     SESSION_COOKIE_HTTPONLY=True,

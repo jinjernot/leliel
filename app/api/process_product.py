@@ -97,7 +97,7 @@ def process_api_response(response_json, sku, locales=None, country_code=None, la
                     if len(feature_blocks) >= feature_config['MAX_BLOCKS']:
                         break
 
-        return render_template('product_template.html', df=df, tech_specs_by_group=sorted_tech_specs_by_group, df_images=df_images, companions=companions, top_companions=top_companions, df_footnotes=df_footnotes, df_disclaimers=df_disclaimers, mm_blocks=mm_blocks, feature_blocks=feature_blocks, top_components=top_components_list, video_data=video_data, locales=locales, sku=sku, current_locale=current_locale)
+        return render_template('product_template.html', df=df, tech_specs_by_group=sorted_tech_specs_by_group, df_images=df_images, companions=companions, top_companions=top_companions, df_footnotes=df_footnotes, df_disclaimers=df_disclaimers, mm_blocks=mm_blocks, feature_blocks=feature_blocks, top_components=top_components_list, video_data=video_data, locales=locales, sku=sku, current_locale=current_locale, country_names=current_app.config['COUNTRY_NAMES'], locale_names=current_app.config['LOCALE_NAMES'])
     except KeyError as e:
         logging.error(
             f"A KeyError occurred in process_api_response: {e}", exc_info=True)

@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (selectedLocale && sku) {
                     const [cc, ll] = selectedLocale.split('-');
                     if (cc && ll) {
-                        window.location.href = `/app/contentcraft/qr?pn=${sku}&cc=${cc}&ll=${ll}`;
+                        window.location.href = `/qr?pn=${sku}&cc=${cc}&ll=${ll}`;
                     }
                 }
             });
