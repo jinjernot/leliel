@@ -139,7 +139,7 @@
     </div>
     {% endif %}
 
-    <h2 id="see-more" class="expand-button">Show All Specifications</h2>
+    <h2 id="see-more" class="expand-button">{{ translations.show_techspecs }}</h2>
 
     <div id="tech-specs" class="content-card" style="display: none;">
       <table class="tech-specs-table">
@@ -184,7 +184,7 @@
     {% endif %}
 
     {% if companions %}
-    <h2 id="see-more-companions" class="expand-button">Show Companions</h2>
+    <h2 id="see-more-companions" class="expand-button">{{ translations.show_companions }}</h2>
 
     <div id="companions" class="content-card" style="display: none;">
       <div class="companions-grid">
@@ -203,7 +203,7 @@
 
     {% if (df_disclaimers is defined and not df_disclaimers.empty) or (df_footnotes is defined and not
     df_footnotes.empty) %}
-    <h2 id="see-more-footnotes" class="expand-button">Show Footnotes</h2>
+    <h2 id="see-more-footnotes" class="expand-button">{{ translations.show_footnotes }}</h2>
 
     <div id="footnotes" class="content-card" style="display: none;">
       <table class="footnotes-table">
@@ -225,6 +225,8 @@
         </tbody>
       </table>
     </div>
+
+
     {% endif %}
   </div>
   <script src="{{ url_for('static', filename='js/superscript.js') }}"></script>
