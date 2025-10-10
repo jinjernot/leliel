@@ -495,3 +495,18 @@ sup {
     height: 45px;
   }
 }
+
+a {
+  text-decoration: none;
+  color: #024ad8; 
+  transition: color 0.2s ease-in-out;
+}
+
+a:hover {
+  color: #024ad8;
+  text-decoration: underline;
+}
+
+p {
+  font-size: 1rem;
+}

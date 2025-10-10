@@ -201,9 +201,9 @@
     </div>
     {% endif %}
 
-    {% if (df_disclaimers is defined and not df_disclaimers.empty) or (df_footnotes is defined and not
+{% if (df_disclaimers is defined and not df_disclaimers.empty) or (df_footnotes is defined and not
     df_footnotes.empty) %}
-    <h2 id="see-more-footnotes" class="expand-button">{{ translations.show_footnotes }}</h2>
+    <h2 id="see-more-footnotes" class="expand-button">Show Footnotes</h2>
 
     <div id="footnotes" class="content-card" style="display: none;">
       <table class="footnotes-table">
@@ -211,23 +211,24 @@
           {% if df_disclaimers is defined and not df_disclaimers.empty %}
           {% for index, row in df_disclaimers.iterrows() %}
           <tr>
-            <td>{{ row['value'] | default('') }}</td>
+            <td>{{ row['value'] | safe | default('') }}</td>
           </tr>
           {% endfor %}
           {% endif %}
           {% if df_footnotes is defined and not df_footnotes.empty %}
           {% for index, row in df_footnotes.iterrows() %}
           <tr>
-            <td>{{ row['value'] | default('') }}</td>
+            <td>{{ row['value'] | safe | default('') }}</td>
           </tr>
           {% endfor %}
           {% endif %}
         </tbody>
       </table>
     </div>
-
-
     {% endif %}
+  
+  
+  
   </div>
   <script src="{{ url_for('static', filename='js/superscript.js') }}"></script>
   <script src="{{ url_for('static', filename='js/productGallery.js') }}"></script>
