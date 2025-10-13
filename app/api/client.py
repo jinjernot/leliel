@@ -4,6 +4,7 @@ import json
 import logging
 import re
 from app.api.api_error import process_api_error
+from datetime import datetime
 
 
 def clean_json_response(response_text):
@@ -15,7 +16,7 @@ def clean_json_response(response_text):
         end = response_text.rfind('}')
         if start == -1 or end == -1:
             raise ValueError("No JSON object found in the response.")
-        
+
         json_string = response_text[start:end+1]
         json.loads(json_string)
         return json_string
@@ -30,26 +31,30 @@ def get_product_locales(sku):
     api_url = f"{current_app.config['API_PCB_URL']}{sku}"
     logging.info(f"Calling PCB API: {api_url}")
     try:
-        api_response = requests.get(api_url, headers={'Content-Type': 'application/json'}, verify=False)
+        api_response = requests.get(
+            api_url, headers={'Content-Type': 'application/json'}, verify=False)
         api_response.raise_for_status()
 
         cleaned_response_text = clean_json_response(api_response.text)
         response_json = json.loads(cleaned_response_text)
-        
+
         locales = response_json.get('plc', {}).get('liveLocales')
 
         if locales is None:
-            logging.warning(f"'liveLocales' not found for SKU {sku} in PCB API response.")
+            logging.warning(
+                f"'liveLocales' not found for SKU {sku} in PCB API response.")
             return []
-        
-        logging.info(f"Successfully fetched locales for SKU {sku}: {locales}")
+
+        logging.info(
+            f"Successfully fetched locales for SKU {sku}: {locales}")
         return locales
 
     except requests.exceptions.RequestException as e:
         logging.error(f"PCB API call failed: {e}")
         return []
     except (ValueError, json.JSONDecodeError) as e:
-        current_app.logger.error(f"Failed to parse JSON response from PCB API: {e}")
+        current_app.logger.error(
+            f"Failed to parse JSON response from PCB API: {e}")
         return []
 
 
@@ -85,6 +90,23 @@ def get_product_data(sku, country_code, language_code):
             logging.error(
                 f"Product-level error for SKU {sku}: {error_message}")
             return None, (render_template('error.html', error_message=error_message), 400)
+
+        # Validation for live products
+        plc_status = product_data.get('plcStatus')
+        if plc_status != 'Live':
+            error_message = f"SKU {sku} is not live. Status is '{plc_status}'." # Change later
+            logging.error(error_message)
+            return None, (render_template('error.html', error_message=error_message), 400)
+
+        general_availability_date_str = product_data.get(
+            'plcDates', {}).get('generalAvailabilityDate')
+        if general_availability_date_str:
+            general_availability_date = datetime.strptime(
+                general_availability_date_str, '%Y-%m-%d').date()
+            if general_availability_date > datetime.now().date():
+                error_message = f"Product SKU {sku} is not yet available. General availability date is {general_availability_date_str}."
+                logging.error(error_message)
+                return None, (render_template('error.html', error_message=error_message), 400)
 
         return response_json, None
 
