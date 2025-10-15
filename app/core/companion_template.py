@@ -1,42 +1,56 @@
 def build_template_companions(api_response, sku):
     """
-    Builds a list of companion products (accessories, services, supplies) for the given SKU.
+    Builds a list of companion products (accessories, services, supplies) or host products for the given SKU.
     """
     if not isinstance(api_response, dict):
         return []
 
     products = api_response.get('products', {})
     product_data = products.get(sku, {})
-
     companions_list = []
 
-    # Process accessories, services and supplies, so they appear in that order.
-    for companion_type in ['supplies', 'accessories', 'services']:
-        if companion_type in product_data:
-            # Sort all companions by date.
-            sorted_companions = sorted(product_data[companion_type], key=lambda x: x.get(
-                'fullDate', '0'), reverse=True)
+    if 'hosts' in product_data and product_data['hosts']:
+        # Process hosts if they exist
+        sorted_hosts = sorted(product_data['hosts'], key=lambda x: x.get('fullDate', '0'), reverse=True)
+        for host in sorted_hosts[2:]:
+            image_url = ''
+            if host.get('image'):
+                image_url = host.get('image', {}).get('url', '')
 
-            for companion in sorted_companions[2:10]:
-                image_url = ''
-                if companion.get('image'):
-                    image_url = companion.get('image', {}).get('url', '')
+            if image_url:
+                companions_list.append({
+                    'type': 'hosts',
+                    'name': host.get('name'),
+                    'sku': host.get('number'),
+                    'image_url': image_url
+                })
+    else:
+        # Process accessories, services and supplies, so they appear in that order.
+        for companion_type in ['supplies', 'accessories', 'services']:
+            if companion_type in product_data:
+                # Sort all companions by date.
+                sorted_companions = sorted(product_data[companion_type], key=lambda x: x.get('fullDate', '0'), reverse=True)
 
-                # Only add the companion to the list if it has an image.
-                if image_url:
-                    companions_list.append({
-                        'type': companion_type,
-                        'name': companion.get('name'),
-                        'sku': companion.get('number'),
-                        'image_url': image_url
-                    })
+                for companion in sorted_companions[2:10]:
+                    image_url = ''
+                    if companion.get('image'):
+                        image_url = companion.get('image', {}).get('url', '')
+
+                    # Only add the companion to the list if it has an image.
+                    if image_url:
+                        companions_list.append({
+                            'type': companion_type,
+                            'name': companion.get('name'),
+                            'sku': companion.get('number'),
+                            'image_url': image_url
+                        })
 
     return companions_list
 
 
 def build_top_companions_by_type(api_response, sku):
     """
-    Builds a dictionary of top companion products (accessories, services, supplies) for the given SKU.
+    Builds a dictionary of top companion products (accessories, services, supplies) or host products for the given SKU.
     """
     if not isinstance(api_response, dict):
         return {}
@@ -46,32 +60,52 @@ def build_top_companions_by_type(api_response, sku):
 
     top_companions = {}
 
-    # Process accessories, services and supplies to get the top two of each.
-    for companion_type in ['supplies', 'accessories', 'services']:
-        if companion_type in product_data:
-            # Sort all companions by date.
-            sorted_companions = sorted(product_data[companion_type], key=lambda x: x.get(
-                'fullDate', '0'), reverse=True)
+    if 'hosts' in product_data and product_data['hosts']:
+        sorted_hosts = sorted(product_data['hosts'], key=lambda x: x.get('fullDate', '0'), reverse=True)
+        found_companions = []
+        for host in sorted_hosts:
+            if len(found_companions) >= 2:
+                break
+            image_url = ''
+            if host.get('image'):
+                image_url = host.get('image', {}).get('url', '')
 
-            # Take the top 2 companions with an image.
-            found_companions = []
-            for companion in sorted_companions:
-                if len(found_companions) >= 2:
-                    break
+            if image_url:
+                found_companions.append({
+                    'type': 'hosts',
+                    'name': host.get('name'),
+                    'sku': host.get('number'),
+                    'image_url': image_url
+                })
+        if found_companions:
+            top_companions['hosts'] = found_companions
+    else:
+        # Process accessories, services and supplies to get the top two of each.
+        for companion_type in ['supplies', 'accessories', 'services']:
+            if companion_type in product_data:
+                # Sort all companions by date.
+                sorted_companions = sorted(product_data[companion_type], key=lambda x: x.get(
+                    'fullDate', '0'), reverse=True)
 
-                image_url = ''
-                if companion.get('image'):
-                    image_url = companion.get('image', {}).get('url', '')
+                # Take the top 2 companions with an image.
+                found_companions = []
+                for companion in sorted_companions:
+                    if len(found_companions) >= 2:
+                        break
 
-                if image_url:
-                    found_companions.append({
-                        'type': companion_type,
-                        'name': companion.get('name'),
-                        'sku': companion.get('number'),
-                        'image_url': image_url
-                    })
+                    image_url = ''
+                    if companion.get('image'):
+                        image_url = companion.get('image', {}).get('url', '')
 
-            if found_companions:
-                top_companions[companion_type] = found_companions
+                    if image_url:
+                        found_companions.append({
+                            'type': companion_type,
+                            'name': companion.get('name'),
+                            'sku': companion.get('number'),
+                            'image_url': image_url
+                        })
+
+                if found_companions:
+                    top_companions[companion_type] = found_companions
 
     return top_companions
