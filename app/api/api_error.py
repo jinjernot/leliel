@@ -8,7 +8,11 @@ def process_api_error(api_response):
     Processes API error responses and returns appropriate error pages.
     """
     try:
-        error_text = api_response.text
+        if api_response is None:
+            logging.error("API request failed before receiving an HTTP response.")
+            return render_template('error.html', error_message='The API request timed out or could not connect to the upstream service.'), 504
+
+        error_text = getattr(api_response, 'text', '')
         logging.error(f"API Error Response: {error_text}")
 
         response_json = api_response.json()
@@ -24,7 +28,7 @@ def process_api_error(api_response):
             return render_template('error.html', error_message=error_message), 400
 
     except json.JSONDecodeError:
-        return render_template('error.html', error_message=f"An unknown error occurred. API Response: {api_response.text}"), 400
+        return render_template('error.html', error_message=f"An unknown error occurred. API Response: {getattr(api_response, 'text', '')}"), 400
     except Exception as e:
         return render_template('error.html', error_message=f"An unexpected error occurred: {str(e)}"), 500
 

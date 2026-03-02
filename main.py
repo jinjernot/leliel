@@ -20,6 +20,8 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 app.config['API_URL'] = os.environ.get('API_URL')
 app.config['API_PCB_URL'] = os.environ.get('API_PCB_URL')
+app.config['API_CONNECT_TIMEOUT'] = float(os.environ.get('API_CONNECT_TIMEOUT', '3'))
+app.config['API_READ_TIMEOUT'] = float(os.environ.get('API_READ_TIMEOUT', '20'))
 app.config['CACHE_DIR'] = CACHE_DIR
 app.config['ALLOWED_COUNTRIES'] = ALLOWED_COUNTRIES
 app.config['ALLOWED_LANGUAGES'] = ALLOWED_LANGUAGES
@@ -66,7 +68,7 @@ def call_get_product():
     return get_product()
 
 # QR code route
-@app.route('/qr')
+@app.route('/')
 def call_get_product_from_qr():
     sku = request.args.get('pn')
     country = request.args.get('cc')
