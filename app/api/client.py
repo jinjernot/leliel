@@ -1,9 +1,9 @@
 import requests
-from flask import current_app, render_template
+from flask import current_app
 import json
 import logging
 import re
-from app.api.api_error import process_api_error
+from app.api.api_error import process_api_error, render_friendly_error, render_locale_unavailable_error
 from datetime import datetime
 
 
@@ -101,18 +101,32 @@ def get_product_data(sku, country_code, language_code):
 
         product_data = response_json.get('products', {}).get(sku.upper())
         if not product_data or product_data.get('status') is False:
-            error_message = product_data.get(
+            error_message = (product_data or {}).get(
                 'statusMessage', 'Invalid SKU or Culture is not available.')
             logging.error(
                 f"Product-level error for SKU {sku}: {error_message}")
-            return None, (render_template('error.html', error_message=error_message), 400)
+
+            if re.search(r'culture\s+is\s+not\s+available|locale\s+is\s+not\s+available', error_message, re.IGNORECASE):
+                locale_options = get_product_locales(sku)
+                return None, render_locale_unavailable_error(sku, country_code, language_code, locale_options)
+
+            return None, render_friendly_error(
+                message=error_message,
+                status_code=400,
+                title='Could not load this product page'
+            )
 
         # Validation for live products
         plc_status = product_data.get('plcStatus')
         if plc_status != 'Live':
-            error_message = f"SKU {sku} is not live. Status is '{plc_status}'." # Change later
+            error_message = f"SKU {sku} is not live. Status is '{plc_status}'."
             logging.error(error_message)
-            return None, (render_template('error.html', error_message=error_message), 400)
+            return None, render_friendly_error(
+                message='This product page is not currently published.',
+                status_code=400,
+                title='Product page unavailable',
+                details=error_message
+            )
 
         general_availability_date_str = product_data.get(
             'plcDates', {}).get('generalAvailabilityDate')
@@ -122,7 +136,12 @@ def get_product_data(sku, country_code, language_code):
             if general_availability_date > datetime.now().date():
                 error_message = f"Product SKU {sku} is not yet available. General availability date is {general_availability_date_str}."
                 logging.error(error_message)
-                return None, (render_template('error.html', error_message=error_message), 400)
+                return None, render_friendly_error(
+                    message='This product is not yet available in the selected market.',
+                    status_code=400,
+                    title='Product not yet available',
+                    details=error_message
+                )
 
         return response_json, None
 
@@ -141,4 +160,8 @@ def get_product_data(sku, country_code, language_code):
     except ValueError as e:
         current_app.logger.error(
             f"Failed to clean or parse JSON response: {e}")
-        return None, (render_template('error.html', error_message="Could not parse the data from the API."), 500)
+        return None, render_friendly_error(
+            message='Could not parse the response from the product service.',
+            status_code=500,
+            title='Unexpected service response'
+        )

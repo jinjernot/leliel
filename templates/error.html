@@ -18,11 +18,33 @@
                 <div class="card-container">
                     <div class="card error-card full-width-card">
                         <div class="card-header">
-                            <h2 class="card-title"><i class="bi bi-exclamation-triangle-fill"></i> Anomaly Detected:
+                            <h2 class="card-title"><i class="bi bi-exclamation-triangle-fill"></i> {{ error_title or 'Anomaly Detected' }}
                             </h2>
                         </div>
                         <div class="card-body">
                             <p class="error-message">{{ error_message }}</p>
+                            {% if error_details %}
+                            <p class="error-details">{{ error_details }}</p>
+                            {% endif %}
+
+                            {% if sku and locale_options %}
+                            <div class="locale-help">
+                                <h3>Available Country/Language Options</h3>
+                                <p>Select an available option to continue:</p>
+                                <div class="locale-links">
+                                    {% for locale in locale_options %}
+                                    {% set parts = locale.split('-') %}
+                                    {% if parts|length == 2 %}
+                                    <a class="locale-link {% if locale == current_locale %}disabled{% endif %}"
+                                        href="{{ url_for('call_get_product_from_qr', pn=sku, cc=parts[0], ll=parts[1]) }}">
+                                        {{ locale_names[locale] | default(locale) }}
+                                        {% if locale == current_locale %}(current){% endif %}
+                                    </a>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

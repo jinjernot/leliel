@@ -3,6 +3,7 @@ from app.core.companion_template import build_template_companions, build_top_com
 from flask import render_template, current_app
 import pandas as pd
 import logging
+from app.api.api_error import render_friendly_error
 
 
 def get_product_type(product_data):
@@ -102,8 +103,18 @@ def process_api_response(response_json, sku, locales=None, country_code=None, la
     except KeyError as e:
         logging.error(
             f"A KeyError occurred in process_api_response: {e}", exc_info=True)
-        return render_template('error.html', error_message=f"An error occurred while processing product data: Missing key {e}"), 500
+        return render_friendly_error(
+            message='A required product field was missing while rendering this page.',
+            status_code=500,
+            title='Product data incomplete',
+            details=f'Missing key: {e}'
+        )
     except Exception as e:
         logging.error(
             f"An unexpected error occurred in process_api_response: {e}", exc_info=True)
-        return render_template('error.html', error_message=f"An unexpected error occurred: {str(e)}"), 500
+        return render_friendly_error(
+            message='An unexpected error occurred while preparing the product page.',
+            status_code=500,
+            title='Something went wrong',
+            details=str(e)
+        )

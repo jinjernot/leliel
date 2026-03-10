@@ -14,6 +14,8 @@ from config import (CACHE_DIR, ALLOWED_COUNTRIES, ALLOWED_LANGUAGES,
                     TECH_SPEC_GROUP_ORDER, PRODUCT_TEMPLATES_CONFIG,
                     PRINTER_PRODUCT_TYPES, MM_BLOCKS_CONFIG, FEATURE_BLOCKS_CONFIG, COUNTRY_NAMES, LOCALE_NAMES, TRANSLATIONS)
 from app.api.get_product import get_product, get_product_by_params
+from app.api.client import get_product_locales
+from app.api.api_error import render_friendly_error
 
 app = Flask(__name__)
 
@@ -75,17 +77,35 @@ def call_get_product_from_qr():
     language = request.args.get('ll')
 
     if not sku:
-        return render_template('error.html', error_message='Missing required URL parameter: pn'), 400
+        return render_friendly_error(
+            message='The product number is missing from the link.',
+            status_code=400,
+            title='Missing product information',
+            details='Please scan the QR code again or verify the URL contains the pn parameter.'
+        )
 
     if not re.match(r'^[a-zA-Z0-9\-\/]+$', sku):
-        return render_template('error.html', error_message='Invalid SKU format provided.'), 400
+        return render_friendly_error(
+            message='The product number format is invalid.',
+            status_code=400,
+            title='Invalid product number'
+        )
 
     if not country or not language:
         return render_template('product_template.html', pn=sku, config=current_app.config.get('PRODUCT_TEMPLATES_CONFIG'))
     
     if country.lower() not in current_app.config['ALLOWED_COUNTRIES'] or \
        language.lower() not in current_app.config['ALLOWED_LANGUAGES']:
-        return render_template('error.html', error_message='Invalid country or language code provided.'), 400
+        locale_options = get_product_locales(sku)
+        return render_friendly_error(
+            message='The selected country/language is not supported for this request.',
+            status_code=400,
+            title='Invalid location selection',
+            details='Please choose one of the available country/language options below.',
+            sku=sku,
+            current_locale=f"{country.lower()}-{language.lower()}",
+            locale_options=locale_options
+        )
     
     return get_product_by_params(sku, country, language)
 

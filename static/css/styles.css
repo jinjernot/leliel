@@ -240,6 +240,53 @@ sup {
   color: #c0392b;
 }
 
+.error-details {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  color: #5c5c5c;
+  text-align: center;
+}
+
+.locale-help {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #ececec;
+}
+
+.locale-help h3 {
+  font-size: 1.05rem;
+  margin-bottom: 0.35rem;
+}
+
+.locale-help p {
+  margin-bottom: 0.85rem;
+  color: #666;
+}
+
+.locale-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.locale-link {
+  padding: 0.4rem 0.7rem;
+  background: #eef4ff;
+  border: 1px solid #d8e5ff;
+  border-radius: 999px;
+  color: #0144c9;
+  font-size: 0.9rem;
+}
+
+.locale-link:hover {
+  background: #dfeaff;
+}
+
+.locale-link.disabled {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
 .input-form {
   display: flex;
   flex-direction: column;

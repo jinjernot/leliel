@@ -1,8 +1,9 @@
-from flask import render_template, request, current_app
+from flask import request, current_app
 import logging
 from app.api.process_product import process_api_response
 from app.api.client import get_product_data, get_product_locales
 from app.cache import get_cached_product, save_to_cache
+from app.api.api_error import render_friendly_error
 
 
 def _fetch_and_process_product(sku, country_code, language_code):
@@ -42,14 +43,27 @@ def get_product():
         allowed_languages = current_app.config['ALLOWED_LANGUAGES']
 
         if country_code.lower() not in allowed_countries or language_code.lower() not in allowed_languages:
-            return render_template('error.html', error_message='Invalid country or language code provided.'), 400
+            locale_options = get_product_locales(sku) if sku else []
+            return render_friendly_error(
+                message='The selected country/language is not supported for this request.',
+                status_code=400,
+                title='Invalid location selection',
+                details='Please choose one of the available country/language options below.',
+                sku=sku,
+                current_locale=f"{country_code.lower()}-{language_code.lower()}",
+                locale_options=locale_options
+            )
 
         return _fetch_and_process_product(sku, country_code, language_code)
 
     except Exception as e:
         logging.error(
             f"An unexpected error occurred in get_product: {e}", exc_info=True)
-        return render_template('error.html', error_message='An unexpected error occurred. Please try again later.'), 500
+        return render_friendly_error(
+            message='An unexpected error occurred. Please try again later.',
+            status_code=500,
+            title='Something went wrong'
+        )
 
 
 def get_product_by_params(sku, country_code, language_code):
@@ -61,11 +75,24 @@ def get_product_by_params(sku, country_code, language_code):
         allowed_languages = current_app.config['ALLOWED_LANGUAGES']
 
         if country_code.lower() not in allowed_countries or language_code.lower() not in allowed_languages:
-            return render_template('error.html', error_message='Invalid country or language code provided.'), 400
+            locale_options = get_product_locales(sku) if sku else []
+            return render_friendly_error(
+                message='The selected country/language is not supported for this request.',
+                status_code=400,
+                title='Invalid location selection',
+                details='Please choose one of the available country/language options below.',
+                sku=sku,
+                current_locale=f"{country_code.lower()}-{language_code.lower()}",
+                locale_options=locale_options
+            )
 
         return _fetch_and_process_product(sku, country_code, language_code)
 
     except Exception as e:
         logging.error(
             f"An unexpected error occurred in get_product_by_params: {e}", exc_info=True)
-        return render_template('error.html', error_message='An unexpected error occurred. Please try again later.'), 500
+        return render_friendly_error(
+            message='An unexpected error occurred. Please try again later.',
+            status_code=500,
+            title='Something went wrong'
+        )
