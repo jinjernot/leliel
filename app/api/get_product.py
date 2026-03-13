@@ -62,7 +62,7 @@ def get_product():
         return render_friendly_error(
             message='An unexpected error occurred. Please try again later.',
             status_code=500,
-            title='Something went wrong'
+            title='HP Product Information'
         )
 
 
@@ -94,5 +94,5 @@ def get_product_by_params(sku, country_code, language_code):
         return render_friendly_error(
             message='An unexpected error occurred. Please try again later.',
             status_code=500,
-            title='Something went wrong'
+            title='HP Product Information'
         )

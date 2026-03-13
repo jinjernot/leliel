@@ -235,9 +235,31 @@
   <script src="{{ url_for('static', filename='js/localeRedirect.js') }}"></script>
 
   {% else %}
-  <p>Detecting your location and redirecting you to the correct HP page...</p>
+  {% if locales %}
+  <div id="ATF" class="superscript-content">
+    <div class="content-card country-selector">
+      <div class="locale-dropdown">
+        <button class="locale-btn">
+          <i class="bi bi-globe"></i>
+          <span>Select your country</span>
+          <i class="bi bi-chevron-down"></i>
+        </button>
+        <div class="locale-dropdown-content">
+          {% for locale in locales %}
+          <a href="#" data-locale="{{ locale }}" data-sku="{{ pn }}"
+            class="locale-option">
+            {{ locale_names[locale] | default(locale) }}
+          </a>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  <p style="text-align:center; padding: 2rem; color:#555;">Detecting your location and redirecting you to the correct HP page...</p>
   <div id="redirect-info" data-pn="{{ pn }}" data-redirect-url="{{ url_for('call_get_product_from_qr') }}"></div>
   <script src="{{ url_for('static', filename='js/geoRedirect.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/localeRedirect.js') }}"></script>
   {% endif %}
 
   <div class="footer-image-container">

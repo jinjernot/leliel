@@ -92,7 +92,14 @@ def call_get_product_from_qr():
         )
 
     if not country or not language:
-        return render_template('product_template.html', pn=sku, config=current_app.config.get('PRODUCT_TEMPLATES_CONFIG'))
+        locales = get_product_locales(sku)
+        return render_template(
+            'product_template.html',
+            pn=sku,
+            config=current_app.config.get('PRODUCT_TEMPLATES_CONFIG'),
+            locales=locales,
+            locale_names=current_app.config['LOCALE_NAMES']
+        )
     
     if country.lower() not in current_app.config['ALLOWED_COUNTRIES'] or \
        language.lower() not in current_app.config['ALLOWED_LANGUAGES']:

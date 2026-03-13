@@ -51,9 +51,8 @@ def render_locale_unavailable_error(sku, country_code, language_code, locale_opt
     """Render a specific error when SKU is not available for the requested locale."""
     current_locale = f"{(country_code or '').lower()}-{(language_code or '').lower()}"
     return render_friendly_error(
-        title='This product page is not available in your selected country',
-        message='The requested product is not currently published for this country/language combination.',
-        details='Please choose another country/language option below to continue.',
+        title='This product is not available in your country',
+        message='Please select a country / language from the available options below.',
         status_code=404,
         sku=sku,
         current_locale=current_locale,
@@ -61,7 +60,7 @@ def render_locale_unavailable_error(sku, country_code, language_code, locale_opt
     )
 
 
-def process_api_error(api_response):
+def process_api_error(api_response, sku=None):
     """
     Processes API error responses and returns appropriate error pages.
     """
@@ -73,6 +72,21 @@ def process_api_error(api_response):
                 status_code=504,
                 title='Service temporarily unavailable',
                 details='Please try again in a moment.'
+            )
+
+        # 404 from the API almost always means the SKU does not exist
+        if getattr(api_response, 'status_code', None) == 404:
+            msg = (
+                f"We couldn't find a product matching \u2018{sku}\u2019. "
+                "Please verify the product number and try again."
+                if sku else
+                "The requested product could not be found. "
+                "Please verify the product number and try again."
+            )
+            return render_friendly_error(
+                message=msg,
+                status_code=404,
+                title='Product not found'
             )
 
         error_text = getattr(api_response, 'text', '')
@@ -108,12 +122,13 @@ def process_api_error(api_response):
         return render_friendly_error(
             message='An unexpected error occurred while loading this page.',
             status_code=500,
-            title='Something went wrong',
+            title='HP Product Information',
             details=str(e)
         )
 
+    sku_hint = f" (\u2018{sku}\u2019)" if sku else ""
     return render_friendly_error(
-        message='An unknown error occurred while loading this product page.',
+        message=f"We couldn\'t load the product page{sku_hint}. Please verify the product number and try again.",
         status_code=500,
-        title='Something went wrong'
+        title='Product not found'
     )

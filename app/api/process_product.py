@@ -115,6 +115,6 @@ def process_api_response(response_json, sku, locales=None, country_code=None, la
         return render_friendly_error(
             message='An unexpected error occurred while preparing the product page.',
             status_code=500,
-            title='Something went wrong',
+            title='HP Product Information',
             details=str(e)
         )

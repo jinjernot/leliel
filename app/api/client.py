@@ -101,8 +101,7 @@ def get_product_data(sku, country_code, language_code):
 
         product_data = response_json.get('products', {}).get(sku.upper())
         if not product_data or product_data.get('status') is False:
-            error_message = (product_data or {}).get(
-                'statusMessage', 'Invalid SKU or Culture is not available.')
+            error_message = (product_data or {}).get('statusMessage', '')
             logging.error(
                 f"Product-level error for SKU {sku}: {error_message}")
 
@@ -111,9 +110,9 @@ def get_product_data(sku, country_code, language_code):
                 return None, render_locale_unavailable_error(sku, country_code, language_code, locale_options)
 
             return None, render_friendly_error(
-                message=error_message,
-                status_code=400,
-                title='Could not load this product page'
+                message=f"We couldn\'t find a product matching \u2018{sku}\u2019. Please verify the product number and try again.",
+                status_code=404,
+                title='Product not found'
             )
 
         # Validation for live products
@@ -153,10 +152,10 @@ def get_product_data(sku, country_code, language_code):
                 "or local firewall/SELinux policy."
             )
         logging.error(f"API call failed: {e}. timeout={timeout}")
-        return None, process_api_error(e.response)
+        return None, process_api_error(e.response, sku=sku)
     except requests.exceptions.RequestException as e:
         logging.error(f"API call failed: {e}. timeout={timeout}")
-        return None, process_api_error(e.response)
+        return None, process_api_error(e.response, sku=sku)
     except ValueError as e:
         current_app.logger.error(
             f"Failed to clean or parse JSON response: {e}")

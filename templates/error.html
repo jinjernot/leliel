@@ -2,59 +2,95 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FRAME - Error</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HP Product Information</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/product_styles.css') }}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+  <link href="https://syndication.inc.hp.com/hpi-favicon.ico" type="image/ico" rel="shortcut icon">
+  <script src="https://www8.hp.com/caas/header-footer/us/en/default/latest.r?contentType=js"></script>
+  <style>
+    #error-page {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 15px;
+    }
+    .error-hero {
+      text-align: center;
+      padding: 48px 32px;
+    }
+    .error-hero .error-icon {
+      font-size: 3rem;
+      display: block;
+      margin-bottom: 1rem;
+    }
+    .error-hero h1 {
+      font-size: 1.6rem;
+      margin-bottom: .5rem;
+      color: #1a1a1a;
+    }
+    .error-hero .error-subtitle {
+      color: #555;
+      margin-bottom: 0;
+    }
+    .error-hero .error-details-text {
+      color: #888;
+      font-size: .9rem;
+      margin-top: .4rem;
+    }
+  </style>
 </head>
 
 <body>
-    <div class="wrapper">
+  <div id="header" class="header"></div>
 
-        <main class="main-panel">
-            <div class="content">
-                <div class="card-container">
-                    <div class="card error-card full-width-card">
-                        <div class="card-header">
-                            <h2 class="card-title"><i class="bi bi-exclamation-triangle-fill"></i> {{ error_title or 'Anomaly Detected' }}
-                            </h2>
-                        </div>
-                        <div class="card-body">
-                            <p class="error-message">{{ error_message }}</p>
-                            {% if error_details %}
-                            <p class="error-details">{{ error_details }}</p>
-                            {% endif %}
+  <div id="error-page">
 
-                            {% if sku and locale_options %}
-                            <div class="locale-help">
-                                <h3>Available Country/Language Options</h3>
-                                <p>Select an available option to continue:</p>
-                                <div class="locale-links">
-                                    {% for locale in locale_options %}
-                                    {% set parts = locale.split('-') %}
-                                    {% if parts|length == 2 %}
-                                    <a class="locale-link {% if locale == current_locale %}disabled{% endif %}"
-                                        href="{{ url_for('call_get_product_from_qr', pn=sku, cc=parts[0], ll=parts[1]) }}">
-                                        {{ locale_names[locale] | default(locale) }}
-                                        {% if locale == current_locale %}(current){% endif %}
-                                    </a>
-                                    {% endif %}
-                                    {% endfor %}
-                                </div>
-                            </div>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <footer class="footer">
-                HP Inc. Restricted, Copyright 2024 HP Inc. Company.
-            </footer>
-        </main>
+    {% if sku and locale_options %}
+    {# ── Locale-unavailable: show the standard country selector bar then the message ── #}
+    <div class="content-card country-selector">
+      <div class="locale-dropdown">
+        <button class="locale-btn">
+          <i class="bi bi-globe"></i>
+          <span>{{ locale_names[current_locale] | default(current_locale) }}</span>
+          <i class="bi bi-chevron-down"></i>
+        </button>
+        <div class="locale-dropdown-content">
+          {% for locale in locale_options %}
+          <a href="#" data-locale="{{ locale }}" data-sku="{{ sku }}"
+            class="locale-option {% if locale == current_locale %}selected{% endif %}">
+            {{ locale_names[locale] | default(locale) }}
+          </a>
+          {% endfor %}
+        </div>
+      </div>
     </div>
-    <script src="{{ url_for('static', filename='js/theme-toggle.js') }}"></script>
+
+    <div class="content-card error-hero">
+      <i class="bi bi-geo-alt error-icon" style="color:#024ad8;"></i>
+      <h1>{{ error_title or 'This product is not available in your country' }}</h1>
+      <p class="error-subtitle">{{ error_message }}</p>
+    </div>
+
+    {% else %}
+    {# ── Generic error ── #}
+    <div class="content-card error-hero">
+      <i class="bi bi-exclamation-circle error-icon" style="color:#c0392b;"></i>
+      <h1>{{ error_title or 'HP Product Information' }}</h1>
+      <p class="error-subtitle">{{ error_message }}</p>
+      {% if error_details %}
+      <p class="error-details-text">{{ error_details }}</p>
+      {% endif %}
+    </div>
+    {% endif %}
+
+  </div>
+
+  <div class="footer-image-container">
+    <img src="{{ url_for('static', filename='images/footer.png') }}" alt="Footer Image">
+  </div>
+  <div id="footer" class="footer"></div>
+  <script src="{{ url_for('static', filename='js/localeRedirect.js') }}"></script>
 </body>
 
 </html>
