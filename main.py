@@ -50,6 +50,8 @@ logging.basicConfig(level=logging.INFO)
 @app.after_request
 def apply_security_headers(response):
     response.headers["X-Frame-Options"] = "SAMEORIGIN"
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
     return response
 
 # Route for testing products without qr code
@@ -84,7 +86,7 @@ def call_get_product_from_qr():
             details='Please scan the QR code again or verify the URL contains the pn parameter.'
         )
 
-    if not re.match(r'^[a-zA-Z0-9\-\/]+$', sku):
+    if not re.match(r'^[a-zA-Z0-9\-]+$', sku):
         return render_friendly_error(
             message='The product number format is invalid.',
             status_code=400,
@@ -105,10 +107,9 @@ def call_get_product_from_qr():
        language.lower() not in current_app.config['ALLOWED_LANGUAGES']:
         locale_options = get_product_locales(sku)
         return render_friendly_error(
-            message='The selected country/language is not supported for this request.',
+            message='The selected country/language combination is not supported.',
             status_code=400,
             title='Invalid location selection',
-            details='Please choose one of the available country/language options below.',
             sku=sku,
             current_locale=f"{country.lower()}-{language.lower()}",
             locale_options=locale_options

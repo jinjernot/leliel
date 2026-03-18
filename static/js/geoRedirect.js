@@ -39,10 +39,8 @@ document.addEventListener("DOMContentLoaded", function () {
         (async () => {
             try {
                 const { cc, lc } = await getGeoLocale();
-                if (confirm(`Your locale: ${cc}-${lc}\n\nClick OK to redirect`)) {
-                    const finalUrl = `${redirectBaseUrl}?pn=${encodeURIComponent(pn)}&cc=${encodeURIComponent(cc)}&ll=${encodeURIComponent(lc)}`;
-                    window.location.href = finalUrl;
-                }
+                const finalUrl = `${redirectBaseUrl}?pn=${encodeURIComponent(pn)}&cc=${encodeURIComponent(cc)}&ll=${encodeURIComponent(lc)}`;
+                window.location.href = finalUrl;
             } catch (err) {
                 console.error("Geolocation redirect failed:", err);
                 alert("Could not determine location. Redirecting to the default page.");

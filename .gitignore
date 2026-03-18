@@ -5,3 +5,4 @@ docs
 *.json
 cached_pages/
 .env
+generate_datasheet.py

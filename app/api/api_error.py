@@ -52,7 +52,7 @@ def render_locale_unavailable_error(sku, country_code, language_code, locale_opt
     current_locale = f"{(country_code or '').lower()}-{(language_code or '').lower()}"
     return render_friendly_error(
         title='This product is not available in your country',
-        message='Please select a country / language from the available options below.',
+        message='Please select a country / language from the available options.',
         status_code=404,
         sku=sku,
         current_locale=current_locale,
@@ -104,10 +104,10 @@ def process_api_error(api_response, sku=None):
 
         # Then, check for other API errors
         if response_json.get('Status') == 'ERROR':
-            error_message = response_json.get(
-                'StatusMessage', 'An unknown API error occurred.')
+            logging.error(
+                f"API returned ERROR status: {response_json.get('StatusMessage', '')}")
             return render_friendly_error(
-                message=error_message,
+                message='Could not load product information. Please try again later.',
                 status_code=400,
                 title='Could not load product information'
             )
@@ -122,13 +122,12 @@ def process_api_error(api_response, sku=None):
         return render_friendly_error(
             message='An unexpected error occurred while loading this page.',
             status_code=500,
-            title='HP Product Information',
-            details=str(e)
+            title='Could not load product page'
         )
 
     sku_hint = f" (\u2018{sku}\u2019)" if sku else ""
     return render_friendly_error(
-        message=f"We couldn\'t load the product page{sku_hint}. Please verify the product number and try again.",
+        message=f"We couldn\'t load the product page{sku_hint}. Please try again later.",
         status_code=500,
-        title='Product not found'
+        title='Could not load product page'
     )

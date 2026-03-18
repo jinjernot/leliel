@@ -104,17 +104,15 @@ def process_api_response(response_json, sku, locales=None, country_code=None, la
         logging.error(
             f"A KeyError occurred in process_api_response: {e}", exc_info=True)
         return render_friendly_error(
-            message='A required product field was missing while rendering this page.',
+            message='An error occurred while preparing this product page. Please try again later.',
             status_code=500,
-            title='Product data incomplete',
-            details=f'Missing key: {e}'
+            title='Could not load product page'
         )
     except Exception as e:
         logging.error(
             f"An unexpected error occurred in process_api_response: {e}", exc_info=True)
         return render_friendly_error(
-            message='An unexpected error occurred while preparing the product page.',
+            message='An unexpected error occurred while preparing this product page. Please try again later.',
             status_code=500,
-            title='HP Product Information',
-            details=str(e)
+            title='Could not load product page'
         )

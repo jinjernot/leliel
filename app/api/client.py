@@ -33,6 +33,17 @@ def _get_timeout_tuple():
     return (connect_timeout, read_timeout)
 
 
+def _normalize_locale(locale):
+    """Normalize locale strings to `cc-ll` lowercase format."""
+    if not locale:
+        return None
+    normalized = str(locale).strip().replace('_', '-').lower()
+    parts = normalized.split('-')
+    if len(parts) != 2 or not parts[0] or not parts[1]:
+        return None
+    return f"{parts[0]}-{parts[1]}"
+
+
 def get_product_locales(sku):
     """
     Fetches available locales for a product from the PCB API.
@@ -44,7 +55,6 @@ def get_product_locales(sku):
         api_response = requests.get(
             api_url,
             headers={'Content-Type': 'application/json'},
-            verify=False,
             timeout=timeout
         )
         api_response.raise_for_status()
@@ -123,8 +133,7 @@ def get_product_data(sku, country_code, language_code):
             return None, render_friendly_error(
                 message='This product page is not currently published.',
                 status_code=400,
-                title='Product page unavailable',
-                details=error_message
+                title='Product page unavailable'
             )
 
         general_availability_date_str = product_data.get(
@@ -138,12 +147,74 @@ def get_product_data(sku, country_code, language_code):
                 return None, render_friendly_error(
                     message='This product is not yet available in the selected market.',
                     status_code=400,
-                    title='Product not yet available',
-                    details=error_message
+                    title='Product not yet available'
                 )
 
         return response_json, None
 
+    except requests.exceptions.HTTPError as e:
+        response = e.response
+        if response is not None:
+            error_json = {}
+            try:
+                cleaned_response_text = clean_json_response(getattr(response, 'text', ''))
+                error_json = json.loads(cleaned_response_text)
+            except (ValueError, json.JSONDecodeError):
+                error_json = {}
+
+            product_data = (
+                error_json.get('products', {}).get(sku.upper())
+                or error_json.get('products', {}).get(sku)
+                or {}
+            )
+            product_status_message = str(
+                product_data.get('statusMessage')
+                or error_json.get('StatusMessage')
+                or ''
+            )
+
+            if re.search(r'culture\s+is\s+not\s+available|locale\s+is\s+not\s+available', product_status_message, re.IGNORECASE):
+                locale_options = get_product_locales(sku)
+                return None, render_locale_unavailable_error(sku, country_code, language_code, locale_options)
+
+            if re.search(r'non\s+publishable\s+product', product_status_message, re.IGNORECASE):
+                requested_locale = _normalize_locale(f"{country_code}-{language_code}")
+                locale_options = get_product_locales(sku)
+                normalized_locale_options = [
+                    locale for locale in (_normalize_locale(opt) for opt in locale_options) if locale
+                ]
+
+                if requested_locale and normalized_locale_options and requested_locale not in normalized_locale_options:
+                    return None, render_locale_unavailable_error(
+                        sku,
+                        country_code,
+                        language_code,
+                        normalized_locale_options
+                    )
+
+                return None, render_friendly_error(
+                    message='This product page is not published for public viewing.',
+                    status_code=400,
+                    title='Product page unavailable'
+                )
+
+            if response.status_code == 404:
+                requested_locale = _normalize_locale(f"{country_code}-{language_code}")
+                locale_options = get_product_locales(sku)
+                normalized_locale_options = [
+                    locale for locale in (_normalize_locale(opt) for opt in locale_options) if locale
+                ]
+
+                if requested_locale and normalized_locale_options and requested_locale not in normalized_locale_options:
+                    logging.info(
+                        "SKU %s exists but locale %s is unavailable. Redirecting to locale selector.",
+                        sku,
+                        requested_locale
+                    )
+                    return None, render_locale_unavailable_error(sku, country_code, language_code, normalized_locale_options)
+
+        logging.error(f"API call failed: {e}. timeout={timeout}")
+        return None, process_api_error(response, sku=sku)
     except requests.exceptions.ConnectTimeout as e:
         if isinstance(api_url_base, str) and 'localhost' in api_url_base.lower():
             logging.error(

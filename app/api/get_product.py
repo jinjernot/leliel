@@ -45,10 +45,9 @@ def get_product():
         if country_code.lower() not in allowed_countries or language_code.lower() not in allowed_languages:
             locale_options = get_product_locales(sku) if sku else []
             return render_friendly_error(
-                message='The selected country/language is not supported for this request.',
+                message='The selected country/language combination is not supported.',
                 status_code=400,
                 title='Invalid location selection',
-                details='Please choose one of the available country/language options below.',
                 sku=sku,
                 current_locale=f"{country_code.lower()}-{language_code.lower()}",
                 locale_options=locale_options
@@ -62,7 +61,7 @@ def get_product():
         return render_friendly_error(
             message='An unexpected error occurred. Please try again later.',
             status_code=500,
-            title='HP Product Information'
+            title='Could not load product page'
         )
 
 
@@ -77,10 +76,9 @@ def get_product_by_params(sku, country_code, language_code):
         if country_code.lower() not in allowed_countries or language_code.lower() not in allowed_languages:
             locale_options = get_product_locales(sku) if sku else []
             return render_friendly_error(
-                message='The selected country/language is not supported for this request.',
+                message='The selected country/language combination is not supported.',
                 status_code=400,
                 title='Invalid location selection',
-                details='Please choose one of the available country/language options below.',
                 sku=sku,
                 current_locale=f"{country_code.lower()}-{language_code.lower()}",
                 locale_options=locale_options
@@ -94,5 +92,5 @@ def get_product_by_params(sku, country_code, language_code):
         return render_friendly_error(
             message='An unexpected error occurred. Please try again later.',
             status_code=500,
-            title='HP Product Information'
+            title='Could not load product page'
         )
