@@ -20,6 +20,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (selectedLocale && sku) {
                     const [cc, ll] = selectedLocale.split('-');
                     if (cc && ll) {
+                        // Close dropdown immediately
+                        dropdownContent.style.display = 'none';
+
+                        // Show full-page loading overlay
+                        const overlay = document.createElement('div');
+                        overlay.className = 'locale-loading-overlay';
+                        overlay.innerHTML = '<div class="locale-spinner"></div><span class="locale-loading-text">Loading...</span>';
+                        document.body.appendChild(overlay);
+
                         window.location.href = `/qr?pn=${sku}&cc=${cc}&ll=${ll}`;
                     }
                 }
