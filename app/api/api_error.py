@@ -89,9 +89,6 @@ def process_api_error(api_response, sku=None):
                 title='Product not found'
             )
 
-        error_text = getattr(api_response, 'text', '')
-        logging.error(f"API Error Response: {error_text}")
-
         response_json = api_response.json()
 
         # Check for "Non publishable Product" first

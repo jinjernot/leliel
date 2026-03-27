@@ -3,8 +3,21 @@ from flask import current_app
 import json
 import logging
 import re
+import time
+import threading
 from app.api.api_error import process_api_error, render_friendly_error, render_locale_unavailable_error
 from datetime import datetime
+
+# Persistent HTTP session — reuses TCP/TLS connections across calls
+_http_session = requests.Session()
+_http_adapter = requests.adapters.HTTPAdapter(pool_connections=4, pool_maxsize=10, max_retries=0)
+_http_session.mount('http://', _http_adapter)
+_http_session.mount('https://', _http_adapter)
+
+# Short in-memory cache for locale lists (they change infrequently)
+_locale_cache: dict = {}
+_locale_cache_lock = threading.Lock()
+_LOCALE_CACHE_TTL = 300  # 5 minutes
 
 
 def clean_json_response(response_text):
@@ -47,12 +60,22 @@ def _normalize_locale(locale):
 def get_product_locales(sku):
     """
     Fetches available locales for a product from the PCB API.
+    Results are cached in-memory for _LOCALE_CACHE_TTL seconds.
     """
+    now = time.monotonic()
+    with _locale_cache_lock:
+        entry = _locale_cache.get(sku)
+    if entry is not None:
+        result, ts = entry
+        if now - ts < _LOCALE_CACHE_TTL:
+            logging.info(f"Returning cached locales for SKU: {sku}")
+            return result
+
     api_url = f"{current_app.config['API_PCB_URL']}{sku}"
     logging.info(f"Calling PCB API: {api_url}")
     timeout = _get_timeout_tuple()
     try:
-        api_response = requests.get(
+        api_response = _http_session.get(
             api_url,
             headers={'Content-Type': 'application/json'},
             timeout=timeout
@@ -71,6 +94,8 @@ def get_product_locales(sku):
 
         logging.info(
             f"Successfully fetched locales for SKU {sku}: {locales}")
+        with _locale_cache_lock:
+            _locale_cache[sku] = (locales, time.monotonic())
         return locales
 
     except requests.exceptions.RequestException as e:
@@ -92,7 +117,7 @@ def get_product_data(sku, country_code, language_code):
     timeout = _get_timeout_tuple()
 
     try:
-        api_response = requests.get(
+        api_response = _http_session.get(
             api_url,
             headers={'Content-Type': 'application/json'},
             timeout=timeout
@@ -117,7 +142,13 @@ def get_product_data(sku, country_code, language_code):
 
             if re.search(r'culture\s+is\s+not\s+available|locale\s+is\s+not\s+available', error_message, re.IGNORECASE):
                 locale_options = get_product_locales(sku)
-                return None, render_locale_unavailable_error(sku, country_code, language_code, locale_options)
+                if locale_options:
+                    return None, render_locale_unavailable_error(sku, country_code, language_code, locale_options)
+                return None, render_friendly_error(
+                    message=f"We couldn\u2019t find a product matching \u2018{sku}\u2019. Please verify the product number and try again.",
+                    status_code=404,
+                    title='Product not found'
+                )
 
             return None, render_friendly_error(
                 message=f"We couldn\'t find a product matching \u2018{sku}\u2019. Please verify the product number and try again.",
@@ -175,7 +206,13 @@ def get_product_data(sku, country_code, language_code):
 
             if re.search(r'culture\s+is\s+not\s+available|locale\s+is\s+not\s+available', product_status_message, re.IGNORECASE):
                 locale_options = get_product_locales(sku)
-                return None, render_locale_unavailable_error(sku, country_code, language_code, locale_options)
+                if locale_options:
+                    return None, render_locale_unavailable_error(sku, country_code, language_code, locale_options)
+                return None, render_friendly_error(
+                    message=f"We couldn\u2019t find a product matching \u2018{sku}\u2019. Please verify the product number and try again.",
+                    status_code=404,
+                    title='Product not found'
+                )
 
             if re.search(r'non\s+publishable\s+product', product_status_message, re.IGNORECASE):
                 requested_locale = _normalize_locale(f"{country_code}-{language_code}")

@@ -12,11 +12,9 @@ def _fetch_and_process_product(sku, country_code, language_code):
     """
     cached_page = get_cached_product(sku, country_code, language_code)
     if cached_page:
-        logging.info(f"Returning cached file for SKU: {sku}")
         return cached_page
 
-    response_json, error_response = get_product_data(
-        sku, country_code, language_code)
+    response_json, error_response = get_product_data(sku, country_code, language_code)
     if error_response:
         return error_response
 
