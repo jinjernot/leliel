@@ -121,4 +121,4 @@ def call_get_product_from_qr():
     return get_product_by_params(sku, country, language)
 
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(debug=False, threaded=True)
