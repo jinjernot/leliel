@@ -71,8 +71,8 @@ sup {
 
 .country-selector {
   text-align: right;
-  padding: 5px 15px;
-  background-color: #024ad8; /* Blue background for the bar */
+  padding: 6px 15px;
+  background-color: #024ad8;
   margin-bottom: 25px;
   border-radius: 8px;
 }
@@ -83,62 +83,72 @@ sup {
 }
 
 .locale-btn {
-  background-color: #ffffff; /* White button */
-  color: #333; /* Dark text */
-  padding: 8px 15px;
-  font-size: 0.9rem;
+  background-color: transparent;
+  color: #ffffff;
+  padding: 7px 14px;
+  font-size: 0.88rem;
   font-weight: 600;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  border: 1.5px solid rgba(255,255,255,0.5);
+  border-radius: 6px;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 8px;
-  transition: background-color 0.2s;
+  gap: 7px;
+  transition: background-color 0.2s, border-color 0.2s;
+  letter-spacing: 0.01em;
 }
 
 .locale-btn:hover {
-  background-color: #f2f2f2;
+  background-color: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.8);
 }
 
-.locale-btn .bi-globe {
-  color: #024ad8;
+.locale-btn .bi-globe,
+.locale-btn .bi-chevron-down {
+  color: rgba(255,255,255,0.85);
+  font-size: 0.85rem;
 }
 
 .locale-dropdown-content {
   display: none;
   position: absolute;
   background-color: #ffffff;
-  min-width: 180px;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.1);
-  z-index: 1;
-  border-radius: 5px;
-  padding: 10px 0;
+  min-width: 210px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.13);
+  z-index: 100;
+  border-radius: 8px;
+  padding: 6px 0;
   right: 0;
-  max-height: 250px;
+  top: calc(100% + 6px);
+  max-height: 280px;
   overflow-y: auto;
+  border: 1px solid rgba(0,0,0,0.08);
 }
 
 .locale-dropdown-content a {
-  color: #333;
-  padding: 10px 20px;
+  color: #222;
+  padding: 9px 18px;
   text-decoration: none;
   display: block;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
+  transition: background-color 0.15s, color 0.15s;
+  white-space: nowrap;
+  text-align: left;
 }
 
 .locale-dropdown-content a:hover {
-  background-color: #f8f9fa;
+  background-color: #f0f4ff;
+  color: #024ad8;
 }
 
 .locale-dropdown-content a.selected {
   background-color: transparent;
   color: #024ad8;
-  font-weight: bold;
+  font-weight: 700;
 }
 
 .locale-dropdown-content a.disabled {
-  color: #aaa;
+  color: #bbb;
   pointer-events: none;
 }
 
@@ -287,12 +297,17 @@ sup {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #024ad8;
-  color: #fff;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   pointer-events: none;
+}
+
+.video-overlay i {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.4rem;
+  line-height: 1;
+  filter: drop-shadow(0 1px 3px rgba(0,0,0,0.6));
 }
 
 .mm-grid {

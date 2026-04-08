@@ -3,21 +3,8 @@ from flask import current_app
 import json
 import logging
 import re
-import time
-import threading
 from app.api.api_error import process_api_error, render_friendly_error, render_locale_unavailable_error
 from datetime import datetime
-
-# Persistent HTTP session — reuses TCP/TLS connections across calls
-_http_session = requests.Session()
-_http_adapter = requests.adapters.HTTPAdapter(pool_connections=4, pool_maxsize=10, max_retries=0)
-_http_session.mount('http://', _http_adapter)
-_http_session.mount('https://', _http_adapter)
-
-# Short in-memory cache for locale lists (they change infrequently)
-_locale_cache: dict = {}
-_locale_cache_lock = threading.Lock()
-_LOCALE_CACHE_TTL = 300  # 5 minutes
 
 
 def clean_json_response(response_text):
@@ -60,22 +47,12 @@ def _normalize_locale(locale):
 def get_product_locales(sku):
     """
     Fetches available locales for a product from the PCB API.
-    Results are cached in-memory for _LOCALE_CACHE_TTL seconds.
     """
-    now = time.monotonic()
-    with _locale_cache_lock:
-        entry = _locale_cache.get(sku)
-    if entry is not None:
-        result, ts = entry
-        if now - ts < _LOCALE_CACHE_TTL:
-            logging.info(f"Returning cached locales for SKU: {sku}")
-            return result
-
     api_url = f"{current_app.config['API_PCB_URL']}{sku}"
     logging.info(f"Calling PCB API: {api_url}")
     timeout = _get_timeout_tuple()
     try:
-        api_response = _http_session.get(
+        api_response = requests.get(
             api_url,
             headers={'Content-Type': 'application/json'},
             timeout=timeout
@@ -94,8 +71,6 @@ def get_product_locales(sku):
 
         logging.info(
             f"Successfully fetched locales for SKU {sku}: {locales}")
-        with _locale_cache_lock:
-            _locale_cache[sku] = (locales, time.monotonic())
         return locales
 
     except requests.exceptions.RequestException as e:
@@ -117,7 +92,7 @@ def get_product_data(sku, country_code, language_code):
     timeout = _get_timeout_tuple()
 
     try:
-        api_response = _http_session.get(
+        api_response = requests.get(
             api_url,
             headers={'Content-Type': 'application/json'},
             timeout=timeout
@@ -162,8 +137,8 @@ def get_product_data(sku, country_code, language_code):
             error_message = f"SKU {sku} is not live. Status is '{plc_status}'."
             logging.error(error_message)
             return None, render_friendly_error(
-                message='This product page is not currently published.',
-                status_code=400,
+                message='This product page is not published for public viewing.',
+                status_code=404,
                 title='Product page unavailable'
             )
 
@@ -177,7 +152,7 @@ def get_product_data(sku, country_code, language_code):
                 logging.error(error_message)
                 return None, render_friendly_error(
                     message='This product is not yet available in the selected market.',
-                    status_code=400,
+                    status_code=404,
                     title='Product not yet available'
                 )
 
@@ -231,7 +206,7 @@ def get_product_data(sku, country_code, language_code):
 
                 return None, render_friendly_error(
                     message='This product page is not published for public viewing.',
-                    status_code=400,
+                    status_code=404,
                     title='Product page unavailable'
                 )
 
@@ -268,7 +243,7 @@ def get_product_data(sku, country_code, language_code):
         current_app.logger.error(
             f"Failed to clean or parse JSON response: {e}")
         return None, render_friendly_error(
-            message='Could not parse the response from the product service.',
-            status_code=500,
+            message='The product service returned an unexpected response.',
+            status_code=502,
             title='Unexpected service response'
         )

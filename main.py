@@ -23,7 +23,7 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 app.config['API_URL'] = os.environ.get('API_URL')
 app.config['API_PCB_URL'] = os.environ.get('API_PCB_URL')
 app.config['API_CONNECT_TIMEOUT'] = float(os.environ.get('API_CONNECT_TIMEOUT', '3'))
-app.config['API_READ_TIMEOUT'] = float(os.environ.get('API_READ_TIMEOUT', '10'))
+app.config['API_READ_TIMEOUT'] = float(os.environ.get('API_READ_TIMEOUT', '30'))
 app.config['CACHE_DIR'] = CACHE_DIR
 app.config['ALLOWED_COUNTRIES'] = ALLOWED_COUNTRIES
 app.config['ALLOWED_LANGUAGES'] = ALLOWED_LANGUAGES
@@ -86,7 +86,7 @@ def call_get_product_from_qr():
             message='The product number is missing from the link.',
             status_code=400,
             title='Missing product information',
-            details='Please scan the QR code again or verify the URL contains the pn parameter.'
+            details='Please scan the QR code again or verify the URL is correct.'
         )
 
     if not re.match(r'^[a-zA-Z0-9\-]+$', sku):

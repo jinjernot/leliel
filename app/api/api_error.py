@@ -52,7 +52,7 @@ def render_locale_unavailable_error(sku, country_code, language_code, locale_opt
     current_locale = f"{(country_code or '').lower()}-{(language_code or '').lower()}"
     return render_friendly_error(
         title='This product is not available in your country',
-        message='Please select a country / language from the available options.',
+        message='Please select a country/language from the available options.',
         status_code=404,
         sku=sku,
         current_locale=current_locale,
@@ -95,7 +95,7 @@ def process_api_error(api_response, sku=None):
         if response_json.get('Status') == 'Success' and response_json.get('StatusMessage') == 'Non publishable Product':
             return render_friendly_error(
                 message='This product page is not published for public viewing.',
-                status_code=400,
+                status_code=404,
                 title='Product page unavailable'
             )
 
@@ -104,15 +104,15 @@ def process_api_error(api_response, sku=None):
             logging.error(
                 f"API returned ERROR status: {response_json.get('StatusMessage', '')}")
             return render_friendly_error(
-                message='Could not load product information. Please try again later.',
-                status_code=400,
+                message='The product service returned an error. Please try again later.',
+                status_code=502,
                 title='Could not load product information'
             )
 
     except json.JSONDecodeError:
         return render_friendly_error(
             message='The product service returned an unexpected response.',
-            status_code=400,
+            status_code=502,
             title='Unexpected service response'
         )
     except Exception as e:

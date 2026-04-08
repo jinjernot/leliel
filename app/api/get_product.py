@@ -74,7 +74,7 @@ def get_product():
 
     except Exception as e:
         logging.error(
-            f"An unexpected error occurred in get_product: {e}", exc_info=True)
+            f"Unexpected error in get_product: {e}", exc_info=True)
         return render_friendly_error(
             message='An unexpected error occurred. Please try again later.',
             status_code=500,
@@ -105,7 +105,7 @@ def get_product_by_params(sku, country_code, language_code):
 
     except Exception as e:
         logging.error(
-            f"An unexpected error occurred in get_product_by_params: {e}", exc_info=True)
+            f"Unexpected error in get_product_by_params: {e}", exc_info=True)
         return render_friendly_error(
             message='An unexpected error occurred. Please try again later.',
             status_code=500,
