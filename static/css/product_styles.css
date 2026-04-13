@@ -71,10 +71,12 @@ sup {
 
 .country-selector {
   text-align: right;
-  padding: 6px 15px;
-  background-color: #024ad8;
+  padding: 8px 16px;
+  background: linear-gradient(135deg, #0241c0 0%, #1a5ef5 100%);
   margin-bottom: 25px;
   border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(2, 74, 216, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .locale-dropdown {
@@ -206,9 +208,6 @@ sup {
 
 .product-description {
   text-align: justify;
-  border: 1px solid #ddd;
-  padding: 25px;
-  border-radius: 4px;
 }
 
 .info-headline {
@@ -233,8 +232,6 @@ sup {
 }
 
 .bordered-section {
-  border: 1px solid #ddd;
-  border-radius: 4px;
   padding: 25px;
   text-align: center;
   position: relative;
@@ -310,10 +307,8 @@ sup {
   filter: drop-shadow(0 1px 3px rgba(0,0,0,0.6));
 }
 
-.mm-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+.mm-block {
+  text-align: center;
 }
 
 .mm-image img {
@@ -331,7 +326,7 @@ sup {
   height: 1px;
   background-color: #024ad8;
   width: 100%;
-  margin: 1rem auto;
+  margin: 0.75rem auto;
 }
 
 .features-grid {
@@ -345,9 +340,16 @@ sup {
   flex-direction: column;
   flex: 1 1 calc(50% - 20px);
   background-color: #ffffff;
-  border: 1px solid #ddd;
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
   padding: 20px;
   text-align: center;
+  transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.feature-block:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  transform: translateY(-3px);
 }
 
 .feature-image {
@@ -375,9 +377,16 @@ sup {
   align-items: center;
   flex: 1 1 calc(50% - 20px);
   background-color: #ffffff;
-  border: 1px solid #ddd;
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
   padding: 20px;
   text-align: center;
+  transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.companion-item:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  transform: translateY(-3px);
 }
 
 .companion-item img {
@@ -414,6 +423,22 @@ sup {
   transform: translateY(-2px);
 }
 
+.expand-button::after {
+  content: '\203A';
+  display: inline-block;
+  margin-left: 10px;
+  font-size: 1.4rem;
+  line-height: 1;
+  vertical-align: middle;
+  color: #024ad8;
+  transition: transform 0.25s ease-in-out;
+  transform: rotate(90deg);
+}
+
+.expand-button.open::after {
+  transform: rotate(270deg);
+}
+
 .tech-specs-table,
 .footnotes-table {
   width: 100%;
@@ -428,8 +453,9 @@ sup {
 }
 
 .tech-specs-table .group-header {
-  background-color: #f2f2f2;
+  background-color: #f5f7ff;
   font-weight: 600;
+  border-left: 3px solid #024ad8;
 }
 
 .tech-specs-table .spec-label {

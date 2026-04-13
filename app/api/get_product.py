@@ -5,6 +5,7 @@ from app.api.process_product import process_api_response
 from app.api.client import get_product_data, get_product_locales
 from app.cache import get_cached_product, save_to_cache
 from app.api.api_error import render_friendly_error
+from app import metrics as app_metrics
 
 # Per-key locks prevent duplicate concurrent API calls for the same product/locale
 _inflight_registry_lock = threading.Lock()
@@ -24,6 +25,7 @@ def _fetch_and_process_product(sku, country_code, language_code):
     """
     cached_page = get_cached_product(sku, country_code, language_code)
     if cached_page:
+        app_metrics.record_cache_hit(current_app.config.get('METRICS_DIR', 'metrics'))
         return cached_page
 
     key = f"{sku}_{country_code}_{language_code}"
@@ -31,16 +33,21 @@ def _fetch_and_process_product(sku, country_code, language_code):
         # Re-check cache — a concurrent request may have populated it while we waited
         cached_page = get_cached_product(sku, country_code, language_code)
         if cached_page:
+            app_metrics.record_cache_hit(current_app.config.get('METRICS_DIR', 'metrics'))
             return cached_page
 
-        response_json, error_response = get_product_data(sku, country_code, language_code)
+        app_metrics.record_cache_miss(current_app.config.get('METRICS_DIR', 'metrics'))
+
+        response_json, error_response, error_reason = get_product_data(sku, country_code, language_code)
         if error_response:
+            app_metrics.record_error(current_app.config.get('METRICS_DIR', 'metrics'), sku, f"{country_code}-{language_code}", error_reason or 'api_error')
             return error_response
 
         locales = get_product_locales(sku)
         rendered_page = process_api_response(response_json, sku, locales, country_code, language_code)
 
         if isinstance(rendered_page, tuple):
+            app_metrics.record_error(current_app.config.get('METRICS_DIR', 'metrics'), sku, f"{country_code}-{language_code}", 'render_error')
             return rendered_page
 
         save_to_cache(rendered_page, sku, country_code, language_code)

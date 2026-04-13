@@ -23,7 +23,7 @@
                             <h2 class="card-title"><i class="bi bi-file-earmark-plus"></i>QR Page Template</h2>
                         </div>
                         <div class="card-body">
-                            <form method="POST" action="{{ url_for('call_get_product') }}" class="input-form">
+                            <form method="POST" action="{{ url_for('call_get_product') }}" class="input-form" onsubmit="var btn=this.querySelector('.btn-submit');btn.disabled=true;btn.textContent='Loading\u2026';">
                                 <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                                 <div class="form-group">
                                     <label for="sku_page">SKU:</label>

@@ -4,6 +4,7 @@ from flask import render_template, current_app
 import pandas as pd
 import logging
 from app.api.api_error import render_friendly_error
+from app import metrics as app_metrics
 
 
 def get_product_type(product_data):
@@ -99,10 +100,16 @@ def process_api_response(response_json, sku, locales=None, country_code=None, la
                     if len(feature_blocks) >= feature_config['MAX_BLOCKS']:
                         break
 
+        metrics_dir = current_app.config.get('METRICS_DIR', 'metrics')
+        hierarchy = product.get('productHierarchy', {})
+        metric_product_type = hierarchy.get('productType', {}).get('name')
+        metric_family = hierarchy.get('marketingSubCategory', {}).get('name')
+        app_metrics.record_page_view(metrics_dir, sku, current_locale or 'unknown', metric_product_type, metric_family)
         return render_template('product_template.html', df=df, tech_specs_by_group=sorted_tech_specs_by_group, df_images=df_images, companions=companions, top_companions=top_companions, df_footnotes=df_footnotes, df_disclaimers=df_disclaimers, mm_blocks=mm_blocks, feature_blocks=feature_blocks, top_components=top_components_list, video_data=video_data, locales=locales, sku=sku, current_locale=current_locale, country_names=current_app.config['COUNTRY_NAMES'], locale_names=current_app.config['LOCALE_NAMES'], translations=translations)
     except KeyError as e:
         logging.error(
             f"A KeyError occurred in process_api_response: {e}", exc_info=True)
+        app_metrics.record_error(current_app.config.get('METRICS_DIR', 'metrics'), sku, f"{country_code}-{language_code}", f"KeyError: {e}")
         return render_friendly_error(
             message='An error occurred while preparing this product page. Please try again later.',
             status_code=500,
@@ -111,6 +118,7 @@ def process_api_response(response_json, sku, locales=None, country_code=None, la
     except Exception as e:
         logging.error(
             f"An unexpected error occurred in process_api_response: {e}", exc_info=True)
+        app_metrics.record_error(current_app.config.get('METRICS_DIR', 'metrics'), sku, f"{country_code}-{language_code}", str(e))
         return render_friendly_error(
             message='An unexpected error occurred while preparing this product page. Please try again later.',
             status_code=500,

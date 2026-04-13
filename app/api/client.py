@@ -107,7 +107,7 @@ def get_product_data(sku, country_code, language_code):
         if response_json.get('Status') == 'ERROR':
             logging.error(
                 f"API returned a 200 status but with an error message: {response_json.get('StatusMessage')}")
-            return None, process_api_error(api_response)
+            return None, process_api_error(api_response), 'api_status_error'
 
         product_data = response_json.get('products', {}).get(sku.upper())
         if not product_data or product_data.get('status') is False:
@@ -118,18 +118,18 @@ def get_product_data(sku, country_code, language_code):
             if re.search(r'culture\s+is\s+not\s+available|locale\s+is\s+not\s+available', error_message, re.IGNORECASE):
                 locale_options = get_product_locales(sku)
                 if locale_options:
-                    return None, render_locale_unavailable_error(sku, country_code, language_code, locale_options)
+                    return None, render_locale_unavailable_error(sku, country_code, language_code, locale_options), 'locale_unavailable'
                 return None, render_friendly_error(
                     message=f"We couldn\u2019t find a product matching \u2018{sku}\u2019. Please verify the product number and try again.",
                     status_code=404,
                     title='Product not found'
-                )
+                ), 'locale_unavailable'
 
             return None, render_friendly_error(
                 message=f"We couldn\'t find a product matching \u2018{sku}\u2019. Please verify the product number and try again.",
                 status_code=404,
                 title='Product not found'
-            )
+            ), 'product_not_found'
 
         # Validation for live products
         plc_status = product_data.get('plcStatus')
@@ -140,7 +140,7 @@ def get_product_data(sku, country_code, language_code):
                 message='This product page is not published for public viewing.',
                 status_code=404,
                 title='Product page unavailable'
-            )
+            ), f'not_live:{plc_status}'
 
         general_availability_date_str = product_data.get(
             'plcDates', {}).get('generalAvailabilityDate')
@@ -154,9 +154,9 @@ def get_product_data(sku, country_code, language_code):
                     message='This product is not yet available in the selected market.',
                     status_code=404,
                     title='Product not yet available'
-                )
+                ), 'not_yet_available'
 
-        return response_json, None
+        return response_json, None, None
 
     except requests.exceptions.HTTPError as e:
         response = e.response
@@ -182,12 +182,12 @@ def get_product_data(sku, country_code, language_code):
             if re.search(r'culture\s+is\s+not\s+available|locale\s+is\s+not\s+available', product_status_message, re.IGNORECASE):
                 locale_options = get_product_locales(sku)
                 if locale_options:
-                    return None, render_locale_unavailable_error(sku, country_code, language_code, locale_options)
+                    return None, render_locale_unavailable_error(sku, country_code, language_code, locale_options), 'locale_unavailable'
                 return None, render_friendly_error(
                     message=f"We couldn\u2019t find a product matching \u2018{sku}\u2019. Please verify the product number and try again.",
                     status_code=404,
                     title='Product not found'
-                )
+                ), 'locale_unavailable'
 
             if re.search(r'non\s+publishable\s+product', product_status_message, re.IGNORECASE):
                 requested_locale = _normalize_locale(f"{country_code}-{language_code}")
@@ -202,13 +202,13 @@ def get_product_data(sku, country_code, language_code):
                         country_code,
                         language_code,
                         normalized_locale_options
-                    )
+                    ), 'locale_unavailable'
 
                 return None, render_friendly_error(
                     message='This product page is not published for public viewing.',
                     status_code=404,
                     title='Product page unavailable'
-                )
+                ), 'not_publishable'
 
             if response.status_code == 404:
                 requested_locale = _normalize_locale(f"{country_code}-{language_code}")
@@ -223,10 +223,12 @@ def get_product_data(sku, country_code, language_code):
                         sku,
                         requested_locale
                     )
-                    return None, render_locale_unavailable_error(sku, country_code, language_code, normalized_locale_options)
+                    return None, render_locale_unavailable_error(sku, country_code, language_code, normalized_locale_options), 'locale_unavailable'
 
+        status_code = getattr(response, 'status_code', None)
+        reason = f'http_{status_code}' if status_code else 'http_error'
         logging.error(f"API call failed: {e}. timeout={timeout}")
-        return None, process_api_error(response, sku=sku)
+        return None, process_api_error(response, sku=sku), reason
     except requests.exceptions.ConnectTimeout as e:
         if isinstance(api_url_base, str) and 'localhost' in api_url_base.lower():
             logging.error(
@@ -235,10 +237,10 @@ def get_product_data(sku, country_code, language_code):
                 "or local firewall/SELinux policy."
             )
         logging.error(f"API call failed: {e}. timeout={timeout}")
-        return None, process_api_error(e.response, sku=sku)
+        return None, process_api_error(e.response, sku=sku), 'timeout'
     except requests.exceptions.RequestException as e:
         logging.error(f"API call failed: {e}. timeout={timeout}")
-        return None, process_api_error(e.response, sku=sku)
+        return None, process_api_error(e.response, sku=sku), 'connection_error'
     except ValueError as e:
         current_app.logger.error(
             f"Failed to clean or parse JSON response: {e}")
@@ -246,4 +248,4 @@ def get_product_data(sku, country_code, language_code):
             message='The product service returned an unexpected response.',
             status_code=502,
             title='Unexpected service response'
-        )
+        ), 'bad_response'

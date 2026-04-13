@@ -9,6 +9,7 @@
     {% endif %}
   </title>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="{{ url_for('static', filename='css/product_styles.css') }}" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
   <link href="https://syndication.inc.hp.com/hpi-favicon.ico" type="image/ico" rel="shortcut icon" />
@@ -78,22 +79,18 @@
 
     {% if mm_blocks %}
     <div id="MM" class="superscript-content">
-      <div class="content-card">
-        <div class="mm-grid">
-          {% for block in mm_blocks %}
-          <div class="bordered-section">
-            <div class="mm-image">
-              <img src="{{ block.image_url | escape }}" alt="Marketing Image">
-            </div>
-            <div class="mm-text">
-              {% if block.headline %}<h3 class="info-headline">{{ block.headline }}</h3>
-              <hr class="section-divider">{% endif %}
-              {% if block.support %}<p class="info-body">{{ block.support }}</p>{% endif %}
-            </div>
-          </div>
-          {% endfor %}
+      {% for block in mm_blocks %}
+      <div class="content-card mm-block">
+        <div class="mm-image">
+          <img src="{{ block.image_url | escape }}" alt="Marketing Image">
+        </div>
+        <div class="mm-text">
+          {% if block.headline %}<h3 class="info-headline">{{ block.headline }}</h3>
+          <hr class="section-divider">{% endif %}
+          {% if block.support %}<p class="info-body">{{ block.support }}</p>{% endif %}
         </div>
       </div>
+      {% endfor %}
     </div>
     {% endif %}
 

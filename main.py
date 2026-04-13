@@ -12,7 +12,9 @@ load_dotenv(dotenv_path=dotenv_path)
 from config import (CACHE_DIR, ALLOWED_COUNTRIES, ALLOWED_LANGUAGES,
                     PRODUCT_HIERARCHY, TOP_COMPONENTS,
                     TECH_SPEC_GROUP_ORDER, PRODUCT_TEMPLATES_CONFIG,
-                    PRINTER_PRODUCT_TYPES, MM_BLOCKS_CONFIG, FEATURE_BLOCKS_CONFIG, COUNTRY_NAMES, LOCALE_NAMES, TRANSLATIONS)
+                    PRINTER_PRODUCT_TYPES, MM_BLOCKS_CONFIG, FEATURE_BLOCKS_CONFIG, COUNTRY_NAMES, LOCALE_NAMES, TRANSLATIONS,
+                    CACHE_TTL_DAYS, CACHE_MAX_FILES, CACHE_PRUNE_COUNT,
+                    METRICS_DIR, SERVER_ID)
 from app.api.get_product import get_product, get_product_by_params
 from app.api.client import get_product_locales
 from app.api.api_error import render_friendly_error
@@ -25,6 +27,11 @@ app.config['API_PCB_URL'] = os.environ.get('API_PCB_URL')
 app.config['API_CONNECT_TIMEOUT'] = float(os.environ.get('API_CONNECT_TIMEOUT', '3'))
 app.config['API_READ_TIMEOUT'] = float(os.environ.get('API_READ_TIMEOUT', '30'))
 app.config['CACHE_DIR'] = CACHE_DIR
+app.config['CACHE_TTL_DAYS'] = CACHE_TTL_DAYS
+app.config['CACHE_MAX_FILES'] = CACHE_MAX_FILES
+app.config['CACHE_PRUNE_COUNT'] = CACHE_PRUNE_COUNT
+app.config['METRICS_DIR'] = METRICS_DIR
+app.config['SERVER_ID'] = SERVER_ID
 app.config['ALLOWED_COUNTRIES'] = ALLOWED_COUNTRIES
 app.config['ALLOWED_LANGUAGES'] = ALLOWED_LANGUAGES
 app.config['PRODUCT_HIERARCHY'] = PRODUCT_HIERARCHY
@@ -55,6 +62,10 @@ def apply_security_headers(response):
     response.headers["X-Frame-Options"] = "SAMEORIGIN"
     response.headers["X-Content-Type-Options"] = "nosniff"
     response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    if response.content_type and 'text/html' in response.content_type:
+        response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+        response.headers["Pragma"] = "no-cache"
+        response.headers["Expires"] = "0"
     return response
 
 # Route for testing products without qr code

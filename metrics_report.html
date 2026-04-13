@@ -1,0 +1,3257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FRAME — Metrics Report (2026-04-13 17:21 UTC)</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: #f4f4f9;
+      color: #333;
+      line-height: 1.6;
+    }
+    a { text-decoration: none; color: inherit; }
+    .wrapper { max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
+
+    /* ── Header ── */
+    .page-header {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+    .page-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #024ad8;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .page-meta { font-size: 0.82rem; color: #999; }
+
+    /* ── Day filter ── */
+    .day-filter { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1.75rem; }
+    .day-filter a {
+      padding: 4px 14px;
+      border-radius: 20px;
+      border: 1px solid #ddd;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: #555;
+    }
+    .day-filter a.active { background: #024ad8; border-color: #024ad8; color: #fff; }
+
+    /* ── Stat cards ── */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+    .stat-card {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,.05);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .stat-label {
+      font-size: 0.78rem;
+      color: #888;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .stat-value { font-size: 2rem; font-weight: 700; color: #024ad8; line-height: 1.1; }
+    .stat-sub   { font-size: 0.78rem; color: #aaa; }
+
+    /* ── Charts ── */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+    .charts-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+    .chart-card {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,.05);
+    }
+    .chart-card-title {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #555;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .chart-wrap { position: relative; }
+
+    /* ── Tables ── */
+    .card {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,.05);
+      overflow: hidden;
+    }
+    .metrics-table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+    .metrics-table th {
+      text-align: left;
+      padding: 8px 12px;
+      background: #f5f7ff;
+      border-bottom: 2px solid #024ad8;
+      font-weight: 600;
+      color: #333;
+      white-space: nowrap;
+    }
+    .metrics-table td {
+      padding: 8px 12px;
+      border-bottom: 1px solid #eee;
+      vertical-align: middle;
+    }
+    .metrics-table tr:last-child td { border-bottom: none; }
+    .metrics-table tr:hover td { background: #fafbff; }
+    .badge-hit  { color: #1a7f37; font-weight: 600; }
+    .badge-miss { color: #024ad8; font-weight: 600; }
+    .badge-err  { color: #d1242f; font-weight: 600; }
+
+    /* ── Inline spark bars ── */
+    .spark-bar {
+      height: 6px;
+      background: #eef0f8;
+      border-radius: 3px;
+      overflow: hidden;
+      min-width: 60px;
+    }
+    .spark-bar-fill { height: 100%; border-radius: 3px; background: #024ad8; }
+
+    .section-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin: 2rem 0 .75rem;
+      color: #333;
+      border-bottom: 2px solid #024ad8;
+      padding-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .empty-state { color: #aaa; font-style: italic; padding: 1rem 0; }
+    footer { margin-top: 3rem; font-size: .8rem; color: #bbb; text-align: center; }
+
+    @media (max-width: 768px) {
+      .charts-grid, .charts-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+
+  <div class="page-header">
+    <h1 class="page-title"><i class="bi bi-bar-chart-line"></i> Usage Metrics</h1>
+    <span class="page-meta">Generated 2026-04-13 17:21 UTC &mdash; last 7 days</span>
+  </div>
+
+  
+
+  
+  
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+
+  
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+
+  
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+
+  
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+
+  
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+  
+    
+    
+  
+
+  
+  
+
+  
+
+  
+  <div class="metrics-grid">
+    <div class="stat-card">
+      <span class="stat-label"><i class="bi bi-eye"></i> Page Views</span>
+      <span class="stat-value">660</span>
+      <span class="stat-sub">last 7 days</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label"><i class="bi bi-lightning-charge-fill" style="color:#1a7f37;"></i> Cache Hits</span>
+      <span class="stat-value" style="color:#1a7f37;">3725</span>
+      <span class="stat-sub">
+        40.2% hit rate
+      </span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label"><i class="bi bi-cloud-download"></i> Cache Misses</span>
+      <span class="stat-value" style="color:#024ad8;">5544</span>
+      <span class="stat-sub">fresh API fetches</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label"><i class="bi bi-exclamation-triangle-fill" style="color:#d1242f;"></i> Errors</span>
+      <span class="stat-value" style="color:#d1242f;">4619</span>
+      <span class="stat-sub">
+        699.8% error rate
+      </span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label"><i class="bi bi-server"></i> Total Requests</span>
+      <span class="stat-value">9269</span>
+      <span class="stat-sub">cache checks</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label"><i class="bi bi-calendar3"></i> Days with Data</span>
+      <span class="stat-value">4</span>
+      <span class="stat-sub">in range</span>
+    </div>
+  </div>
+
+  
+  <div class="charts-grid">
+    <div class="chart-card">
+      <div class="chart-card-title"><i class="bi bi-graph-up"></i> Daily Activity</div>
+      <div class="chart-wrap" style="height:260px;"><canvas id="trendChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-card-title"><i class="bi bi-pie-chart-fill"></i> Cache Performance</div>
+      <div class="chart-wrap" style="height:260px;display:flex;align-items:center;justify-content:center;">
+        <canvas id="cacheChart" style="max-width:220px;max-height:220px;"></canvas>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="charts-row">
+    <div class="chart-card">
+      <div class="chart-card-title"><i class="bi bi-globe2"></i> Top Locales</div>
+      <div class="chart-wrap" style="height:280px;"><canvas id="localesChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-card-title"><i class="bi bi-upc-scan"></i> Top SKUs</div>
+      <div class="chart-wrap" style="height:280px;"><canvas id="skusChart"></canvas></div>
+    </div>
+  </div>
+
+  <script>
+  (function () {
+    Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+    Chart.defaults.font.size = 12;
+    const BLUE   = 'rgba(2,74,216,0.80)';
+    const GREEN  = 'rgba(26,127,55,0.80)';
+    const RED    = 'rgba(209,36,47,0.90)';
+    const ORANGE = 'rgba(227,98,9,0.80)';
+    const GRID   = '#f0f0f6';
+
+    // Daily trend
+    const trendLabels = ["2026-04-10", "2026-04-11", "2026-04-12", "2026-04-13"];
+    const trendViews  = [199, 194, 127, 140];
+    const trendHits   = [531, 1052, 1235, 907];
+    const trendMisses = [948, 1498, 1713, 1385];
+    const trendErrors = [482, 1304, 1588, 1245];
+
+    new Chart(document.getElementById('trendChart'), {
+      data: {
+        labels: trendLabels,
+        datasets: [
+          { type:'bar',  label:'Page Views',    data:trendViews,  backgroundColor:BLUE,   borderRadius:4, order:3 },
+          { type:'bar',  label:'Cache Hits',    data:trendHits,   backgroundColor:GREEN,  borderRadius:4, order:4 },
+          { type:'bar',  label:'Cache Misses',  data:trendMisses, backgroundColor:ORANGE, borderRadius:4, order:5 },
+          { type:'line', label:'Errors', data:trendErrors,
+            borderColor:RED, backgroundColor:'rgba(209,36,47,0.08)',
+            borderWidth:2, pointRadius:4, fill:false, tension:0.3, order:1, yAxisID:'yErr' },
+        ],
+      },
+      options: {
+        responsive:true, maintainAspectRatio:false,
+        interaction:{ mode:'index', intersect:false },
+        plugins:{ legend:{ position:'bottom', labels:{ boxWidth:12, padding:14 } } },
+        scales: {
+          x:    { grid:{ display:false } },
+          y:    { beginAtZero:true, grid:{ color:GRID }, ticks:{ precision:0 } },
+          yErr: { beginAtZero:true, position:'right', grid:{ drawOnChartArea:false },
+                  ticks:{ precision:0, color:'#d1242f' },
+                  title:{ display:true, text:'Errors', color:'#d1242f', font:{ size:11 } } },
+        },
+      },
+    });
+
+    // Cache donut
+    new Chart(document.getElementById('cacheChart'), {
+      type:'doughnut',
+      data:{
+        labels:['Cache Hits','Cache Misses'],
+        datasets:[{ data:[3725,5544],
+          backgroundColor:['rgba(26,127,55,0.85)','rgba(2,74,216,0.85)'],
+          borderWidth:0, hoverOffset:8 }],
+      },
+      options:{
+        responsive:true, maintainAspectRatio:false, cutout:'68%',
+        plugins:{
+          legend:{ position:'bottom', labels:{ boxWidth:12, padding:14 } },
+          tooltip:{ callbacks:{ label(ctx) {
+            const total = ctx.dataset.data.reduce((a,b)=>a+b,0);
+            const pct = total>0 ? ((ctx.parsed/total)*100).toFixed(1) : 0;
+            return ` ${ctx.label}: ${ctx.parsed.toLocaleString()} (${pct}%)`;
+          }}},
+        },
+      },
+    });
+
+    // Top locales
+    const localeData = [["us-en", 245], ["fr-fr", 44], ["mx-mx", 27], ["de-de", 23], ["in-en", 23], ["es-es", 22], ["cn-zh", 21], ["ca-en", 20], ["ae-ar", 19], ["pt-pt", 17], ["it-it", 17], ["tr-tr", 13]];
+    new Chart(document.getElementById('localesChart'), {
+      type:'bar',
+      data:{ labels:localeData.map(d=>d[0]), datasets:[{ label:'Requests', data:localeData.map(d=>d[1]), backgroundColor:BLUE, borderRadius:4 }] },
+      options:{ indexAxis:'y', responsive:true, maintainAspectRatio:false,
+        plugins:{ legend:{ display:false } },
+        scales:{ x:{ beginAtZero:true, grid:{ color:GRID }, ticks:{ precision:0 } }, y:{ grid:{ display:false } } } },
+    });
+
+    // Top SKUs
+    const skuData = [["588K9B", 15], ["588Q0B", 13], ["588Q2B", 12], ["A24HWB", 12], ["499Q6F", 9], ["89F98B", 9], ["588R4B", 8], ["AJ4X9B", 7], ["588K4B", 7], ["7WN42B", 7], ["4A8D4A", 7], ["A24HMB", 7]];
+    new Chart(document.getElementById('skusChart'), {
+      type:'bar',
+      data:{ labels:skuData.map(d=>d[0]), datasets:[{ label:'Requests', data:skuData.map(d=>d[1]), backgroundColor:GREEN, borderRadius:4 }] },
+      options:{ indexAxis:'y', responsive:true, maintainAspectRatio:false,
+        plugins:{ legend:{ display:false } },
+        scales:{ x:{ beginAtZero:true, grid:{ color:GRID }, ticks:{ precision:0 } }, y:{ grid:{ display:false } } } },
+    });
+  })();
+  </script>
+
+  
+  <h2 class="section-title"><i class="bi bi-calendar-range"></i> Daily Breakdown</h2>
+  <div class="card" style="overflow:auto;">
+    <table class="metrics-table">
+      <thead>
+        <tr>
+          <th>Date</th><th>Server</th><th>Page Views</th>
+          <th>Cache Hits</th><th>Cache Misses</th><th>Errors</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        <tr>
+          <td><strong>2026-04-13</strong></td>
+          <td><code style="font-size:.8rem;">g8t03706a.inc.hp.com, g8t03707a.inc.hp.com</code></td>
+          <td>140</td>
+          <td class="badge-hit">907</td>
+          <td class="badge-miss">1385</td>
+          <td class="badge-err">1245</td>
+        </tr>
+        
+        <tr>
+          <td><strong>2026-04-12</strong></td>
+          <td><code style="font-size:.8rem;">g8t03706a.inc.hp.com, g8t03707a.inc.hp.com</code></td>
+          <td>127</td>
+          <td class="badge-hit">1235</td>
+          <td class="badge-miss">1713</td>
+          <td class="badge-err">1588</td>
+        </tr>
+        
+        <tr>
+          <td><strong>2026-04-11</strong></td>
+          <td><code style="font-size:.8rem;">g8t03706a.inc.hp.com, g8t03707a.inc.hp.com</code></td>
+          <td>194</td>
+          <td class="badge-hit">1052</td>
+          <td class="badge-miss">1498</td>
+          <td class="badge-err">1304</td>
+        </tr>
+        
+        <tr>
+          <td><strong>2026-04-10</strong></td>
+          <td><code style="font-size:.8rem;"></code></td>
+          <td>199</td>
+          <td class="badge-hit">531</td>
+          <td class="badge-miss">948</td>
+          <td class="badge-err">482</td>
+        </tr>
+        
+      </tbody>
+    </table>
+  </div>
+
+  
+  
+  
+  
+  <h2 class="section-title"><i class="bi bi-upc-scan"></i> Top SKUs</h2>
+  <div class="card" style="overflow:auto;">
+    <table class="metrics-table">
+      <thead><tr><th>SKU</th><th>Requests</th><th style="width:40%;"></th></tr></thead>
+      <tbody>
+        
+        <tr>
+          <td><strong>588K9B</strong></td>
+          <td>15</td>
+          <td><div class="spark-bar"><div class="spark-bar-fill" style="width:100.0%;"></div></div></td>
+        </tr>
+        
+        <tr>
+          <td><strong>588Q0B</strong></td>
+          <td>13</td>
+          <td><div class="spark-bar"><div class="spark-bar-fill" style="width:87.0%;"></div></div></td>
+        </tr>
+        
+        <tr>
+          <td><strong>588Q2B</strong></td>
+          <td>12</td>
+          <td><div class="spark-bar"><div class="spark-bar-fill" style="width:80.0%;"></div></div></td>
+        </tr>
+        
+        <tr>
+          <td><strong>A24HWB</strong></td>
+          <td>12</td>
+          <td><div class="spark-bar"><div class="spark-bar-fill" style="width:80.0%;"></div></div></td>
+        </tr>
+        
+        <tr>
+          <td><strong>499Q6F</strong></td>
+          <td>9</td>
+          <td><div class="spark-bar"><div class="spark-bar-fill" style="width:60.0%;"></div></div></td>
+        </tr>
+        
+        <tr>
+          <td><strong>89F98B</strong></td>
+          <td>9</td>
+          <td><div class="spark-bar"><div class="spark-bar-fill" style="width:60.0%;"></div></div></td>
+        </tr>
+        
+        <tr>
+          <td><strong>588R4B</strong></td>
+          <td>8</td>
+          <td><div class="spark-bar"><div class="spark-bar-fill" style="width:53.0%;"></div></div></td>
+        </tr>
+        
+        <tr>
+          <td><strong>AJ4X9B</strong></td>
+          <td>7</td>
+          <td><div class="spark-bar"><div class="spark-bar-fill" style="width:47.0%;"></div></div></td>
+        </tr>
+        
+        <tr>
+          <td><strong>588K4B</strong></td>
+          <td>7</td>
+          <td><div class="spark-bar"><div class="spark-bar-fill" style="width:47.0%;"></div></div></td>
+        </tr>
+        
+        <tr>
+          <td><strong>7WN42B</strong></td>
+          <td>7</td>
+          <td><div class="spark-bar"><div class="spark-bar-fill" style="width:47.0%;"></div></div></td>
+        </tr>
+        
+        <tr>
+          <td><strong>4A8D4A</strong></td>
+          <td>7</td>
+          <td><div class="spark-bar"><div class="spark-bar-fill" style="width:47.0%;"></div></div></td>
+        </tr>
+        
+        <tr>
+          <td><strong>A24HMB</strong></td>
+          <td>7</td>
+          <td><div class="spark-bar"><div class="spark-bar-fill" style="width:47.0%;"></div></div></td>
+        </tr>
+        
+        <tr>
+          <td><strong>AJ4Y4A</strong></td>
+          <td>7</td>
+          <td><div class="spark-bar"><div class="spark-bar-fill" style="width:47.0%;"></div></div></td>
+        </tr>
+        
+        <tr>
+          <td><strong>4RA81F</strong></td>
+          <td>7</td>
+          <td><div class="spark-bar"><div class="spark-bar-fill" style="width:47.0%;"></div></div></td>
+        </tr>
+        
+        <tr>
+          <td><strong>7MD68A</strong></td>
+          <td>6</td>
+          <td><div class="spark-bar"><div class="spark-bar-fill" style="width:40.0%;"></div></div></td>
+        </tr>
+        
+        <tr>
+          <td><strong>1F3Y2A</strong></td>
+          <td>6</td>
+          <td><div class="spark-bar"><div class="spark-bar-fill" style="width:40.0%;"></div></div></td>
+        </tr>
+        
+        <tr>
+          <td><strong>714J2B</strong></td>
+          <td>6</td>
+          <td><div class="spark-bar"><div class="spark-bar-fill" style="width:40.0%;"></div></div></td>
+        </tr>
+        
+        <tr>
+          <td><strong>588S5A</strong></td>
+          <td>6</td>
+          <td><div class="spark-bar"><div class="spark-bar-fill" style="width:40.0%;"></div></div></td>
+        </tr>
+        
+        <tr>
+          <td><strong>4A8D1A</strong></td>
+          <td>5</td>
+          <td><div class="spark-bar"><div class="spark-bar-fill" style="width:33.0%;"></div></div></td>
+        </tr>
+        
+        <tr>
+          <td><strong>1F3Y3A</strong></td>
+          <td>5</td>
+          <td><div class="spark-bar"><div class="spark-bar-fill" style="width:33.0%;"></div></div></td>
+        </tr>
+        
+      </tbody>
+    </table>
+  </div>
+  
+
+  
+  
+  
+  
+  <h2 class="section-title"><i class="bi bi-globe2"></i> Top Locales</h2>
+  <div class="card" style="overflow:auto;">
+    <table class="metrics-table">
+      <thead><tr><th>Locale</th><th>Requests</th><th style="width:40%;"></th></tr></thead>
+      <tbody>
+        
+        <tr>
+          <td>us-en</td>
+          <td>245</td>
+          <td><div class="spark-bar"><div class="spark-bar-fill" style="width:100.0%;"></div></div></td>
+        </tr>
+        
+        <tr>
+          <td>fr-fr</td>
+          <td>44</td>
+          <td><div class="spark-bar"><div class="spark-bar-fill" style="width:18.0%;"></div></div></td>
+        </tr>
+        
+        <tr>
+          <td>mx-mx</td>
+          <td>27</td>
+          <td><div class="spark-bar"><div class="spark-bar-fill" style="width:11.0%;"></div></div></td>
+        </tr>
+        
+        <tr>
+          <td>de-de</td>
+          <td>23</td>
+          <td><div class="spark-bar"><div class="spark-bar-fill" style="width:9.0%;"></div></div></td>
+        </tr>
+        
+        <tr>
+          <td>in-en</td>
+          <td>23</td>
+          <td><div class="spark-bar"><div class="spark-bar-fill" style="width:9.0%;"></div></div></td>
+        </tr>
+        
+        <tr>
+          <td>es-es</td>
+          <td>22</td>
+          <td><div class="spark-bar"><div class="spark-bar-fill" style="width:9.0%;"></div></div></td>
+        </tr>
+        
+        <tr>
+          <td>cn-zh</td>
+          <td>21</td>
+          <td><div class="spark-bar"><div class="spark-bar-fill" style="width:9.0%;"></div></div></td>
+        </tr>
+        
+        <tr>
+          <td>ca-en</td>
+          <td>20</td>
+          <td><div class="spark-bar"><div class="spark-bar-fill" style="width:8.0%;"></div></div></td>
+        </tr>
+        
+        <tr>
+          <td>ae-ar</td>
+          <td>19</td>
+          <td><div class="spark-bar"><div class="spark-bar-fill" style="width:8.0%;"></div></div></td>
+        </tr>
+        
+        <tr>
+          <td>pt-pt</td>
+          <td>17</td>
+          <td><div class="spark-bar"><div class="spark-bar-fill" style="width:7.0%;"></div></div></td>
+        </tr>
+        
+        <tr>
+          <td>it-it</td>
+          <td>17</td>
+          <td><div class="spark-bar"><div class="spark-bar-fill" style="width:7.0%;"></div></div></td>
+        </tr>
+        
+        <tr>
+          <td>tr-tr</td>
+          <td>13</td>
+          <td><div class="spark-bar"><div class="spark-bar-fill" style="width:5.0%;"></div></div></td>
+        </tr>
+        
+        <tr>
+          <td>br-br</td>
+          <td>12</td>
+          <td><div class="spark-bar"><div class="spark-bar-fill" style="width:5.0%;"></div></div></td>
+        </tr>
+        
+        <tr>
+          <td>nl-nl</td>
+          <td>11</td>
+          <td><div class="spark-bar"><div class="spark-bar-fill" style="width:4.0%;"></div></div></td>
+        </tr>
+        
+        <tr>
+          <td>au-en</td>
+          <td>10</td>
+          <td><div class="spark-bar"><div class="spark-bar-fill" style="width:4.0%;"></div></div></td>
+        </tr>
+        
+        <tr>
+          <td>pl-pl</td>
+          <td>9</td>
+          <td><div class="spark-bar"><div class="spark-bar-fill" style="width:4.0%;"></div></div></td>
+        </tr>
+        
+        <tr>
+          <td>se-sv</td>
+          <td>9</td>
+          <td><div class="spark-bar"><div class="spark-bar-fill" style="width:4.0%;"></div></div></td>
+        </tr>
+        
+        <tr>
+          <td>be-nl</td>
+          <td>8</td>
+          <td><div class="spark-bar"><div class="spark-bar-fill" style="width:3.0%;"></div></div></td>
+        </tr>
+        
+        <tr>
+          <td>at-de</td>
+          <td>8</td>
+          <td><div class="spark-bar"><div class="spark-bar-fill" style="width:3.0%;"></div></div></td>
+        </tr>
+        
+        <tr>
+          <td>ch-de</td>
+          <td>7</td>
+          <td><div class="spark-bar"><div class="spark-bar-fill" style="width:3.0%;"></div></div></td>
+        </tr>
+        
+      </tbody>
+    </table>
+  </div>
+  
+
+  
+  
+  <h2 class="section-title"><i class="bi bi-box-seam"></i> Top Product Types</h2>
+  <div class="card" style="overflow:auto;">
+    <table class="metrics-table">
+      <thead><tr><th>Product Type</th><th>Requests</th></tr></thead>
+      <tbody>
+        
+        <tr><td>Printers and Multifunction</td><td>128</td></tr>
+        
+        <tr><td>Laptops and Hybrids</td><td>118</td></tr>
+        
+        <tr><td>Impresoras y multifunción</td><td>51</td></tr>
+        
+        <tr><td>Imprimantes et multifonctions</td><td>50</td></tr>
+        
+        <tr><td>Drucker und Multifunktion</td><td>33</td></tr>
+        
+        <tr><td>打印机和多功能</td><td>21</td></tr>
+        
+        <tr><td>Impressoras e multifunções</td><td>20</td></tr>
+        
+        <tr><td>Printers en multifunctioneel</td><td>19</td></tr>
+        
+        <tr><td>الطباعة والأجهزة متعددة الوظائف</td><td>18</td></tr>
+        
+        <tr><td>Stampanti e multifunzione</td><td>14</td></tr>
+        
+        <tr><td>Impressoras e Multifuncionais</td><td>11</td></tr>
+        
+        <tr><td>Yazıcılar ve Çok İşlevli</td><td>11</td></tr>
+        
+        <tr><td>Skrivare och multifunktion</td><td>9</td></tr>
+        
+        <tr><td>Drukarki i urządzenia wielofunkcyjne</td><td>8</td></tr>
+        
+        <tr><td>מדפסות והתקנים רב-תפקודיים</td><td>6</td></tr>
+        
+        <tr><td>Printere og multifunktion</td><td>5</td></tr>
+        
+        <tr><td>Tiskárny a multifunkční zařízení</td><td>4</td></tr>
+        
+        <tr><td>Nyomtatók és többfunkciós készülékek</td><td>4</td></tr>
+        
+        <tr><td>Принтеры и многофункциональные устройства</td><td>3</td></tr>
+        
+        <tr><td>เครื่องพิมพ์และมัลติฟังก์ชัน</td><td>2</td></tr>
+        
+        <tr><td>Tulostimet ja monitoimilaitteet</td><td>2</td></tr>
+        
+        <tr><td>印表機和多功能事務機</td><td>2</td></tr>
+        
+        <tr><td>Skrivere og flerfunksjonsenheter</td><td>2</td></tr>
+        
+        <tr><td>Tlačiarne a mutifinkčné zariadenia</td><td>2</td></tr>
+        
+        <tr><td>打印機和多功能打印機</td><td>1</td></tr>
+        
+        <tr><td>Máy in và Máy đa năng</td><td>1</td></tr>
+        
+        <tr><td>ماسحات/ناسخات/فاكسات</td><td>1</td></tr>
+        
+        <tr><td>Принтери и мултифункционални</td><td>1</td></tr>
+        
+        <tr><td>Scanners/Copiers/Faxes</td><td>1</td></tr>
+        
+        <tr><td>Printeri un daudzfunkcionālās iekārtas</td><td>1</td></tr>
+        
+        <tr><td>Štampači i multifunkcionalni uređaji</td><td>1</td></tr>
+        
+        <tr><td>Pisači i višefunkcijski uređaji</td><td>1</td></tr>
+        
+        <tr><td>Εκτυπωτές και πολυλειτουργικά</td><td>1</td></tr>
+        
+        <tr><td>Imprimante şi multifuncţionale</td><td>1</td></tr>
+        
+        <tr><td>Monitors</td><td>1</td></tr>
+        
+      </tbody>
+    </table>
+  </div>
+  
+
+  
+  
+  <h2 class="section-title"><i class="bi bi-collection"></i> Top Product Families</h2>
+  <div class="card" style="overflow:auto;">
+    <table class="metrics-table">
+      <thead><tr><th>Family</th><th>Requests</th></tr></thead>
+      <tbody>
+        
+        <tr><td>Photo and Document All-in-One Printers</td><td>63</td></tr>
+        
+        <tr><td>HP Home Notebook PCs</td><td>62</td></tr>
+        
+        <tr><td>HP OmniBook Laptop PC</td><td>47</td></tr>
+        
+        <tr><td>Imprimantes tout-en-un document et photo</td><td>44</td></tr>
+        
+        <tr><td>Impresoras Todo en Uno para fotografías y documentos</td><td>24</td></tr>
+        
+        <tr><td>All-in-One-Drucker für Fotos und Dokumente</td><td>24</td></tr>
+        
+        <tr><td>Documentos e fotografias</td><td>16</td></tr>
+        
+        <tr><td>All-in-one foto- en documentprinters</td><td>15</td></tr>
+        
+        <tr><td>Impresoras multifuncionales para fotos y documentos</td><td>15</td></tr>
+        
+        <tr><td>Photo and Document All-in-One Printers </td><td>14</td></tr>
+        
+        <tr><td>Personal Laser Multifunction Printers</td><td>13</td></tr>
+        
+        <tr><td>Stampanti all-in-one per documenti e foto</td><td>13</td></tr>
+        
+        <tr><td>Business Ink Multifunction Printers</td><td>13</td></tr>
+        
+        <tr><td>طابعات الصور والوثائق المتكاملة</td><td>12</td></tr>
+        
+        <tr><td>Personal Black and White Laser Printers</td><td>11</td></tr>
+        
+        <tr><td>Fotoğraf ve Belge All-in-One Yazıcıları</td><td>11</td></tr>
+        
+        <tr><td>Office Laser Multifunction Printers</td><td>10</td></tr>
+        
+        <tr><td>Impressoras Multifuncionais para fotos e documentos</td><td>10</td></tr>
+        
+        <tr><td>Allt-i-ett-skrivare för foton och dokument</td><td>9</td></tr>
+        
+        <tr><td>照片和文档多功能一体机</td><td>8</td></tr>
+        
+      </tbody>
+    </table>
+  </div>
+  
+
+  
+  
+  <h2 class="section-title"><i class="bi bi-x-octagon"></i> Recent Errors</h2>
+  <div class="card" style="overflow:auto;">
+    <table class="metrics-table">
+      <thead><tr><th>Timestamp</th><th>Server</th><th>SKU</th><th>Locale</th><th>Reason</th></tr></thead>
+      <tbody>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:56:43.278964+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>B4GX5UA</strong></td>
+          <td>jm-en</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:55:27.608031+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>9R8R3UA</strong></td>
+          <td>us-en</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:55:23.358470+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>9R8R3UA</strong></td>
+          <td>us-en</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:55:14.720845+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>9R8R3UA</strong></td>
+          <td>us-en</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:53:13.152186+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>B4KT4UA</strong></td>
+          <td>py-es</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:52:51.901072+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>6UU46A</strong></td>
+          <td>pe-es</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:47:39.461048+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>A9HM6UA</strong></td>
+          <td>jm-en</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:45:41.338016+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>685K4UA</strong></td>
+          <td>us-en</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:43:59.431094+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>AJ4Y4A</strong></td>
+          <td>pe-es</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:43:54.265748+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>20J08UA</strong></td>
+          <td>us-en</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:43:17.852347+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>9Z7L4UA</strong></td>
+          <td>us-en</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:43:06.952309+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>7N3S2UA</strong></td>
+          <td>us-en</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:42:46.166618+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>AJ4Y4A</strong></td>
+          <td>pe-es</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:42:23.103112+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>AJ4Y4A</strong></td>
+          <td>pe-es</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:42:22.118803+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>CD9Y9UA</strong></td>
+          <td>mx-mx</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:40:51.984813+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>26N93UA</strong></td>
+          <td>mx-mx</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:35:53.287274+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>60F57UA</strong></td>
+          <td>nl-nl</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:33:15.205686+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>B4GX5UA</strong></td>
+          <td>mx-mx</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:33:12.645993+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>AJ4Y4A</strong></td>
+          <td>pe-es</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:33:07.158622+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>B4GX5UA</strong></td>
+          <td>mx-mx</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:28:30.392691+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>364K3UA</strong></td>
+          <td>ar-es</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:28:11.247514+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>364K3UA</strong></td>
+          <td>ar-es</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:27:35.800363+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>697L8UA</strong></td>
+          <td>us-en</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:27:21.115233+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>697L8UA</strong></td>
+          <td>us-en</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:25:40.750459+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>9R8R2UA</strong></td>
+          <td>us-en</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:23:16.672288+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>4A8D5A</strong></td>
+          <td>us-en</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:22:42.639200+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>B4GX6UA</strong></td>
+          <td>pe-es</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:22:27.489367+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>7H9Y3UA</strong></td>
+          <td>us-en</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:22:25.472902+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>BM4X8UA</strong></td>
+          <td>pe-es</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:22:23.220627+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>7H9Y3UA</strong></td>
+          <td>us-en</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:22:06.430228+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>66B44UA</strong></td>
+          <td>ec-es</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:22:00.122038+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>BM4X8UA</strong></td>
+          <td>pe-es</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:20:31.242338+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>685K1UA</strong></td>
+          <td>us-en</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:20:26.772487+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>685K1UA</strong></td>
+          <td>us-en</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:19:32.608832+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>1F3Y2A</strong></td>
+          <td>ar-es</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:18:41.367598+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>685K6UA</strong></td>
+          <td>us-en</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:17:56.514693+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>685K1UA</strong></td>
+          <td>us-en</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:17:46.241440+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>685K1UA</strong></td>
+          <td>ng-en</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:17:35.805726+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>B5EQ3UA</strong></td>
+          <td>ng-en</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:16:56.362958+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>6X3B4UA</strong></td>
+          <td>us-en</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:16:43.167128+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>4P8N2UA</strong></td>
+          <td>us-en</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:16:37.530902+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>8L708UA</strong></td>
+          <td>us-en</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:16:05.694797+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>BM4X8UA</strong></td>
+          <td>mx-mx</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:11:03.321964+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>7H9Y3UA</strong></td>
+          <td>us-en</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:09:04.788655+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>1F3Y2A</strong></td>
+          <td>co-es</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:08:48.884861+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>B4HN6UA</strong></td>
+          <td>ve-es</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:08:33.551462+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>1F3Y2A</strong></td>
+          <td>co-es</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:08:31.494073+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>7L2C7UA</strong></td>
+          <td>us-en</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:07:27.614920+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>1Y8Z2UA</strong></td>
+          <td>us-en</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+        <tr>
+          <td style="white-space:nowrap;font-size:.82rem;">2026-04-10T23:05:46.448653+00:00</td>
+          <td><code style="font-size:.8rem;">g8t03707a.inc.hp.com</code></td>
+          <td><strong>9G3C0UA</strong></td>
+          <td>br-pt</td>
+          <td class="badge-err">api_error</td>
+        </tr>
+        
+      </tbody>
+    </table>
+  </div>
+  
+
+  
+
+  <footer>HP Inc. Restricted &mdash; Copyright 2025 HP Inc. Company.</footer>
+</div>
+</body>
+</html>

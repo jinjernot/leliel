@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FRAME - Metrics</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+  <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    /* ── Stat cards ── */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+    .stat-card {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .stat-card .stat-label {
+      font-size: 0.78rem;
+      color: #888;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .stat-card .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #024ad8;
+      line-height: 1.1;
+    }
+    .stat-card .stat-sub {
+      font-size: 0.78rem;
+      color: #aaa;
+    }
+
+    /* ── Chart layout ── */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+    .charts-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+    .chart-card {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .chart-card-title {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #555;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .chart-wrap { position: relative; }
+
+    /* ── Day filter ── */
+    .day-filter {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 1.75rem;
+    }
+    .day-filter a {
+      padding: 4px 14px;
+      border-radius: 20px;
+      border: 1px solid #ddd;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: #555;
+      text-decoration: none;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+    .day-filter a:hover { border-color: #024ad8; color: #024ad8; }
+    .day-filter a.active { background: #024ad8; border-color: #024ad8; color: #fff; }
+
+    /* ── Tables ── */
+    .metrics-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+    .metrics-table th {
+      text-align: left;
+      padding: 8px 12px;
+      background: #f5f7ff;
+      border-bottom: 2px solid #024ad8;
+      font-weight: 600;
+      color: #333;
+    }
+    .metrics-table td {
+      padding: 8px 12px;
+      border-bottom: 1px solid #eee;
+      vertical-align: middle;
+    }
+    .metrics-table tr:last-child td { border-bottom: none; }
+    .metrics-table tr:hover td { background: #fafbff; }
+    .badge-hit  { color: #1a7f37; font-weight: 600; }
+    .badge-miss { color: #024ad8; font-weight: 600; }
+    .badge-err  { color: #d1242f; font-weight: 600; }
+
+    /* ── Mini bar (inline sparkbar) ── */
+    .spark-bar-wrap { display: flex; align-items: center; gap: 8px; }
+    .spark-bar {
+      flex: 1;
+      height: 6px;
+      background: #eef0f8;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .spark-bar-fill {
+      height: 100%;
+      border-radius: 3px;
+      background: #024ad8;
+    }
+
+    .section-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin: 2rem 0 0.75rem;
+      color: #333;
+      border-bottom: 2px solid #024ad8;
+      padding-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .empty-state {
+      color: #aaa;
+      font-style: italic;
+      padding: 1rem 0;
+    }
+
+    @media (max-width: 768px) {
+      .charts-grid, .charts-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <main class="main-panel">
+      <div class="content">
+        <h1 class="page-title"><i class="bi bi-bar-chart-line"></i> Usage Metrics</h1>
+
+        {# ── Day filter ── #}
+        <div class="day-filter">
+          {% for d in [7, 14, 30] %}
+          <a href="?days={{ d }}"{% if days == d %} class="active"{% endif %}>Last {{ d }} days</a>
+          {% endfor %}
+        </div>
+
+        {% if not summary %}
+        <p class="empty-state">No metrics data found. Data is recorded as pages are served.</p>
+        {% else %}
+
+        {# ── Pre-compute all aggregates ── #}
+        {% set ns = namespace(views=0, hits=0, misses=0, errors=0) %}
+        {% for day in summary %}
+          {% set ns.views   = ns.views   + day.page_views %}
+          {% set ns.hits    = ns.hits    + day.cache_hits %}
+          {% set ns.misses  = ns.misses  + day.cache_misses %}
+          {% set ns.errors  = ns.errors  + day.errors %}
+        {% endfor %}
+
+        {% set all_skus = {} %}
+        {% for day in summary %}{% for sku, cnt in day.top_skus.items() %}
+          {% if sku in all_skus %}{% set _ = all_skus.update({sku: all_skus[sku] + cnt}) %}
+          {% else %}{% set _ = all_skus.update({sku: cnt}) %}{% endif %}
+        {% endfor %}{% endfor %}
+
+        {% set all_locales = {} %}
+        {% for day in summary %}{% for loc, cnt in day.top_locales.items() %}
+          {% if loc in all_locales %}{% set _ = all_locales.update({loc: all_locales[loc] + cnt}) %}
+          {% else %}{% set _ = all_locales.update({loc: cnt}) %}{% endif %}
+        {% endfor %}{% endfor %}
+
+        {% set all_types = {} %}
+        {% for day in summary %}{% for pt, cnt in (day.top_product_types | default({})).items() %}
+          {% if pt in all_types %}{% set _ = all_types.update({pt: all_types[pt] + cnt}) %}
+          {% else %}{% set _ = all_types.update({pt: cnt}) %}{% endif %}
+        {% endfor %}{% endfor %}
+
+        {% set all_families = {} %}
+        {% for day in summary %}{% for fam, cnt in (day.top_families | default({})).items() %}
+          {% if fam in all_families %}{% set _ = all_families.update({fam: all_families[fam] + cnt}) %}
+          {% else %}{% set _ = all_families.update({fam: cnt}) %}{% endif %}
+        {% endfor %}{% endfor %}
+
+        {% set recent_errors = [] %}
+        {% for day in summary %}{% for e in day.error_details %}{% set _ = recent_errors.append(e) %}{% endfor %}{% endfor %}
+
+        {# sorted oldest-first for chart timeline #}
+        {% set sorted_days = summary | sort(attribute='date') %}
+
+        {# ── Stat cards ── #}
+        <div class="metrics-grid">
+          <div class="stat-card">
+            <span class="stat-label"><i class="bi bi-eye"></i> Page Views</span>
+            <span class="stat-value">{{ ns.views }}</span>
+            <span class="stat-sub">last {{ days }} days</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label"><i class="bi bi-lightning-charge-fill" style="color:#1a7f37;"></i> Cache Hits</span>
+            <span class="stat-value" style="color:#1a7f37;">{{ ns.hits }}</span>
+            <span class="stat-sub">
+              {% if ns.hits + ns.misses > 0 %}{{ ((ns.hits / (ns.hits + ns.misses)) * 100) | round(1) }}% hit rate{% else %}—{% endif %}
+            </span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label"><i class="bi bi-cloud-download"></i> Cache Misses</span>
+            <span class="stat-value" style="color:#024ad8;">{{ ns.misses }}</span>
+            <span class="stat-sub">fresh API fetches</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label"><i class="bi bi-exclamation-triangle-fill" style="color:#d1242f;"></i> Errors</span>
+            <span class="stat-value" style="color:#d1242f;">{{ ns.errors }}</span>
+            <span class="stat-sub">
+              {% if ns.views > 0 %}{{ ((ns.errors / ns.views) * 100) | round(1) }}% error rate{% else %}—{% endif %}
+            </span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label"><i class="bi bi-server"></i> Total Requests</span>
+            <span class="stat-value">{{ ns.hits + ns.misses }}</span>
+            <span class="stat-sub">cache checks</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label"><i class="bi bi-calendar3"></i> Days Tracked</span>
+            <span class="stat-value">{{ summary | length }}</span>
+            <span class="stat-sub">with data in range</span>
+          </div>
+        </div>
+
+        {# ── Charts row 1: Daily trend + Cache donut ── #}
+        <div class="charts-grid">
+          <div class="chart-card">
+            <div class="chart-card-title"><i class="bi bi-graph-up"></i> Daily Activity</div>
+            <div class="chart-wrap" style="height:260px;">
+              <canvas id="trendChart"></canvas>
+            </div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-card-title"><i class="bi bi-pie-chart-fill"></i> Cache Performance</div>
+            <div class="chart-wrap" style="height:260px;display:flex;align-items:center;justify-content:center;">
+              <canvas id="cacheChart" style="max-width:220px;max-height:220px;"></canvas>
+            </div>
+          </div>
+        </div>
+
+        {# ── Charts row 2: Top Locales + Top SKUs ── #}
+        <div class="charts-row">
+          <div class="chart-card">
+            <div class="chart-card-title"><i class="bi bi-globe2"></i> Top Locales</div>
+            <div class="chart-wrap" style="height:280px;">
+              <canvas id="localesChart"></canvas>
+            </div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-card-title"><i class="bi bi-upc-scan"></i> Top SKUs</div>
+            <div class="chart-wrap" style="height:280px;">
+              <canvas id="skusChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        {# ── Chart.js initialization ── #}
+        <script>
+        (function () {
+          Chart.defaults.font.family = "'Forma DJR Micro', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+          Chart.defaults.font.size = 12;
+
+          const BLUE   = 'rgba(2,  74, 216, 0.80)';
+          const GREEN  = 'rgba(26, 127,  55, 0.80)';
+          const RED    = 'rgba(209, 36,  47, 0.90)';
+          const ORANGE = 'rgba(227,  98,   9, 0.80)';
+          const gridColor = '#f0f0f6';
+
+          // ── Daily trend (bar + error line) ──
+          const trendLabels = {{ sorted_days | map(attribute='date') | list | tojson }};
+          const trendViews  = {{ sorted_days | map(attribute='page_views')  | list | tojson }};
+          const trendHits   = {{ sorted_days | map(attribute='cache_hits')  | list | tojson }};
+          const trendMisses = {{ sorted_days | map(attribute='cache_misses')| list | tojson }};
+          const trendErrors = {{ sorted_days | map(attribute='errors')      | list | tojson }};
+
+          new Chart(document.getElementById('trendChart'), {
+            data: {
+              labels: trendLabels,
+              datasets: [
+                {
+                  type: 'bar',
+                  label: 'Page Views',
+                  data: trendViews,
+                  backgroundColor: BLUE,
+                  borderRadius: 4,
+                  order: 3,
+                },
+                {
+                  type: 'bar',
+                  label: 'Cache Hits',
+                  data: trendHits,
+                  backgroundColor: GREEN,
+                  borderRadius: 4,
+                  order: 4,
+                },
+                {
+                  type: 'bar',
+                  label: 'Cache Misses',
+                  data: trendMisses,
+                  backgroundColor: ORANGE,
+                  borderRadius: 4,
+                  order: 5,
+                },
+                {
+                  type: 'line',
+                  label: 'Errors',
+                  data: trendErrors,
+                  borderColor: RED,
+                  backgroundColor: 'rgba(209,36,47,0.08)',
+                  borderWidth: 2,
+                  pointRadius: 4,
+                  pointHoverRadius: 6,
+                  fill: false,
+                  tension: 0.3,
+                  order: 1,
+                  yAxisID: 'yErr',
+                },
+              ]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              interaction: { mode: 'index', intersect: false },
+              plugins: {
+                legend: { position: 'bottom', labels: { boxWidth: 12, padding: 14 } },
+                tooltip: { padding: 10 },
+              },
+              scales: {
+                x: { grid: { display: false } },
+                y: {
+                  beginAtZero: true,
+                  grid: { color: gridColor },
+                  ticks: { precision: 0 },
+                },
+                yErr: {
+                  beginAtZero: true,
+                  position: 'right',
+                  grid: { drawOnChartArea: false },
+                  ticks: { precision: 0, color: '#d1242f' },
+                  title: { display: true, text: 'Errors', color: '#d1242f', font: { size: 11 } },
+                },
+              },
+            },
+          });
+
+          // ── Cache donut ──
+          new Chart(document.getElementById('cacheChart'), {
+            type: 'doughnut',
+            data: {
+              labels: ['Cache Hits', 'Cache Misses'],
+              datasets: [{
+                data: [{{ ns.hits }}, {{ ns.misses }}],
+                backgroundColor: ['rgba(26,127,55,0.85)', 'rgba(2,74,216,0.85)'],
+                borderWidth: 0,
+                hoverOffset: 8,
+              }],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              cutout: '68%',
+              plugins: {
+                legend: { position: 'bottom', labels: { boxWidth: 12, padding: 14 } },
+                tooltip: {
+                  callbacks: {
+                    label(ctx) {
+                      const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                      const pct = total > 0 ? ((ctx.parsed / total) * 100).toFixed(1) : 0;
+                      return ` ${ctx.label}: ${ctx.parsed.toLocaleString()} (${pct}%)`;
+                    },
+                  },
+                },
+              },
+            },
+          });
+
+          // ── Top locales horizontal bar ──
+          const localeData = {{ (all_locales | dictsort(by='value', reverse=true))[:12] | tojson }};
+          new Chart(document.getElementById('localesChart'), {
+            type: 'bar',
+            data: {
+              labels: localeData.map(d => d[0]),
+              datasets: [{
+                label: 'Requests',
+                data: localeData.map(d => d[1]),
+                backgroundColor: BLUE,
+                borderRadius: 4,
+              }],
+            },
+            options: {
+              indexAxis: 'y',
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: { legend: { display: false } },
+              scales: {
+                x: { beginAtZero: true, grid: { color: gridColor }, ticks: { precision: 0 } },
+                y: { grid: { display: false } },
+              },
+            },
+          });
+
+          // ── Top SKUs horizontal bar ──
+          const skuData = {{ (all_skus | dictsort(by='value', reverse=true))[:12] | tojson }};
+          new Chart(document.getElementById('skusChart'), {
+            type: 'bar',
+            data: {
+              labels: skuData.map(d => d[0]),
+              datasets: [{
+                label: 'Requests',
+                data: skuData.map(d => d[1]),
+                backgroundColor: GREEN,
+                borderRadius: 4,
+              }],
+            },
+            options: {
+              indexAxis: 'y',
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: { legend: { display: false } },
+              scales: {
+                x: { beginAtZero: true, grid: { color: gridColor }, ticks: { precision: 0 } },
+                y: { grid: { display: false } },
+              },
+            },
+          });
+        })();
+        </script>
+
+        {# ── Daily breakdown table ── #}
+        <h2 class="section-title"><i class="bi bi-calendar-range"></i> Daily Breakdown</h2>
+        <div class="card" style="overflow:auto;">
+          <table class="metrics-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Server</th>
+                <th>Page Views</th>
+                <th>Cache Hits</th>
+                <th>Cache Misses</th>
+                <th>Errors</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for day in summary %}
+              <tr>
+                <td><strong>{{ day.date }}</strong></td>
+                <td><code style="font-size:0.8rem;">{{ day.server_id | default('—') }}</code></td>
+                <td>{{ day.page_views }}</td>
+                <td class="badge-hit">{{ day.cache_hits }}</td>
+                <td class="badge-miss">{{ day.cache_misses }}</td>
+                <td class="badge-err">{{ day.errors }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        {# ── Top SKUs table ── #}
+        {% if all_skus %}
+        {% set top_skus_list = all_skus | dictsort(by='value', reverse=true) %}
+        {% set max_sku_cnt = top_skus_list[0][1] if top_skus_list else 1 %}
+        <h2 class="section-title"><i class="bi bi-upc-scan"></i> Top SKUs</h2>
+        <div class="card" style="overflow:auto;">
+          <table class="metrics-table">
+            <thead><tr><th>SKU</th><th>Requests</th><th style="width:40%;"></th></tr></thead>
+            <tbody>
+              {% for sku, cnt in top_skus_list[:20] %}
+              <tr>
+                <td><strong>{{ sku }}</strong></td>
+                <td>{{ cnt }}</td>
+                <td>
+                  <div class="spark-bar">
+                    <div class="spark-bar-fill" style="width:{{ ((cnt / max_sku_cnt) * 100) | round }}%;"></div>
+                  </div>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% endif %}
+
+        {# ── Top Locales table ── #}
+        {% if all_locales %}
+        {% set top_locales_list = all_locales | dictsort(by='value', reverse=true) %}
+        {% set max_loc_cnt = top_locales_list[0][1] if top_locales_list else 1 %}
+        <h2 class="section-title"><i class="bi bi-globe2"></i> Top Locales</h2>
+        <div class="card" style="overflow:auto;">
+          <table class="metrics-table">
+            <thead><tr><th>Locale</th><th>Requests</th><th style="width:40%;"></th></tr></thead>
+            <tbody>
+              {% for loc, cnt in top_locales_list[:20] %}
+              <tr>
+                <td>{{ loc }}</td>
+                <td>{{ cnt }}</td>
+                <td>
+                  <div class="spark-bar">
+                    <div class="spark-bar-fill" style="width:{{ ((cnt / max_loc_cnt) * 100) | round }}%;"></div>
+                  </div>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% endif %}
+
+        {# ── Top Product Types table ── #}
+        {% if all_types %}
+        <h2 class="section-title"><i class="bi bi-box-seam"></i> Top Product Types</h2>
+        <div class="card" style="overflow:auto;">
+          <table class="metrics-table">
+            <thead><tr><th>Product Type</th><th>Requests</th></tr></thead>
+            <tbody>
+              {% for pt, cnt in (all_types | dictsort(by='value', reverse=true)) %}
+              <tr><td>{{ pt }}</td><td>{{ cnt }}</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% endif %}
+
+        {# ── Top Families table ── #}
+        {% if all_families %}
+        <h2 class="section-title"><i class="bi bi-collection"></i> Top Product Families</h2>
+        <div class="card" style="overflow:auto;">
+          <table class="metrics-table">
+            <thead><tr><th>Family</th><th>Requests</th></tr></thead>
+            <tbody>
+              {% for fam, cnt in (all_families | dictsort(by='value', reverse=true))[:20] %}
+              <tr><td>{{ fam }}</td><td>{{ cnt }}</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% endif %}
+
+        {# ── Recent Errors table ── #}
+        {% if recent_errors %}
+        <h2 class="section-title"><i class="bi bi-x-octagon"></i> Recent Errors</h2>
+        <div class="card" style="overflow:auto;">
+          <table class="metrics-table">
+            <thead><tr><th>Timestamp</th><th>Server</th><th>SKU</th><th>Locale</th><th>Reason</th></tr></thead>
+            <tbody>
+              {% for e in recent_errors[-50:] | reverse %}
+              <tr>
+                <td style="white-space:nowrap;font-size:0.82rem;">{{ e.ts }}</td>
+                <td><code style="font-size:0.8rem;">{{ e.server_id | default('—') }}</code></td>
+                <td><strong>{{ e.sku }}</strong></td>
+                <td>{{ e.locale }}</td>
+                <td class="badge-err">{{ e.reason }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% endif %}
+
+        {% endif %}
+      </div>
+      <footer class="footer">HP Inc. Restricted, Copyright 2025 HP Inc. Company.</footer>
+    </main>
+  </div>
+</body>
+</html>
