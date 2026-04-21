@@ -1,6 +1,7 @@
 from flask import request, current_app
 import logging
 import threading
+import time
 from app.api.process_product import process_api_response
 from app.api.client import get_product_data, get_product_locales
 from app.cache import get_cached_product, save_to_cache
@@ -38,13 +39,17 @@ def _fetch_and_process_product(sku, country_code, language_code):
 
         app_metrics.record_cache_miss(current_app.config.get('METRICS_DIR', 'metrics'))
 
-        response_json, error_response, error_reason = get_product_data(sku, country_code, language_code)
+        api_start = time.monotonic()
+        result = get_product_data(sku, country_code, language_code)
+        api_elapsed = round(time.monotonic() - api_start, 3)
+        response_json, error_response, error_reason = result[0], result[1], result[2]
+        error_detail = result[3] if len(result) > 3 else None
         if error_response:
-            app_metrics.record_error(current_app.config.get('METRICS_DIR', 'metrics'), sku, f"{country_code}-{language_code}", error_reason or 'api_error')
+            app_metrics.record_error(current_app.config.get('METRICS_DIR', 'metrics'), sku, f"{country_code}-{language_code}", error_reason or 'api_error', detail=error_detail)
             return error_response
 
         locales = get_product_locales(sku)
-        rendered_page = process_api_response(response_json, sku, locales, country_code, language_code)
+        rendered_page = process_api_response(response_json, sku, locales, country_code, language_code, response_time=api_elapsed)
 
         if isinstance(rendered_page, tuple):
             app_metrics.record_error(current_app.config.get('METRICS_DIR', 'metrics'), sku, f"{country_code}-{language_code}", 'render_error')

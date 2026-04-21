@@ -131,9 +131,9 @@ def get_product_data(sku, country_code, language_code):
                 title='Product not found'
             ), 'product_not_found'
 
-        # Validation for live products
+        # Validation for live/obsolete products
         plc_status = product_data.get('plcStatus')
-        if plc_status != 'Live':
+        if plc_status not in ('Live', 'Obsolete'):
             error_message = f"SKU {sku} is not live. Status is '{plc_status}'."
             logging.error(error_message)
             return None, render_friendly_error(
@@ -227,8 +227,9 @@ def get_product_data(sku, country_code, language_code):
 
         status_code = getattr(response, 'status_code', None)
         reason = f'http_{status_code}' if status_code else 'http_error'
+        detail = product_status_message or ''
         logging.error(f"API call failed: {e}. timeout={timeout}")
-        return None, process_api_error(response, sku=sku), reason
+        return None, process_api_error(response, sku=sku), reason, detail
     except requests.exceptions.ConnectTimeout as e:
         if isinstance(api_url_base, str) and 'localhost' in api_url_base.lower():
             logging.error(

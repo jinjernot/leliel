@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FRAME - Metrics</title>
+  <title>QR Code Page - Metrics</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
   <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
@@ -202,8 +202,12 @@
 
         {% set all_types = {} %}
         {% for day in summary %}{% for pt, cnt in (day.top_product_types | default({})).items() %}
-          {% if pt in all_types %}{% set _ = all_types.update({pt: all_types[pt] + cnt}) %}
-          {% else %}{% set _ = all_types.update({pt: cnt}) %}{% endif %}
+          {# resolve pmoid to English name; skip translated historical values #}
+          {% if pt in product_hierarchy %}{% set pt = product_hierarchy[pt] %}{% endif %}
+          {% if pt in product_hierarchy.values() %}
+            {% if pt in all_types %}{% set _ = all_types.update({pt: all_types[pt] + cnt}) %}
+            {% else %}{% set _ = all_types.update({pt: cnt}) %}{% endif %}
+          {% endif %}
         {% endfor %}{% endfor %}
 
         {% set all_families = {} %}
@@ -214,6 +218,7 @@
 
         {% set recent_errors = [] %}
         {% for day in summary %}{% for e in day.error_details %}{% set _ = recent_errors.append(e) %}{% endfor %}{% endfor %}
+        {% set recent_errors = recent_errors | sort(attribute='ts', reverse=true) %}
 
         {# sorted oldest-first for chart timeline #}
         {% set sorted_days = summary | sort(attribute='date') %}
@@ -576,7 +581,7 @@
           <table class="metrics-table">
             <thead><tr><th>Timestamp</th><th>Server</th><th>SKU</th><th>Locale</th><th>Reason</th></tr></thead>
             <tbody>
-              {% for e in recent_errors[-50:] | reverse %}
+              {% for e in recent_errors[:50] %}
               <tr>
                 <td style="white-space:nowrap;font-size:0.82rem;">{{ e.ts }}</td>
                 <td><code style="font-size:0.8rem;">{{ e.server_id | default('—') }}</code></td>

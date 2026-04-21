@@ -131,5 +131,19 @@ def call_get_product_from_qr():
     
     return get_product_by_params(sku, country, language)
 
+@app.route('/locales')
+def get_locales():
+    from flask import jsonify
+    sku = request.args.get('pn', '').strip()
+
+    if not sku:
+        return jsonify({'error': 'Missing product number. Use ?pn=PRODUCTNUMBER'}), 400
+
+    if not re.match(r'^[a-zA-Z0-9\-]+$', sku):
+        return jsonify({'error': 'Invalid product number format.'}), 400
+
+    locales = get_product_locales(sku)
+    return jsonify({'pn': sku, 'locales': locales})
+
 if __name__ == '__main__':
     app.run(debug=False, threaded=True)

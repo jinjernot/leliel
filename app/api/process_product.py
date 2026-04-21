@@ -3,6 +3,7 @@ from app.core.companion_template import build_template_companions, build_top_com
 from flask import render_template, current_app
 import pandas as pd
 import logging
+from datetime import datetime, timedelta
 from app.api.api_error import render_friendly_error
 from app import metrics as app_metrics
 
@@ -16,7 +17,7 @@ def get_product_type(product_data):
     return current_app.config['PRODUCT_HIERARCHY'].get(pmoid)
 
 
-def process_api_response(response_json, sku, locales=None, country_code=None, language_code=None):
+def process_api_response(response_json, sku, locales=None, country_code=None, language_code=None, response_time=None):
     """
     Process the API response and render the product template
     """
@@ -24,6 +25,7 @@ def process_api_response(response_json, sku, locales=None, country_code=None, la
         current_locale = f"{country_code}-{language_code}" if country_code and language_code else None
         translations = current_app.config['TRANSLATIONS'].get(language_code, current_app.config['TRANSLATIONS']['en'])
         product = response_json.get('products', {}).get(sku, {})
+        is_obsolete = product.get('plcStatus') == 'Obsolete'
         product_type = get_product_type(product)
         companions = build_template_companions(response_json, sku)
         top_companions = build_top_companions_by_type(response_json, sku)
@@ -102,10 +104,46 @@ def process_api_response(response_json, sku, locales=None, country_code=None, la
 
         metrics_dir = current_app.config.get('METRICS_DIR', 'metrics')
         hierarchy = product.get('productHierarchy', {})
-        metric_product_type = hierarchy.get('productType', {}).get('name')
+        pmoid = hierarchy.get('productType', {}).get('pmoid')
+        metric_product_type = pmoid  # store pmoid; resolved to English name at display time
         metric_family = hierarchy.get('marketingSubCategory', {}).get('name')
-        app_metrics.record_page_view(metrics_dir, sku, current_locale or 'unknown', metric_product_type, metric_family)
-        return render_template('product_template.html', df=df, tech_specs_by_group=sorted_tech_specs_by_group, df_images=df_images, companions=companions, top_companions=top_companions, df_footnotes=df_footnotes, df_disclaimers=df_disclaimers, mm_blocks=mm_blocks, feature_blocks=feature_blocks, top_components=top_components_list, video_data=video_data, locales=locales, sku=sku, current_locale=current_locale, country_names=current_app.config['COUNTRY_NAMES'], locale_names=current_app.config['LOCALE_NAMES'], translations=translations)
+
+        # Extended metrics
+        plc_status = product.get('plcStatus')
+        metric_category = hierarchy.get('marketingCategory', {}).get('name')
+        metric_series = hierarchy.get('bigSeries', {}).get('name')
+        fallback_applied = product.get('fallbackApplied', False)
+        has_video = video_data is not None
+        has_companions = bool(companions)
+        image_count = len(df_images) if not df_images.empty else 0
+        spec_group_count = len(tech_specs_by_group)
+
+        # Check EOL: flag products with endOfSalesDate within 90 days
+        eol_date = None
+        end_of_sales = product.get('plcDates', {}).get('endOfSalesDate')
+        if end_of_sales:
+            try:
+                eos = datetime.strptime(end_of_sales, '%Y-%m-%d').date()
+                if eos <= (datetime.now().date() + timedelta(days=90)):
+                    eol_date = end_of_sales
+            except (ValueError, TypeError):
+                pass
+
+        app_metrics.record_page_view(
+            metrics_dir, sku, current_locale or 'unknown',
+            metric_product_type, metric_family,
+            plc_status=plc_status,
+            category=metric_category,
+            series=metric_series,
+            fallback=fallback_applied,
+            response_time=response_time,
+            has_video=has_video,
+            has_companions=has_companions,
+            image_count=image_count,
+            spec_group_count=spec_group_count,
+            eol_date=eol_date,
+        )
+        return render_template('product_template.html', df=df, tech_specs_by_group=sorted_tech_specs_by_group, df_images=df_images, companions=companions, top_companions=top_companions, df_footnotes=df_footnotes, df_disclaimers=df_disclaimers, mm_blocks=mm_blocks, feature_blocks=feature_blocks, top_components=top_components_list, video_data=video_data, locales=locales, sku=sku, current_locale=current_locale, country_names=current_app.config['COUNTRY_NAMES'], locale_names=current_app.config['LOCALE_NAMES'], translations=translations, is_obsolete=is_obsolete)
     except KeyError as e:
         logging.error(
             f"A KeyError occurred in process_api_response: {e}", exc_info=True)
